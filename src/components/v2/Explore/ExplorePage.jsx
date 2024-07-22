@@ -4,7 +4,7 @@ import '../../pages/Pages.css';
 import TabGroup from '../../common/TabGroup';
 import FilterBar from '../../common/FilterBar';
 
-function LandingPage(){
+function ExplorePage(){
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [filteredData, setFilteredData] = useState(null);
@@ -12,11 +12,12 @@ function LandingPage(){
   const [error, setError] = useState(null);
   const [name, setName] = useState(null);
   const [activeTab, setActiveTab] = useState("Country");
+  const apiUrl = process.env.REACT_APP_API_URL; 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://192.168.0.3:8000/api/allParks');
+        const response = await fetch(`${apiUrl}/allParks`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -154,4 +155,4 @@ function ParkGroup({list, name, openLink}){
   )
 }
 
-export default LandingPage;
+export default ExplorePage;

@@ -1,18 +1,16 @@
+import { Link } from 'react-router-dom';
 import './Nav.css';
 
 function Nav() {
   return (
-    <div class="nav-menu">
-      <a className='nav-logo' href='/'>Park Hopper</a>
+    <div className="nav-menu">
+      <Link className='nav-logo' to='/'>Park Hopper</Link>
       <div></div>
-      <ul class="nav-menu-content">
-        <li><a href="/explore">Explore</a></li>
-        <li><a href="/settings">Settings</a></li>
-        <li><a href="/favs">Favs</a></li>
-        <li><a href="/login">Login/Logout</a></li>
-        {/* <li><a href="/explore"><span class="material-symbols-outlined">explore</span></a></li> */}
-        {/* <li><a href="#"><span class="material-symbols-outlined">settings</span></a></li>
-        <li style={{float: 'right'}}><a href="/login"><span class="material-symbols-outlined">login</span></a></li>  */}
+      <ul className="nav-menu-content">
+        <li><Link to="/explore">Explore</Link></li>
+        <li><Link to="/settings">Settings</Link></li>
+        <li><Link to="/favs">Favs</Link></li>
+        <li><Link to="/login">Login/Logout</Link></li>
       </ul>
     </div>
   );

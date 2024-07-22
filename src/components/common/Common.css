@@ -1,0 +1,74 @@
+ 
+.wide-card {
+  width: 100%;
+  height: 48px;
+  background-color: rgb(204, 204, 204);
+  color: black;
+  border-radius: 10px;
+  margin: 4px 0;
+}
+
+.wide-card:hover {
+  background-color: rgb(204, 204, 204, 0.8);
+}
+
+.wide-card-img{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat; 
+  background-size: 100% 100%;
+  z-index: 1;
+}
+
+.overlay{
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2; 
+}
+
+.overlay-name{
+  width: 92.5%;;
+}
+
+.overlay-wait{
+  width: 2.5%;;
+}
+
+.overlay p, .overlay i{
+  float: left;
+  height: 24px;
+  margin: 12px 0;
+}
+.tab-group{
+  display: flex;
+  flex-direction: row;
+  margin-left: 8px;
+  background-color: #ddd;
+  width: fit-content;
+  height: 52px;
+  border-radius: 4px;
+}
+.tab-element{
+  width: fit-content;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  height: 40px;
+  margin: 6px;
+}
+.active-tab-element{
+  width: fit-content;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  height: 40px;
+  margin: 6px;
+  background-color: #fff;
+}
+.tab-element:hover{
+  background-color: #fff;
+}

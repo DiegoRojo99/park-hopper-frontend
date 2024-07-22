@@ -1,0 +1,31 @@
+functionsDirectory = "D:\\Proyectos\\git\\Park-Hopper-Web\\frontend\\netlify\\functions"
+functionsDirectoryOrigin = "ui"
+plugins = []
+headers = []
+redirects = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "D:\\Proyectos\\git\\Park-Hopper-Web\\frontend\\build"
+publishOrigin = "ui"
+base = "D:\\Proyectos\\git\\Park-Hopper-Web\\frontend"
+command = "npm run build"
+commandOrigin = "ui"
+functions = "D:\\Proyectos\\git\\Park-Hopper-Web\\frontend\\netlify\\functions"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]

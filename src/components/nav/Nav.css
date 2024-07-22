@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
+.menu {
+  height: 100%;
+  transition: .3s;
+  background: #ffffff12;
+  padding: 20px 20px 20px 0;
+  width: 85px;
+  box-shadow: 8px 0px 9px 0px #00000014;
+  backdrop-filter: blur(5px);
+  min-height: 100vh;
+}
+
+.menu:hover {
+  width: 320px;
+}
+
+.menu:hover li span:nth-child(2) {
+  display: block;
+}
+
+.menu-content li {
+  list-style: none;
+  border-radius: 0px 50px 50px 0;
+  transition: .3s;
+  margin-bottom: 20px;
+  padding-left: 20px;
+}
+
+.menu-content li:hover {
+  background: #0c0c0c;
+}
+
+.menu-content li span:nth-child(2) {
+  display: none;
+}
+
+a {
+  text-decoration: none;
+  color: rgb(213, 213, 213);
+  display: flex;
+  align-items: center;
+  font-family: 'calibri';
+}
+
+.material-symbols-outlined {
+  font-size: 25px;
+  margin-right: 10px;
+  background: #0c0c0c;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.nav-logo{
+  padding: 0 24px;
+  color: black;
+  width: 256px;
+}
+
+.nav-menu{
+  width: 100%;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  background: linear-gradient(to right,#fff, #ccc);
+}
+
+.nav-menu-content{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+}
+
+.nav-menu-content li{
+  /* flex: 1; */
+  list-style: none;
+  padding: 8px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-menu-content li a{
+  color: black;
+}
+
+.material-symbols-outlined:hover {
+  background: #5a5a5a;
+}

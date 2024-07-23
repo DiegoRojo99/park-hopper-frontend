@@ -74,7 +74,7 @@ export function WaitingTimes({ attractions }){
   }
 
   function selectFavAttraction(attractionName){
-    alert("New FAV attraction: " + attractionName);
+    
   }
 
   return (

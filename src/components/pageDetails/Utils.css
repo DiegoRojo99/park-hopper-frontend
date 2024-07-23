@@ -4,6 +4,15 @@
   justify-content: center;
 }
 
+.star-icon{
+  margin-left: 6px;
+}
+
+.star-icon:hover{
+ transform: scale(1.25);
+ cursor: pointer;
+}
+
 @media screen and (max-width: 640px) {
   .status-div{
     align-items: center;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faX, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faX, faTriangleExclamation, faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as lineStar } from '@fortawesome/free-regular-svg-icons';
 import './Utils.css';
 
 export function WaitingTimes({ attractions }){
@@ -64,7 +65,7 @@ export function WaitingTimes({ attractions }){
         return (
           <div className='status-div'>
             <p>DOWN</p>
-            <FontAwesomeIcon icon={faTriangleExclamation} style={{color: "#ff0", margin: '0 4px'}} />
+            <FontAwesomeIcon icon={faTriangleExclamation} style={{color: "#fcb00a", margin: '0 4px'}} />
           </div>
         );
       default:
@@ -72,16 +73,22 @@ export function WaitingTimes({ attractions }){
     }  
   }
 
+  function selectFavAttraction(attractionName){
+    alert("New FAV attraction: " + attractionName);
+  }
+
   return (
     <div className='waiting-times'>
       <div className='attraction-row header-row'>
+        <p></p>
         <p>Attraction</p>
         <p>Waiting Time</p>
         <p>Status</p>
       </div>
       { attractions.sort((a,b) => sortByWaitTime(a, b)).map((a) => {
         return (
-          <div className='attraction-row'>
+          <div className='attraction-row'>            
+            <FontAwesomeIcon icon={lineStar} className='star-icon' onClick={() => selectFavAttraction(a.name)} />
             <p>{a.name}</p>
             <p>{a.queue?.STANDBY?.waitTime ? a.queue["STANDBY"].waitTime : "-"}</p>
             {statusData(a.status)}

@@ -198,7 +198,7 @@
 
 .attraction-row{
   display: grid;
-  grid-template-columns: 4fr 1fr 1fr;
+  grid-template-columns: 1fr 5fr 1fr 1fr;
   padding: 8px 0;
   border-bottom: 1px solid rgb(128,128,128,0.5);
   width: 100%;

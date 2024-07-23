@@ -55,10 +55,10 @@
 }
 
 .filter-bar{
-  width: 90%;
-  margin: 8px 5%;
+  width: 95%;
+  margin: 8px 2.5%;
   height: 72px;
-  padding: 8px;
+  padding: 8px 0px;
   display: flex;
 }
 
@@ -71,6 +71,15 @@
   .country-list-div{
     display: flex;
     flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 600px) {
+  .filter-bar{
+    width: 100%;
+    margin: 8px;
+    height: 72px;
+    padding: 8px 0px;
+    display: flex;
   }
 }
 

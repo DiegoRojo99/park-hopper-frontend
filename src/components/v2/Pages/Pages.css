@@ -48,7 +48,7 @@
 .landing-big-img{
   width: 100%;
   height: 320px;
-  background-image: url('../../img/theme-park-banner.jpg');
+  background-image: url('../../../img/theme-park-banner.jpg');
   background-size: cover; 
   background-position: center;
   background-repeat: no-repeat; 

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Card from '../common/Card';
-import TabGroup from '../common/TabGroup';
-import FilterBar from '../common/FilterBar';
-import { WaitingTimes } from '../pageDetails/WaitingTimes';
+import TabGroup from '../../common/TabGroup';
+import FilterBar from '../../common/FilterBar';
+import { WaitingTimes } from '../../pageDetails/WaitingTimes';
 
 export function ParkPage(){
   const { id } = useParams();
@@ -26,26 +25,33 @@ export function ParkPage(){
       let restaurants = children.filter((child) => child.entityType === "RESTAURANT");
       let hotels = children.filter((child) => child.entityType === "HOTEL");
       let shows = children.filter((child) => child.entityType === "SHOW");
-      const dividedChildren = {attractions, restaurants, hotels, shows};
 
+      const dividedChildren = {attractions, restaurants, hotels, shows};
       const tabsOrder = ["Attractions", "Shows", "Restaurants", "Hotels"];
       const filteredTabs = tabsOrder.filter(tab => dividedChildren[tab.toLocaleLowerCase()]?.length);
       setTabs(filteredTabs);
-      setChildren(dividedChildren);
+      
+      return dividedChildren;
     }
 
     const fetchData = async () => {
       try {
         const response = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/live`);
         const scheduleRes = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/schedule`);
-        
+        const parkAttractionsResponse = await fetch(`http://localhost:8000/api/parks/${id}/attractions`);
         if (!response.ok || !scheduleRes.ok) {
           throw new Error('Network response was not ok');
         }
 
         const result = await response.json();
         const scheduleObj = await scheduleRes.json();
-        divideChildren(result.liveData);
+        
+        let parkAttractions = await parkAttractionsResponse.json();
+        parkAttractions = parkAttractions.map(att => att.id);
+        
+        let dividedChildren = divideChildren(result.liveData);
+        dividedChildren.attractions = dividedChildren.attractions.filter(att => !parkAttractions.includes(att.id));
+        setChildren(dividedChildren);
         setData(result);
         const groupedByDate = scheduleObj.schedule.reduce((acc, obj) => {
           const date = new Date(obj.date).toLocaleDateString(); // Extracting only the date part
@@ -113,7 +119,7 @@ export function ParkPage(){
     return <>Loading</>
   }
   return (
-    <div>
+    <div className='details-page'>
       <div className='page-header'>
         <h1>{data.name}</h1>
       </div>

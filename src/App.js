@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './Firebase';
 import ExplorePage from './components/v2/Explore/ExplorePage';
-import { ParkPage } from './components/pages/ParkPage';
+import { ParkPage } from './components/v2/Pages/ParkPage';
 import Home from './components/home/Home';
 
 function App() {

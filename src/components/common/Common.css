@@ -72,3 +72,33 @@
 .tab-element:hover{
   background-color: #fff;
 }
+
+@media screen and (max-width: 640px) {
+  .tab-group{
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    background-color: #ddd;
+    width: fit-content;
+    height: 30px;
+    border-radius: 4px;
+    font-size: 10px;
+  }
+  .tab-element{
+    width: fit-content;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 20px;
+    margin: 4px;
+  }
+  .active-tab-element{
+    width: fit-content;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 20px;
+    margin: 4px;
+    background-color: #fff;
+  }
+}

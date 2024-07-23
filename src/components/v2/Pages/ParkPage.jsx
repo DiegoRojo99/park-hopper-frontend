@@ -90,7 +90,7 @@ export function ParkPage(){
   }
 
   function renderChildrenObjects(){
-    let selectedChildren = filteredData.length || name.length ? filteredData : children[activeTab.toLowerCase()];
+    let selectedChildren = filteredData.length || name ? filteredData : children[activeTab.toLowerCase()];
     if(loading){
       return <></>
     }

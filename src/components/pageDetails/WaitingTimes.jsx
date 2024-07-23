@@ -1,4 +1,7 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faX, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import './Utils.css';
 
 export function WaitingTimes({ attractions }){
 
@@ -40,6 +43,35 @@ export function WaitingTimes({ attractions }){
     }
   }
 
+  function statusData(status){
+    switch(status){
+      case "OPERATING":
+        return (
+          <div className='status-div'>
+            <p>OPEN</p>
+            <FontAwesomeIcon icon={faCheck} style={{color: "#197328", margin: '0 4px'}} />
+          </div>
+        );
+      case "REFURBISHMENT":
+      case "CLOSED":
+        return (
+          <div className='status-div'>
+            <p>CLOSED</p>
+            <FontAwesomeIcon icon={faX} style={{color: "#f00", margin: '0 4px'}} />
+          </div>
+        );
+      case "DOWN":
+        return (
+          <div className='status-div'>
+            <p>DOWN</p>
+            <FontAwesomeIcon icon={faTriangleExclamation} style={{color: "#ff0", margin: '0 4px'}} />
+          </div>
+        );
+      default:
+        return <p>{status}</p>
+    }  
+  }
+
   return (
     <div className='waiting-times'>
       <div className='attraction-row header-row'>
@@ -52,7 +84,7 @@ export function WaitingTimes({ attractions }){
           <div className='attraction-row'>
             <p>{a.name}</p>
             <p>{a.queue?.STANDBY?.waitTime ? a.queue["STANDBY"].waitTime : "-"}</p>
-            <p>{a.status}</p>
+            {statusData(a.status)}
           </div>
         )
       })}

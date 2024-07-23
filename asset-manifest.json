@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/park-hopper-frontend/static/css/main.a98eb252.css",
-    "main.js": "/park-hopper-frontend/static/js/main.820a5ead.js",
+    "main.css": "/park-hopper-frontend/static/css/main.8dc92054.css",
+    "main.js": "/park-hopper-frontend/static/js/main.56c43a00.js",
     "static/js/787.9e9f4ffd.chunk.js": "/park-hopper-frontend/static/js/787.9e9f4ffd.chunk.js",
     "static/media/theme-park-banner.jpg": "/park-hopper-frontend/static/media/theme-park-banner.7282f4c25c2d00c9bcf0.jpg",
     "index.html": "/park-hopper-frontend/index.html",
-    "main.a98eb252.css.map": "/park-hopper-frontend/static/css/main.a98eb252.css.map",
-    "main.820a5ead.js.map": "/park-hopper-frontend/static/js/main.820a5ead.js.map",
+    "main.8dc92054.css.map": "/park-hopper-frontend/static/css/main.8dc92054.css.map",
+    "main.56c43a00.js.map": "/park-hopper-frontend/static/js/main.56c43a00.js.map",
     "787.9e9f4ffd.chunk.js.map": "/park-hopper-frontend/static/js/787.9e9f4ffd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a98eb252.css",
-    "static/js/main.820a5ead.js"
+    "static/css/main.8dc92054.css",
+    "static/js/main.56c43a00.js"
   ]
 }

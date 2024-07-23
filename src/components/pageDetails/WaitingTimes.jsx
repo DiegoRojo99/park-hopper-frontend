@@ -38,23 +38,21 @@ export function WaitingTimes({ type, attractions }){
   }
 
   return (
-    <div>               
-      <div className='waiting-times'>
-        <div className='attraction-row header-row'>
-          <p>Attraction</p>
-          <p>Waiting Time</p>
-          <p>Status</p>
-        </div>
-        { attractions.sort((a,b) => sortByWaitTime(a, b)).map((a) => {
-          return (
-            <div className='attraction-row'>
-              <p>{a.name}</p>
-              <p>{a.queue?.STANDBY?.waitTime ? a.queue["STANDBY"].waitTime : "-"}</p>
-              <p>{a.status}</p>
-            </div>
-          )
-        })}
+    <div className='waiting-times'>
+      <div className='attraction-row header-row'>
+        <p>Attraction</p>
+        <p>Waiting Time</p>
+        <p>Status</p>
       </div>
+      { attractions.sort((a,b) => sortByWaitTime(a, b)).map((a) => {
+        return (
+          <div className='attraction-row'>
+            <p>{a.name}</p>
+            <p>{a.queue?.STANDBY?.waitTime ? a.queue["STANDBY"].waitTime : "-"}</p>
+            <p>{a.status}</p>
+          </div>
+        )
+      })}
     </div>
   );
 };

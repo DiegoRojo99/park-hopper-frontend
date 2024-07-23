@@ -37,7 +37,7 @@
     flex-direction: column;
   }
   .page-header h1{
-    margin: 32px 0;
+    margin: 32px 0 20px;
     text-align: center;
     width: 100%;
   }
@@ -61,9 +61,10 @@
     flex-direction: column;
   }
   .page-header h1{
-    margin: 32px 0;
+    margin: 32px 0 20px;
     text-align: center;
     width: 100%;
+    font-size: 24px;
   }
   .toggle-switch{
     margin: 0 calc(50% - 40px) 16px !important;

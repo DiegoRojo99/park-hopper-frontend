@@ -1,9 +1,12 @@
 import React from 'react';
 
-export function WaitingTimes({ type, attractions }){
+export function WaitingTimes({ attractions }){
 
-  if (!attractions || !attractions.length) {
+  if (!attractions) {
     return <p>Loading...</p>;
+  }
+  else if(!attractions.length){
+    return <p>No matching attractions</p>
   }
 
   function sortByWaitTime(a, b){

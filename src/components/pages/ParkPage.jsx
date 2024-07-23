@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Card from '../common/Card';
-import WideCard from '../common/WideCard';
 import TabGroup from '../common/TabGroup';
 import FilterBar from '../common/FilterBar';
 import { WaitingTimes } from '../pageDetails/WaitingTimes';
@@ -16,7 +15,7 @@ export function ParkPage(){
   const [schedule, setSchedule] = useState(null);
   const [name, setName] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
-  const [viewType, setViewType] = useState("Card");
+  const [viewType, setViewType] = useState("List");
   const [activeTab, setActiveTab] = useState("Attractions");
   const [tabs, setTabs] = useState(["Attractions", "Shows", "Restaurants", "Hotels"]);
 
@@ -84,17 +83,18 @@ export function ParkPage(){
 
   function renderChildrenObjects(){
     let selectedChildren = filteredData?.length || name?.length ? filteredData : children[activeTab.toLowerCase()];
-    if(!loading && viewType==="Card"){
-      return(
-        <div className='grid-element'>
-          {selectedChildren.map((child) => { 
-          return (
-            <Card child={child} openLink={openLink} />
-          )})}
-        </div>          
-      );
-    }
-    else if(!loading && viewType==="List"){
+    // if(!loading && viewType==="Card"){
+    //   return(
+    //     <div className='grid-element'>
+    //       {selectedChildren.map((child) => { 
+    //       return (
+    //         <Card child={child} openLink={openLink} />
+    //       )})}
+    //     </div>          
+    //   );
+    // }
+    // else 
+    if(!loading && viewType==="List"){
       return(
         <>
           <div className='grid-element'>
@@ -124,7 +124,7 @@ export function ParkPage(){
       <div style={{display: 'flex', margin: '32px 16px 16px'}} >
         <TabGroup tabs={tabs} activeTab={activeTab} changeTab={setActiveTab} />
         <div style={{flex: '4'}}></div>
-        <ToggleSwitch setViewType={setViewType} />  
+        {/* <ToggleSwitch setViewType={setViewType} />   */}
       </div>
       <FilterBar name={name} searchName={searchName} />
       {renderChildrenObjects()}

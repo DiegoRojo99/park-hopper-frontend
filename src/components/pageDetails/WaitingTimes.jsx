@@ -3,8 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faX, faTriangleExclamation, faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as lineStar } from '@fortawesome/free-regular-svg-icons';
 import './Utils.css';
+import { useAuth } from '../../contexts/AuthContext';
 
 export function WaitingTimes({ attractions }){
+  
+  const { user } = useAuth(); 
+  const apiUrl = process.env.REACT_APP_API_URL; 
 
   if (!attractions) {
     return <p>Loading...</p>;
@@ -73,7 +77,39 @@ export function WaitingTimes({ attractions }){
     }  
   }
 
-  function selectFavAttraction(attractionName){
+  async function selectFavAttraction(attraction){
+
+    if(!user){
+      console.error('User is not logged in.');
+      return;
+    }else{
+      console.log("User: ", user);
+    }
+    const body = {
+      "userId": user.uid,
+      "entityId": attraction.id,
+      "type": "attraction"
+    }
+
+    try {
+      const response = await fetch(`${apiUrl}/addFavorite`, { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log('Favorite added:', result); // Handle response as needed
+    } catch (error) {
+      console.error('Failed to add favorite:', error);
+    }
+    
     
   }
 
@@ -88,7 +124,7 @@ export function WaitingTimes({ attractions }){
       { attractions.sort((a,b) => sortByWaitTime(a, b)).map((a) => {
         return (
           <div className='attraction-row'>            
-            <FontAwesomeIcon icon={lineStar} className='star-icon' onClick={() => selectFavAttraction(a.name)} />
+            <FontAwesomeIcon icon={lineStar} className='star-icon' onClick={() => selectFavAttraction(a)} />
             <p>{a.name}</p>
             <p>{a.queue?.STANDBY?.waitTime ? a.queue["STANDBY"].waitTime : "-"}</p>
             {statusData(a.status)}

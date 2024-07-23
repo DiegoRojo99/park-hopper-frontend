@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Destinations.css';
 import Card from '../common/Card';
-import TextField from '@mui/material/TextField';
+import FilterBar from '../common/FilterBar';
 
 function Destinations(){
   const navigate = useNavigate();
@@ -64,24 +64,5 @@ function Destinations(){
     </div>
   );
 };
-
-function FilterBar({name, searchName}){
-
-  return (
-    <div className='filter-bar'>
-      <TextField 
-        id="outlined-basic" 
-        label="Name" 
-        // variant="outlined" 
-        // color=''
-        value={name}
-        onChange={(event) => { searchName(event.target.value)}}
-        focused
-        sx={{ color: 'white' }}
-      />
-
-    </div>
-  )
-}
 
 export default Destinations;

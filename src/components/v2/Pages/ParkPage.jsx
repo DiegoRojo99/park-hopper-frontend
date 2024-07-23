@@ -90,11 +90,11 @@ export function ParkPage(){
   }
 
   function renderChildrenObjects(){
+    let selectedChildren = filteredData.length || name.length ? filteredData : children[activeTab.toLowerCase()];
     if(loading){
       return <></>
     }
     if(activeTab !== "Attractions"){
-      let selectedChildren = children[activeTab.toLowerCase()];
       return(
         <div className='grid-element'>
           {selectedChildren.map((child) => { 
@@ -107,7 +107,7 @@ export function ParkPage(){
     else if(viewType==="List"){
       return(
         <div className='grid-element'>
-          <WaitingTimes attractions={children.attractions} />
+          <WaitingTimes attractions={selectedChildren} />
         </div>
       );
     }

@@ -8,30 +8,30 @@ const LoginRegister = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
+  const apiUrl = process.env.REACT_APP_API_URL; 
 
   async function login(email, password){
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // console.log(errorCode, errorMessage)
-      });
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log('User logged in:', user);
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error('Error logging in:', errorCode, errorMessage);
+    }
   }
 
   async function register(email, password){
     await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
-        // Call backend API to add user to the database
-        const response = await fetch('http://192.168.0.3:5000/api/users', {
+        const response = await fetch(`${apiUrl}/createUser`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ username, email, uid: user.uid }) // Pass username, email, and uid to backend
+          body: JSON.stringify({ username, email, uid: user.uid })
         });
         if (!response.ok) {
           throw new Error('Failed to add user to database');
@@ -40,7 +40,7 @@ const LoginRegister = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        // console.log(errorCode, errorMessage);
+        console.error('Error logging in:', errorCode, errorMessage);
       });    
   }
 

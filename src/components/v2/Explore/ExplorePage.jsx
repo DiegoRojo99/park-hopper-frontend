@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../pages/Pages.css';
+import '../../common/Common.css';
 import TabGroup from '../../common/TabGroup';
 import FilterBar from '../../common/FilterBar';
 

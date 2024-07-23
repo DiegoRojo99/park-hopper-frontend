@@ -131,9 +131,9 @@ export function ParkPage(){
       <div className='page-header'>
         <h1>{data.name}</h1>
       </div>
-      <div style={{display: 'flex'}} >
+      {/* <div style={{display: 'flex'}} >
         <img src='../../img/logo512.png' style={{width: '128px', height: '128px', marginLeft: '32px'}} />
-      </div>
+      </div> */}
                
       <div style={{display: 'flex', margin: '32px 16px 16px'}} >
         <TabGroup tabs={tabs} activeTab={activeTab} changeTab={setActiveTab} />

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import TabGroup from '../../common/TabGroup';
 import FilterBar from '../../common/FilterBar';
 import { WaitingTimes } from '../../pageDetails/WaitingTimes';
+import Card from '../../common/Card';
 
 export function ParkPage(){
   const { id } = useParams();
@@ -17,6 +18,7 @@ export function ParkPage(){
   const [viewType, setViewType] = useState("List");
   const [activeTab, setActiveTab] = useState("Attractions");
   const [tabs, setTabs] = useState(["Attractions", "Shows", "Restaurants", "Hotels"]);
+  const apiUrl = process.env.REACT_APP_API_URL; 
 
   useEffect(() => {
 
@@ -38,7 +40,7 @@ export function ParkPage(){
       try {
         const response = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/live`);
         const scheduleRes = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/schedule`);
-        const parkAttractionsResponse = await fetch(`http://localhost:8000/api/parks/${id}/attractions`);
+        const parkAttractionsResponse = await fetch(`${apiUrl}/parks/${id}/attractions`);
         if (!response.ok || !scheduleRes.ok) {
           throw new Error('Network response was not ok');
         }
@@ -88,19 +90,28 @@ export function ParkPage(){
   }
 
   function renderChildrenObjects(){
-    let selectedChildren = filteredData?.length || name?.length ? filteredData : children[activeTab.toLowerCase()];
-    // if(!loading && viewType==="Card"){
-    //   return(
-    //     <div className='grid-element'>
-    //       {selectedChildren.map((child) => { 
-    //       return (
-    //         <Card child={child} openLink={openLink} />
-    //       )})}
-    //     </div>          
-    //   );
-    // }
-    // else 
-    if(!loading && viewType==="List"){
+    if(loading){
+      return <></>
+    }
+    if(activeTab !== "Attractions"){
+      let selectedChildren = children[activeTab.toLowerCase()];
+      return(
+        <div className='grid-element'>
+          {selectedChildren.map((child) => { 
+          return (
+            <Card child={child} openLink={openLink} />
+          )})}
+        </div>          
+      );
+    }
+    else if(viewType==="List"){
+      return(
+        <div className='grid-element'>
+          <WaitingTimes attractions={children.attractions} />
+        </div>
+      );
+    }
+    else{
       return(
         <>
           <div className='grid-element'>
@@ -108,9 +119,6 @@ export function ParkPage(){
           </div>
         </>
       );
-    }
-    else{
-      return <></>;
     }
   }
 

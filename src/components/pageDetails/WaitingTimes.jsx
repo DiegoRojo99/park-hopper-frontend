@@ -4,6 +4,7 @@ import { faCheck, faX, faTriangleExclamation, faStar as solidStar } from '@forta
 import { faStar as lineStar } from '@fortawesome/free-regular-svg-icons';
 import './Utils.css';
 import { useAuth } from '../../contexts/AuthContext';
+import { Loader } from '../common/Loader';
 
 export function WaitingTimes({ attractions }){
   
@@ -11,7 +12,7 @@ export function WaitingTimes({ attractions }){
   const apiUrl = process.env.REACT_APP_API_URL; 
 
   if (!attractions) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
   else if(!attractions.length){
     return <p>No matching attractions</p>

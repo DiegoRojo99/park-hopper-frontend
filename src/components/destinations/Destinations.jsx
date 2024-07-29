@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Destinations.css';
 import Card from '../common/Card';
 import FilterBar from '../common/FilterBar';
+import { Loader } from '../common/Loader';
 
 function Destinations(){
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ function Destinations(){
   }, []); // The empty dependency array means this effect will run once when the component mounts
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   if (error) {

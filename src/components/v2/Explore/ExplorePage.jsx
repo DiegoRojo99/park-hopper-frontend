@@ -4,6 +4,7 @@ import '../Pages/Pages.css';
 import '../../common/Common.css';
 import TabGroup from '../../common/TabGroup';
 import FilterBar from '../../common/FilterBar';
+import { Loader } from '../../common/Loader';
 
 function ExplorePage(){
   const navigate = useNavigate();
@@ -34,14 +35,6 @@ function ExplorePage(){
 
     fetchData();
   }, []);
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
 
   function searchName(text){
     setName(text);
@@ -120,6 +113,15 @@ function ExplorePage(){
 
   function changeTab(newTab){
     setActiveTab(newTab);
+  }
+
+  
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
   }
 
   return (

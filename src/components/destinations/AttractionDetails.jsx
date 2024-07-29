@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Loader } from './../common/Loader.jsx';
 
 export function AttractionDetails(){
   const { id } = useParams();
@@ -30,7 +31,7 @@ export function AttractionDetails(){
   }, [id]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   if (error) {

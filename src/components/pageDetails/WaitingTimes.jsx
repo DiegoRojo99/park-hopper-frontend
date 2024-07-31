@@ -9,7 +9,7 @@ import { Loader } from '../common/Loader';
 export function WaitingTimes({ attractions }){
   
   const { user } = useAuth(); 
-  const apiUrl = process.env.REACT_APP_API_URL; 
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   if (!attractions) {
     return <Loader />;
@@ -79,15 +79,12 @@ export function WaitingTimes({ attractions }){
   }
 
   async function selectFavAttraction(attraction){
-
     if(!user){
       console.error('User is not logged in.');
       return;
-    }else{
-      console.log("User: ", user);
     }
+
     const body = {
-      "userId": user.uid,
       "entityId": attraction.id,
       "type": "attraction"
     }
@@ -97,6 +94,7 @@ export function WaitingTimes({ attractions }){
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.accessToken}`
         },
         body: JSON.stringify(body),
       });

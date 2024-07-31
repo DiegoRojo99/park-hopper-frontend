@@ -4,6 +4,7 @@ import TabGroup from '../../common/TabGroup';
 import FilterBar from '../../common/FilterBar';
 import { WaitingTimes } from '../../pageDetails/WaitingTimes';
 import Card from '../../common/Card';
+import { Loader } from '../../common/Loader';
 
 export function ParkPage(){
   const { id } = useParams();
@@ -124,7 +125,7 @@ export function ParkPage(){
 
   
   if(loading){
-    return <>Loading</>
+    return <Loader />;
   }
   return (
     <div className='details-page'>

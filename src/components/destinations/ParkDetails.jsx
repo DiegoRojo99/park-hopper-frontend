@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Card from '../common/Card';
 import WideCard from '../common/WideCard';
+import { Loader } from '../common/Loader';
 
 export function ParkDetails(){
   const { id } = useParams();
@@ -95,7 +96,7 @@ export function ParkDetails(){
 
   
   if(loading){
-    return <>Loading</>
+    return <Loader />;
   }
   return (
     <div>

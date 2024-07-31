@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faX, faTriangleExclamation, faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as lineStar } from '@fortawesome/free-regular-svg-icons';
@@ -8,8 +8,31 @@ import { Loader } from '../common/Loader';
 
 export function WaitingTimes({ attractions }){
   
+  const [userAttractions, setUserAttractions] = useState(false);
   const { user } = useAuth(); 
   const apiUrl = process.env.REACT_APP_API_URL;
+  
+  useEffect(() => {
+    async function loadUserFavorites(){
+      try {
+        const result = await fetch(`${apiUrl}/favorites`, { 
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`
+          }
+        })
+        .then(response => response.json());
+        
+        setUserAttractions(result);
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    if(user && user.accessToken){
+      loadUserFavorites();
+    }
+  }, [user]);
 
   if (!attractions) {
     return <Loader />;
@@ -78,37 +101,38 @@ export function WaitingTimes({ attractions }){
     }  
   }
 
-  async function selectFavAttraction(attraction){
+  async function selectFavAttraction(attraction, fav){
     if(!user){
       console.error('User is not logged in.');
       return;
     }
 
-    const body = {
-      "entityId": attraction.id,
-      "type": "attraction"
-    }
-
-    try {
-      const response = await fetch(`${apiUrl}/addFavorite`, { 
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.accessToken}`
-        },
-        body: JSON.stringify(body),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+    if(!fav){
+      const body = {
+        "entityId": attraction.id,
+        "type": "attraction"
       }
-
-      const result = await response.json();
-      console.log('Favorite added:', result); // Handle response as needed
-    } catch (error) {
-      console.error('Failed to add favorite:', error);
-    }
-    
+  
+      try {
+        const response = await fetch(`${apiUrl}/addFavorite`, { 
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`
+          },
+          body: JSON.stringify(body),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        const result = await response.json();
+        console.log('Favorite added:', result);
+      } catch (error) {
+        console.error('Failed to add favorite:', error);
+      }
+    }   
     
   }
 
@@ -121,9 +145,14 @@ export function WaitingTimes({ attractions }){
         <p>Status</p>
       </div>
       { attractions.sort((a,b) => sortByWaitTime(a, b)).map((a) => {
+        const fav = userAttractions ? userAttractions.some(userAtt => userAtt.EntityID === a.id) : false;
         return (
-          <div className='attraction-row'>            
-            <FontAwesomeIcon icon={lineStar} className='star-icon' onClick={() => selectFavAttraction(a)} />
+          <div className='attraction-row'> 
+            <FontAwesomeIcon 
+              icon={!fav ? lineStar : solidStar} 
+              className='star-icon' 
+              onClick={() => selectFavAttraction(a, fav)} 
+            />
             <p>{a.name}</p>
             <p>{a.queue?.STANDBY?.waitTime ? a.queue["STANDBY"].waitTime : "-"}</p>
             {statusData(a.status)}

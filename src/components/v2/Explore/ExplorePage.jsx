@@ -50,9 +50,11 @@ function ExplorePage(){
   function renderLandingContent(){
     switch(activeTab){
       case "Country":
-        return renderCountryList();
+        return renderFieldList("Country");
       case "Group":
-        return renderGroupList();
+        return renderGroupList();        
+      case "Destination":
+        return renderFieldList("DestinationName");
       default:
         return <></>
 
@@ -68,10 +70,10 @@ function ExplorePage(){
         groupMap[row.ParkName] = [row];
       }
     });
-    const countries = Object.keys(groupMap);
-    countries.sort((a,b) => a.localeCompare(b));
-    const firstColumn = countries.splice(0, Math.ceil(countries.length / 3));
-    const secondColumn = countries.splice(0, Math.ceil(countries.length / 2));
+    const groupedParks = Object.keys(groupMap);
+    groupedParks.sort((a,b) => a.localeCompare(b));
+    const firstColumn = groupedParks.splice(0, Math.ceil(groupedParks.length / 3));
+    const secondColumn = groupedParks.splice(0, Math.ceil(groupedParks.length / 2));
     return (
       <div className='country-list-div'>
         <div className='column'>
@@ -81,31 +83,34 @@ function ExplorePage(){
           {secondColumn.map(c => <ParkGroup list={groupMap[c]} name={c} openLink={openLink} /> )}
         </div>       
         <div className='column'>
-          {countries.map(c => <ParkGroup list={groupMap[c]} name={c} openLink={openLink} /> )}
+          {groupedParks.map(c => <ParkGroup list={groupMap[c]} name={c} openLink={openLink} /> )}
         </div>   
       </div>
     )
   }
 
-  function renderCountryList(){
-    const countryMap = {};
+  function renderFieldList(field){
+    const groupedMap = {};
     filteredData.forEach((row) => {
-      if(countryMap[row.Country]?.length){
-        countryMap[row.Country] = [...countryMap[row.Country], row];
+      if(groupedMap[row[field]]?.length){
+        groupedMap[row[field]] = [...groupedMap[row[field]], row];
       }else{
-        countryMap[row.Country] = [row];
+        groupedMap[row[field]] = [row];
       }
     });
-    const countries = Object.keys(countryMap);
-    countries.sort((a,b) => a.localeCompare(b));
-    const firstColumn = countries.length > 10 ? countries.splice(0, 13) : countries.splice(0, Math.ceil(countries.length / 2));
+    const groupedParks = Object.keys(groupedMap);
+    groupedParks.sort((a,b) => a.localeCompare(b));
+    let number = field === "Country" ? 10 : groupedParks.length / 2 
+    const firstColumn = groupedParks.length > number ? 
+      groupedParks.splice(0, number + 3) : 
+      groupedParks.splice(0, Math.ceil(groupedParks.length / 2));
     return (
       <div className='country-list-div'>
         <div className='column'>
-          {firstColumn.map(c => <ParkGroup list={countryMap[c]} name={c} openLink={openLink} /> )}
+          {firstColumn.map(c => <ParkGroup list={groupedMap[c]} name={c} openLink={openLink} /> )}
         </div>       
         <div className='column'>
-          {countries.map(c => <ParkGroup list={countryMap[c]} name={c} openLink={openLink} /> )}
+          {groupedParks.map(c => <ParkGroup list={groupedMap[c]} name={c} openLink={openLink} /> )}
         </div>
       </div>
     )
@@ -129,7 +134,7 @@ function ExplorePage(){
       <div className='landing-big-img' alt="Generic Theme Park" />
       <FilterBar name={name} searchName={searchName} placeholder={'Search a theme park...'} />
       <div className='landing-main'>
-        <TabGroup tabs={["Country", "Map"]} activeTab={activeTab} changeTab={changeTab} />
+        <TabGroup tabs={["Country", "Map", "Destination"]} activeTab={activeTab} changeTab={changeTab} />
         {renderLandingContent()}
       </div>
       
@@ -145,14 +150,14 @@ function ParkGroup({list, name, openLink}){
     <div className='group-list' key={name + "-group"}>
       <p className='group-name'>{name}</p>
       {list.map(park => 
-      <div className='group-park'>
-        <p className='group-park-name' onClick={() => openLink(park.ParkID)}>
-          {park.ParkName}
-        </p>
-        <div className='group-park-link'>
-          
+        <div className='group-park'>
+          <p className='group-park-name' onClick={() => openLink(park.ParkID)}>
+            {park.ParkName}
+          </p>
+          <div className='group-park-link'>
+            
+          </div>
         </div>
-      </div>
       )}
     </div>
   )

@@ -132,7 +132,32 @@ export function WaitingTimes({ attractions }){
       } catch (error) {
         console.error('Failed to add favorite:', error);
       }
-    }   
+    } 
+    else{
+      const body = {
+        "entityId": attraction.id,
+        "type": "attraction"
+      }
+  
+      try {
+        const response = await fetch(`${apiUrl}/removeFavorite`, { 
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.accessToken}`
+          },
+          body: JSON.stringify(body),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        loadUserFavorites();
+      } catch (error) {
+        console.error('Failed to add favorite:', error);
+      }
+    }  
     
   }
 

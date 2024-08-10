@@ -11,24 +11,25 @@ export function WaitingTimes({ attractions }){
   const [userAttractions, setUserAttractions] = useState(false);
   const { user } = useAuth(); 
   const apiUrl = process.env.REACT_APP_API_URL;
-  
-  useEffect(() => {
-    async function loadUserFavorites(){
-      try {
-        const result = await fetch(`${apiUrl}/favorites`, { 
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.accessToken}`
-          }
-        })
-        .then(response => response.json());
-        
-        setUserAttractions(result);
-      } catch (error) {
-        console.error(error)
-      }
+
+  async function loadUserFavorites(){
+    try {
+      const result = await fetch(`${apiUrl}/favorites`, { 
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.accessToken}`
+        }
+      })
+      .then(response => response.json());
+      
+      setUserAttractions(result);
+    } catch (error) {
+      console.error(error)
     }
+  }
+
+  useEffect(() => {
     if(user && user.accessToken){
       loadUserFavorites();
     }
@@ -126,9 +127,8 @@ export function WaitingTimes({ attractions }){
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-  
-        const result = await response.json();
-        console.log('Favorite added:', result);
+
+        loadUserFavorites();
       } catch (error) {
         console.error('Failed to add favorite:', error);
       }

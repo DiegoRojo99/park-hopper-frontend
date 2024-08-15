@@ -29,7 +29,6 @@
     justify-content: space-around;
     width: 95%;
     font-size: 14px;
-    /* margin:  0 2.5% 16px; */
   }
   .page-header{
     width: 100%;
@@ -49,7 +48,6 @@
 @media screen and (max-width: 640px) {
   .grid-element{
     font-size: 10px;
-    /* margin:  0 2.5% 16px; */
   }
   .page-header{
     width: 100%;
@@ -164,7 +162,7 @@
 
 .park-card {
   width: 100%;
-  max-width: 480px; /* Adjust the maximum width as needed */
+  max-width: 480px;
   margin: 10px;
   padding: 15px;
   border: 1px solid #000;
@@ -221,12 +219,11 @@
   border-radius: 20px;
   transition: transform 0.3s ease;
 }
-/* Add styles for checked state */
+
 .toggle-slider.checked {
   transform: translateX(100%);
 }
 
-/* Add styles for left and right icons */
 .toggle-icon {
   position: absolute;
   top: 50%;
@@ -266,7 +263,6 @@
   width: 30%;
 }
 
-/* Media queries for responsiveness */
 @media screen and (max-width: 720px){
   .park-header-info{
     flex-direction: column;

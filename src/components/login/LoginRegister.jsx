@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './LoginRegister.css';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from '@firebase/auth';
 import { auth } from '../../Firebase';
+import { useNavigate } from 'react-router-dom';
 
 const LoginRegister = () => {
   const [username, setUsername] = useState('');
@@ -9,12 +10,12 @@ const LoginRegister = () => {
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
   const apiUrl = process.env.REACT_APP_API_URL; 
+  const navigate = useNavigate();
 
   async function login(email, password){
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      console.log('User logged in:', user);
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate('/');
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -35,6 +36,9 @@ const LoginRegister = () => {
         });
         if (!response.ok) {
           throw new Error('Failed to add user to database');
+        }
+        else{
+          login(email, password);
         }
       })
       .catch((error) => {

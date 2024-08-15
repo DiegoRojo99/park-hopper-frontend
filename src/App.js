@@ -28,7 +28,7 @@ function App() {
     <Router basename="/">
       <div id='main-container' className="App">
         <Nav />
-        <div style={{width: '100%', height: '100%'}}>
+        <div style={{width: '100%', height: '100%', backgroundColor: 'white'}}>
           <Routes>
             <Route path="/" exact element={<Home />} />
             <Route path="/explore" element={<ExplorePage />} />

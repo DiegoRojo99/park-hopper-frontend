@@ -5,6 +5,7 @@ import FilterBar from '../../common/FilterBar';
 import { WaitingTimes } from '../../pageDetails/WaitingTimes';
 import Card from '../../common/Card';
 import { Loader } from '../../common/Loader';
+import { Showtimes } from '../../pageDetails/Showtimes';
 
 export function ParkPage(){
   const { id } = useParams();
@@ -95,14 +96,11 @@ export function ParkPage(){
     if(loading){
       return <></>
     }
-    if(activeTab !== "Attractions"){
+    if(activeTab === "Shows"){
       return(
         <div className='grid-element'>
-          {selectedChildren.map((child) => { 
-          return (
-            <Card child={child} openLink={openLink} />
-          )})}
-        </div>          
+          <Showtimes shows={selectedChildren} />
+        </div>
       );
     }
     else if(viewType==="List"){

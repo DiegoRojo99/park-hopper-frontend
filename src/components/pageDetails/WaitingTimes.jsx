@@ -5,6 +5,7 @@ import { faStar as lineStar } from '@fortawesome/free-regular-svg-icons';
 import './Utils.css';
 import { useAuth } from '../../contexts/AuthContext';
 import { Loader } from '../common/Loader';
+import { Status } from './../common/Status';
 
 export function WaitingTimes({ attractions }){
   
@@ -180,7 +181,7 @@ export function WaitingTimes({ attractions }){
             />
             <p>{a.name}</p>
             <p>{a.queue?.STANDBY?.waitTime ? a.queue["STANDBY"].waitTime : "-"}</p>
-            {statusData(a.status)}
+            <Status status={a.status} />
           </div>
         )
       })}

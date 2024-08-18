@@ -136,9 +136,8 @@ export function ParkPage(){
         <img src='../../img/logo512.png' style={{width: '128px', height: '128px', marginLeft: '32px'}} />
       </div> */}
                
-      <div style={{display: 'flex', margin: '32px 16px 16px'}} >
+      <div className='tab-group-row' >
         <TabGroup tabs={tabs} activeTab={activeTab} changeTab={setActiveTab} />
-        <div style={{flex: '4'}}></div>
         {/* <ToggleSwitch setViewType={setViewType} />   */}
       </div>
       <FilterBar name={name} searchName={searchName} />

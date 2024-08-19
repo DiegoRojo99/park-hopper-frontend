@@ -3,7 +3,7 @@
   background-color: #333;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Logo on the left, links on the right */
+  justify-content: space-between;
   padding: 0 16px;
   height: 60px;
   z-index: 1000; 
@@ -19,7 +19,7 @@
 .menu-items {
   display: flex;
   align-items: center;
-  gap: 16px; /* Space between the menu links */
+  gap: 16px;
 }
 
 .menu-items a {

@@ -1,70 +1,22 @@
-# Getting Started with Create React App
+# Park Hopper
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to **Park Hopper**—your ultimate companion for a seamless and enjoyable theme park experience! Visit us at [parkhopper.live](https://parkhopper.live).
 
-## Available Scripts
+## Project Overview
 
-In the project directory, you can run:
+**Park Hopper** is a web application designed to make navigating and enjoying theme parks easier and more intuitive. Instead of relying on multiple apps to track wait times, find attractions, or manage your theme park visit, Park Hopper centralizes everything into a single, user-friendly platform.
 
-### `npm start`
+### Key Features
 
-Runs the app in the development mode.\
-Open [http://192.168.0.3:3000](http://192.168.0.3:3000) to view it in your browser.
+- **Real-Time Waiting Times**: Access up-to-date waiting times for attractions, shows, restaurants, and more, all in one place using data from the [Theme Parks API](https://api.themeparks.wiki/docs/v1/).
+- **Favorites Management**: Easily track your favorite attractions with a simple click. No more sifting through long lists—your top picks are always at your fingertips.
+- **Responsive Design**: Whether you’re planning your visit from home or navigating the park on the go, Park Hopper is fully responsive and optimized for all devices.
+- **Future Enhancements**: We’re working on exciting new features, including personalized wait time alerts, social sharing options, and more, to make your theme park experience even better.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### How It Works
 
-### `npm test`
+Park Hopper utilizes the [Theme Parks API](https://api.themeparks.wiki/docs/v1/) to fetch real-time data from various theme parks. Users can explore different park destinations, view detailed information about attractions, and add them to their personalized favorites list. Soon, you’ll also be able to set up alerts for waiting times, ensuring you never miss the perfect moment to visit your favorite ride.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Visit Us
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Experience Park Hopper today at [parkhopper.live](https://parkhopper.live) and take your theme park visits to the next level!

@@ -11,6 +11,7 @@ import { auth } from './Firebase';
 import ExplorePage from './components/v2/Explore/ExplorePage';
 import { ParkPage } from './components/v2/Pages/ParkPage';
 import Home from './components/home/Home';
+import { FavPage } from './components/v2/Pages/FavPage';
 
 function App() {
   
@@ -32,6 +33,7 @@ function App() {
           <Routes>
             <Route path="/" exact element={<Home />} />
             <Route path="/explore" element={<ExplorePage />} />
+            <Route path="/favs" element={<FavPage />} />
             <Route path="/destinations" element={<Destinations />} />
             <Route path="/destinations/:id" element={<DestinationDetails />} />
             <Route path="/parks/:id" element={<ParkPage />} />            

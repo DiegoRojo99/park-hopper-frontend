@@ -1,19 +1,31 @@
+.login-page{
+  height: 100%;
+  margin: 100px auto;
+}
+
 .login-register-container {
   max-width: 400px;
-  margin: 100px auto;
-  padding: 20px;
+  /* padding: 20px; */
+  margin: 0 5%;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f9f9f9;
 }
 
-h2 {
+.login-register-container form{
+  margin: 0 5%;
+}
+
+
+.login-register-container h2 {
   text-align: center;
+  padding: 12px 0 4px;
 }
 
 form {
   display: flex;
   flex-direction: column;
+  padding: 8px 0;
 }
 
 input {
@@ -38,6 +50,7 @@ button:hover {
 
 .login-register-container p {
   text-align: center;
+  padding: 4px 0 8px;
   cursor: pointer;
   color: #007bff;
 }

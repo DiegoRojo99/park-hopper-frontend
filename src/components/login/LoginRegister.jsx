@@ -60,37 +60,39 @@ const LoginRegister = () => {
   };
 
   return (
-    <div className="login-register-container">
-      <h2>{isLogin ? 'Login' : 'Register'}</h2>
-      <form onSubmit={handleSubmit}>
-        { !isLogin &&
+    <div className='login-page'>
+      <div className="login-register-container">
+        <h2>{isLogin ? 'Login' : 'Register'}</h2>
+        <form onSubmit={handleSubmit}>
+          { !isLogin &&
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          }
           <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
-        }
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
-      </form>
-      <p onClick={() => setIsLogin(!isLogin)}>
-        {isLogin ? 'Don\'t have an account? Register here' : 'Already have an account? Login here'}
-      </p>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
+        </form>
+        <p onClick={() => setIsLogin(!isLogin)}>
+          {isLogin ? 'Don\'t have an account? Register here' : 'Already have an account? Login here'}
+        </p>
+      </div>    
     </div>
   );
 };

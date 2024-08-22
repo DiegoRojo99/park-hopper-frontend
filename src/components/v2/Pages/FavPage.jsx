@@ -8,8 +8,7 @@ import { Loader } from '../../common/Loader';
 import { Showtimes } from '../../pageDetails/Showtimes';
 import { useAuth } from '../../../contexts/AuthContext';
 
-export function ParkPage(){
-  const { id } = useParams();
+export function FavPage(){
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);  
@@ -21,17 +20,17 @@ export function ParkPage(){
   const [filteredData, setFilteredData] = useState([]);
   const [viewType, setViewType] = useState("List");
   const [activeTab, setActiveTab] = useState("Attractions");
-  const [tabs, setTabs] = useState(["Attractions", "Shows", "Restaurants", "Hotels"]);
+  const [tabs, setTabs] = useState(["Attractions"]);
   const apiUrl = process.env.REACT_APP_API_URL; 
   const { user } = useAuth(); 
 
   useEffect(() => {
 
     function divideChildren(children){
-      let attractions = children.filter((child) => child.entityType === "ATTRACTION");
-      let restaurants = children.filter((child) => child.entityType === "RESTAURANT");
-      let hotels = children.filter((child) => child.entityType === "HOTEL");
-      let shows = children.filter((child) => child.entityType === "SHOW");
+      let attractions = children.filter((child) => child.entityType.toUpperCase() === "ATTRACTION");
+      let restaurants = children.filter((child) => child.entityType.toUpperCase() === "RESTAURANT");
+      let hotels = children.filter((child) => child.entityType.toUpperCase() === "HOTEL");
+      let shows = children.filter((child) => child.entityType.toUpperCase() === "SHOW");
 
       const dividedChildren = {attractions, restaurants, hotels, shows};
       const tabsOrder = ["Attractions", "Shows", "Restaurants", "Hotels"];
@@ -41,41 +40,6 @@ export function ParkPage(){
       return dividedChildren;
     }
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/live`);
-        const scheduleRes = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/schedule`);
-        const parkAttractionsResponse = await fetch(`${apiUrl}/parks/${id}/attractions`);
-        if (!response.ok || !scheduleRes.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const result = await response.json();
-        const scheduleObj = await scheduleRes.json();
-        
-        let parkAttractions = await parkAttractionsResponse.json();
-        parkAttractions = parkAttractions.map(att => att.id);
-        
-        let dividedChildren = divideChildren(result.liveData);
-        dividedChildren.attractions = dividedChildren.attractions.filter(att => !parkAttractions.includes(att.id));
-        setChildren(dividedChildren);
-        setData(result);
-        const groupedByDate = scheduleObj.schedule.reduce((acc, obj) => {
-          const date = new Date(obj.date).toLocaleDateString(); // Extracting only the date part
-          if (!acc[date]) {
-            acc[date] = [];
-          }
-          acc[date].push(obj);
-          return acc;
-        }, {});
-        setSchedule(groupedByDate);
-        setLoading(false);
-      } catch (error) {
-        setError(error);
-        setLoading(false);
-      }
-    };
-    
     async function loadUserFavorites(){
       try {
         const result = await fetch(`${apiUrl}/favorites`, { 
@@ -86,16 +50,18 @@ export function ParkPage(){
           }
         })
         .then(response => response.json());
-        
+        setLoading(false);
         setUserAttractions(result);
       } catch (error) {
         console.error(error)
       }
     }
 
-    fetchData();
-    loadUserFavorites()
-  }, [id]);
+    if(user){
+      loadUserFavorites();
+    }
+
+  }, [user]);
 
   if (error) {
     return <p>Error: {error.message}</p>;
@@ -113,21 +79,22 @@ export function ParkPage(){
   }
 
   function renderChildrenObjects(){
-    let selectedChildren = filteredData.length || name ? filteredData : children[activeTab.toLowerCase()];
+    // let selectedChildren = filteredData.length || name ? filteredData : children[activeTab.toLowerCase()];
     if(loading){
       return <></>
     }
-    if(activeTab === "Shows"){
+    // if(activeTab === "Shows"){
+    //   return(
+    //     <div className='grid-element'>
+    //       <Showtimes shows={selectedChildren} />
+    //     </div>
+    //   );
+    // }
+    // else 
+    if(viewType==="List"){
       return(
         <div className='grid-element'>
-          <Showtimes shows={selectedChildren} />
-        </div>
-      );
-    }
-    else if(viewType==="List"){
-      return(
-        <div className='grid-element'>
-          <WaitingTimes attractions={selectedChildren} favorites={userAttractions} />
+          <WaitingTimes attractions={userAttractions} favorites={userAttractions} />
         </div>
       );
     }
@@ -135,7 +102,7 @@ export function ParkPage(){
       return(
         <>
           <div className='grid-element'>
-            <WaitingTimes attractions={children.attractions} favorites={userAttractions} />
+            <WaitingTimes attractions={userAttractions} favorites={userAttractions} />
           </div>
         </>
       );
@@ -146,15 +113,15 @@ export function ParkPage(){
   if(loading){
     return <Loader />;
   }
+  else if(!loading && !user){
+    return <>Need to be logged in...</>
+  }
   return (
     <div className='details-page'>
       <div className='page-header'>
-        <h1>{data.name}</h1>
+        <h1>Favorites</h1>
       </div>
-      {/* <div style={{display: 'flex'}} >
-        <img src='../../img/logo512.png' style={{width: '128px', height: '128px', marginLeft: '32px'}} />
-      </div> */}
-               
+      
       <div className='tab-group-row' >
         <TabGroup tabs={tabs} activeTab={activeTab} changeTab={setActiveTab} />
         {/* <ToggleSwitch setViewType={setViewType} />   */}

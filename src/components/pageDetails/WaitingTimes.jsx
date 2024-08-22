@@ -7,34 +7,11 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Loader } from '../common/Loader';
 import { Status } from './../common/Status';
 
-export function WaitingTimes({ attractions }){
+export function WaitingTimes({ attractions , favorites}){
   
-  const [userAttractions, setUserAttractions] = useState(false);
+  const [userAttractions, setUserAttractions] = useState(favorites);
   const { user } = useAuth(); 
   const apiUrl = process.env.REACT_APP_API_URL;
-
-  async function loadUserFavorites(){
-    try {
-      const result = await fetch(`${apiUrl}/favorites`, { 
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.accessToken}`
-        }
-      })
-      .then(response => response.json());
-      
-      setUserAttractions(result);
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  useEffect(() => {
-    if(user && user.accessToken){
-      loadUserFavorites();
-    }
-  }, [user]);
 
   if (!attractions) {
     return <Loader />;
@@ -44,8 +21,8 @@ export function WaitingTimes({ attractions }){
   }
 
   function sortByWaitTime(a, b){
-    const aWaitTime = a.queue?.STANDBY?.waitTime;
-    const bWaitTime = b.queue?.STANDBY?.waitTime;
+    const aWaitTime = a.WaitTime ?? a.queue?.STANDBY?.waitTime;
+    const bWaitTime = b.WaitTime ?? b.queue?.STANDBY?.waitTime;
     if(!aWaitTime && bWaitTime){
       return 1;
     }
@@ -112,7 +89,8 @@ export function WaitingTimes({ attractions }){
     if(!fav){
       const body = {
         "entityId": attraction.id,
-        "type": "attraction"
+        "type": "ATTRACTION",
+        "name": attraction.name
       }
   
       try {
@@ -129,14 +107,13 @@ export function WaitingTimes({ attractions }){
           throw new Error('Network response was not ok');
         }
 
-        loadUserFavorites();
       } catch (error) {
         console.error('Failed to add favorite:', error);
       }
     } 
     else{
       const body = {
-        "entityId": attraction.id,
+        "entityId": attraction.id ?? attraction.EntityID,
         "type": "attraction"
       }
   
@@ -154,7 +131,7 @@ export function WaitingTimes({ attractions }){
           throw new Error('Network response was not ok');
         }
 
-        loadUserFavorites();
+        // loadUserFavorites();
       } catch (error) {
         console.error('Failed to add favorite:', error);
       }
@@ -170,18 +147,19 @@ export function WaitingTimes({ attractions }){
         <p>Waiting Time</p>
         <p>Status</p>
       </div>
-      { attractions.sort((a,b) => sortByWaitTime(a, b)).map((a) => {
-        const fav = userAttractions ? userAttractions.some(userAtt => userAtt.EntityID === a.id) : false;
+      { attractions.sort((a,b) => sortByWaitTime(a, b)).map((att) => {
+        const fav = userAttractions ? userAttractions.some(userAtt => userAtt.EntityID === att.id || userAtt.EntityID === att.EntityID) : false;
+        const waitingTime = att?.WaitTime ? att.WaitTime : att.queue?.STANDBY?.waitTime ? att.queue["STANDBY"].waitTime : "-";
         return (
           <div className='attraction-row'> 
             <FontAwesomeIcon 
               icon={!fav ? lineStar : solidStar} 
               className='star-icon' 
-              onClick={() => selectFavAttraction(a, fav)} 
+              onClick={() => selectFavAttraction(att, fav)} 
             />
-            <p>{a.name}</p>
-            <p>{a.queue?.STANDBY?.waitTime ? a.queue["STANDBY"].waitTime : "-"}</p>
-            <Status status={a.status} />
+            <p>{att.name}</p>
+            <p>{waitingTime}</p>
+            <Status status={att.status} />
           </div>
         )
       })}

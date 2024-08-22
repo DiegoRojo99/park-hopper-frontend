@@ -174,3 +174,7 @@
 .footer a:hover {
   text-decoration: underline;
 }
+
+.not-found-container{
+  padding: 376px 0 32px;
+}

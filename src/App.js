@@ -5,26 +5,14 @@ import DestinationDetails from './components/destinations/DestinationDetails';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AttractionDetails } from './components/destinations/AttractionDetails';
 import LoginRegister from './components/login/LoginRegister';
-import { useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './Firebase';
 import ExplorePage from './components/v2/Explore/ExplorePage';
 import { ParkPage } from './components/v2/Pages/ParkPage';
 import Home from './components/home/Home';
 import { FavPage } from './components/v2/Pages/FavPage';
 import LandingPage from './components/v2/Pages/LandingPage';
+import NotFoundPage from './components/v2/Pages/NotFoundPage';
 
 function App() {
-  
-  useEffect(()=>{
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // const uid = user.uid;
-      } else {
-        // console.log("user is logged out")
-      }
-    });
-  }, [])
 
   return (
     <Router basename="/">
@@ -40,6 +28,7 @@ function App() {
             <Route path="/parks/:id" element={<ParkPage />} />            
             <Route path="/attractions/:id" element={<AttractionDetails />} />            
             <Route path="/login" element={<LoginRegister />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
       </div>

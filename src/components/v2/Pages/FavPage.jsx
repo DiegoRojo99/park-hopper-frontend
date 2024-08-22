@@ -12,7 +12,6 @@ export function FavPage(){
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);  
-  const [data, setData] = useState(null);
   const [children, setChildren] = useState(null);
   const [userAttractions, setUserAttractions] = useState(false);
   const [schedule, setSchedule] = useState(null);
@@ -26,11 +25,11 @@ export function FavPage(){
 
   useEffect(() => {
 
-    function divideChildren(children){
-      let attractions = children.filter((child) => child.entityType.toUpperCase() === "ATTRACTION");
-      let restaurants = children.filter((child) => child.entityType.toUpperCase() === "RESTAURANT");
-      let hotels = children.filter((child) => child.entityType.toUpperCase() === "HOTEL");
-      let shows = children.filter((child) => child.entityType.toUpperCase() === "SHOW");
+    function divideChildren(entitites){
+      let attractions = entitites.filter((child) => child.entityType.toUpperCase() === "ATTRACTION");
+      let restaurants = entitites.filter((child) => child.entityType.toUpperCase() === "RESTAURANT");
+      let hotels = entitites.filter((child) => child.entityType.toUpperCase() === "HOTEL");
+      let shows = entitites.filter((child) => child.entityType.toUpperCase() === "SHOW");
 
       const dividedChildren = {attractions, restaurants, hotels, shows};
       const tabsOrder = ["Attractions", "Shows", "Restaurants", "Hotels"];
@@ -52,6 +51,8 @@ export function FavPage(){
         .then(response => response.json());
         setLoading(false);
         setUserAttractions(result);
+        setFilteredData(result);
+        setChildren(divideChildren(result));
       } catch (error) {
         console.error(error)
       }
@@ -79,19 +80,18 @@ export function FavPage(){
   }
 
   function renderChildrenObjects(){
-    // let selectedChildren = filteredData.length || name ? filteredData : children[activeTab.toLowerCase()];
+    let selectedChildren = filteredData.length || name ? filteredData : children[activeTab.toLowerCase()];
     if(loading){
       return <></>
     }
-    // if(activeTab === "Shows"){
-    //   return(
-    //     <div className='grid-element'>
-    //       <Showtimes shows={selectedChildren} />
-    //     </div>
-    //   );
-    // }
-    // else 
-    if(viewType==="List"){
+    if(activeTab === "Shows"){
+      return(
+        <div className='grid-element'>
+          <Showtimes shows={selectedChildren} />
+        </div>
+      );
+    }
+    else if(viewType==="List"){
       return(
         <div className='grid-element'>
           <WaitingTimes attractions={userAttractions} favorites={userAttractions} />
@@ -122,10 +122,13 @@ export function FavPage(){
         <h1>Favorites</h1>
       </div>
       
-      <div className='tab-group-row' >
-        <TabGroup tabs={tabs} activeTab={activeTab} changeTab={setActiveTab} />
-        {/* <ToggleSwitch setViewType={setViewType} />   */}
-      </div>
+      {tabs.length > 1 ? 
+        <div className='tab-group-row' >
+          <TabGroup tabs={tabs} activeTab={activeTab} changeTab={setActiveTab} />
+          {/* <ToggleSwitch setViewType={setViewType} />   */}
+        </div> : 
+        <></>
+      }
       <FilterBar name={name} searchName={searchName} />
       {renderChildrenObjects()}
 

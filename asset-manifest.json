@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.984e419c.css",
+    "main.css": "/static/css/main.67e2866c.css",
     "main.js": "/static/js/main.3d37201e.js",
     "static/js/787.9e9f4ffd.chunk.js": "/static/js/787.9e9f4ffd.chunk.js",
     "static/media/theme-park-banner.jpg": "/static/media/theme-park-banner.7282f4c25c2d00c9bcf0.jpg",
     "index.html": "/index.html",
-    "main.984e419c.css.map": "/static/css/main.984e419c.css.map",
+    "main.67e2866c.css.map": "/static/css/main.67e2866c.css.map",
     "main.3d37201e.js.map": "/static/js/main.3d37201e.js.map",
     "787.9e9f4ffd.chunk.js.map": "/static/js/787.9e9f4ffd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.984e419c.css",
+    "static/css/main.67e2866c.css",
     "static/js/main.3d37201e.js"
   ]
 }

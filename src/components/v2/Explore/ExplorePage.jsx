@@ -38,7 +38,13 @@ function ExplorePage(){
 
   function searchName(text){
     setName(text);
-    const filteredNames = data.filter((dest) => dest.ParkName?.toLowerCase().includes(text.toLowerCase()))
+    const filteredNames = data.filter((dest) => {
+      return (
+        (dest.ParkName?.toLowerCase().includes(text.toLowerCase())) ||
+        (activeTab === "Country" && dest.Country.toLowerCase().includes(text.toLowerCase()))||
+        (activeTab === "Destination" && dest.DestinationName.toLowerCase().includes(text.toLowerCase()))
+      )
+    })
     setFilteredData(filteredNames);
   }
   

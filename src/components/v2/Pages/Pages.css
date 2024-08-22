@@ -66,17 +66,30 @@
   margin: 16px 0%;
 }
 
+@media screen and (max-width: 1020px) {  
+  .steps-container {
+    width: 70% !important;
+    margin: 0 15% !important;
+  }
+}
+
 @media screen and (min-width: 780px) {
   .country-list-div{
     display: flex;
     flex-wrap: wrap;
   }
 }
-@media screen and (max-width: 600px) {
+
+@media screen and (max-width: 680px) {
   .filter-bar{
     margin: 8px;
     padding: 8px 0px;
     display: flex;
+  }
+  
+  .steps-container {
+    width: 100% !important;
+    margin: 0 !important;
   }
 }
 
@@ -134,7 +147,8 @@
   display: flex;
   justify-content: center;
   scroll-snap-type: x mandatory;
-  width: 100%;
+  width: 40%;
+  margin: 0 30%;
   /* -webkit-overflow-scrolling: touch; */
 }
 

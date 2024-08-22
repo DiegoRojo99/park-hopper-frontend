@@ -17,7 +17,7 @@ function Nav() {
       <div className={openMenu ? "menu-items open" : "menu-items"}>
         <Link to="/explore" onClick={handleLinkClick}>Explore</Link>
         <Link to="/favs" onClick={handleLinkClick}>Favs</Link>
-        <Link to="/settings" onClick={handleLinkClick}>Settings</Link>
+        {/* <Link to="/settings" onClick={handleLinkClick}>Settings</Link> */}
         <Link to="/login" onClick={handleLinkClick}>Login/Logout</Link>     
       </div>
       <a className='icon' onClick={() => setOpenMenu(!openMenu)}>

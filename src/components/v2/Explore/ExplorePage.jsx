@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Pages/Pages.css';
+import './Explore.css';
 import '../../common/Common.css';
 import TabGroup from '../../common/TabGroup';
 import FilterBar from '../../common/FilterBar';
 import { Loader } from '../../common/Loader';
+import ParksMap from '../Map/ParksMap';
 
 function ExplorePage(){
   const navigate = useNavigate();
@@ -61,6 +63,22 @@ function ExplorePage(){
         return renderGroupList();        
       case "Destination":
         return renderFieldList("DestinationName");
+      case "Map":
+        const places = filteredData.map(park => {
+          let reducedPark = {
+            name: park.ParkName,
+            lng: park.Longitude,
+            lat: park.Latitude
+          }
+          return reducedPark;
+        });
+      
+        return (
+          <div className='explore-map-div'>
+            {/* <h1>My Map</h1> */}
+            <ParksMap places={places} />
+          </div>
+        );
       default:
         return <></>
 

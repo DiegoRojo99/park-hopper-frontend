@@ -345,8 +345,28 @@
   bottom: 8.12em;
 }
 
+.parks-map{
+  height: 80vh;
+  width: 100%; 
+}
+
+@media screen and (max-width: 1080px){
+  .parks-map{
+    height: 60vh;
+    width: 100%; 
+  }
+}
+
+@media screen and (max-width: 720px){
+  .parks-map{
+    height: 40vh;
+    width: 100%; 
+  }
+}
+
 @media screen and (min-width: 600px) {
   .container {
     font-size: 20px;
   }
 }
+

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Pages/Pages.css';
+import './Explore.css';
 import '../../common/Common.css';
 import TabGroup from '../../common/TabGroup';
 import FilterBar from '../../common/FilterBar';
 import { Loader } from '../../common/Loader';
+import ParksMap from '../Map/ParksMap';
 
 function ExplorePage(){
   const navigate = useNavigate();
@@ -61,6 +63,22 @@ function ExplorePage(){
         return renderGroupList();        
       case "Destination":
         return renderFieldList("DestinationName");
+      case "Map":
+        const places = filteredData.map(park => {
+          let reducedPark = {
+            name: park.ParkName,
+            lng: park.Longitude,
+            lat: park.Latitude,
+            id: park.ParkID,
+          }
+          return reducedPark;
+        });
+      
+        return (
+          <div className='explore-map-div'>
+            <ParksMap openLink={openLink} places={places} />
+          </div>
+        );
       default:
         return <></>
 
@@ -136,7 +154,7 @@ function ExplorePage(){
   }
 
   return (
-    <div style={{height: '100%'}}>
+    <div style={{height: '100%', paddingBottom: '64px'}}>
       <div className='landing-big-img' alt="Generic Theme Park" />
       <FilterBar name={name} searchName={searchName} placeholder={'Search a theme park...'} />
       <div className='landing-main'>

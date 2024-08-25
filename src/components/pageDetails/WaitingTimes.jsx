@@ -82,6 +82,7 @@ export function WaitingTimes({ attractions , favorites}){
 
   async function selectFavAttraction(attraction, fav){
     if(!user){
+      alert("You have to be logged in");
       console.error('User is not logged in.');
       return;
     }

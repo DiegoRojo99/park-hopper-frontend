@@ -77,6 +77,7 @@ export function Showtimes({ shows }){
 
   async function selectFavShow(show, fav){
     if(!user){
+      alert("You have to be logged in");
       console.error('User is not logged in.');
       return;
     }

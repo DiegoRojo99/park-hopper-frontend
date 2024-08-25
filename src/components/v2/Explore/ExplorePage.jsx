@@ -68,15 +68,15 @@ function ExplorePage(){
           let reducedPark = {
             name: park.ParkName,
             lng: park.Longitude,
-            lat: park.Latitude
+            lat: park.Latitude,
+            id: park.ParkID,
           }
           return reducedPark;
         });
       
         return (
           <div className='explore-map-div'>
-            {/* <h1>My Map</h1> */}
-            <ParksMap places={places} />
+            <ParksMap openLink={openLink} places={places} />
           </div>
         );
       default:
@@ -154,7 +154,7 @@ function ExplorePage(){
   }
 
   return (
-    <div style={{height: '100%'}}>
+    <div style={{height: '100%', paddingBottom: '64px'}}>
       <div className='landing-big-img' alt="Generic Theme Park" />
       <FilterBar name={name} searchName={searchName} placeholder={'Search a theme park...'} />
       <div className='landing-main'>

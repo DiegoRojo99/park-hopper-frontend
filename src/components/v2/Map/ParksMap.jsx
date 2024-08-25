@@ -8,24 +8,28 @@ import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
+import '../../common/Common.css';
+
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
   iconUrl: markerIcon,
   shadowUrl: markerShadow,
 });
 
-const ParksMap = ({ places }) => {
+function ParksMap({ places, openLink }){
   const defaultPosition = [51.505, -0.09]; // Default coordinates (e.g., London)
 
   return (
-    <MapContainer center={defaultPosition} zoom={1} style={{ height: '30vh', width: '100%' }}>
+    <MapContainer center={defaultPosition} zoom={1} className='parks-map'>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       {places.map((place, index) => (
         <Marker key={index} position={[place.lat, place.lng]}>
-          <Popup>{place.name}</Popup>
+          <Popup>
+            <p onClick={() => openLink(place.id)}>{place.name}</p>
+          </Popup>
         </Marker>
       ))}
     </MapContainer>

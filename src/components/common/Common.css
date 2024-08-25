@@ -346,13 +346,20 @@
 }
 
 .parks-map{
-  height: 60vh;
+  height: 80vh;
   width: 100%; 
+}
+
+@media screen and (max-width: 1080px){
+  .parks-map{
+    height: 60vh;
+    width: 100%; 
+  }
 }
 
 @media screen and (max-width: 720px){
   .parks-map{
-    height: 30vh;
+    height: 40vh;
     width: 100%; 
   }
 }

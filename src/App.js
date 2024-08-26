@@ -11,8 +11,40 @@ import Home from './components/home/Home';
 import { FavPage } from './components/v2/Pages/FavPage';
 import LandingPage from './components/v2/Pages/LandingPage';
 import NotFoundPage from './components/v2/Pages/NotFoundPage';
+import { subscribeUser } from './functions/subscribeUser';
 
 function App() {
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(registration => {
+        console.log('Service Worker registered with scope:', registration.scope);
+        subscribeUser();
+      }).catch(function(error) {
+        console.error('Service Worker registration failed:', error);
+      });
+
+    navigator.serviceWorker.ready.then(registration => {
+      registration.pushManager.getSubscription().then(subscription => {
+        console.log('Current subscription:', subscription);
+      });
+    });
+
+    if (Notification.permission === 'denied') {
+      console.error('Notifications are blocked by the user.');
+    } else if (Notification.permission === 'default') {
+      Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          console.log('Notifications are enabled.');
+        } else {
+          console.error('Notifications are not enabled.');
+        }
+      });
+    } else {
+      console.log('Notifications are already enabled.');
+    } 
+  }
+  
 
   return (
     <Router basename="/">

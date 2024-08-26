@@ -10,6 +10,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        localStorage.setItem('access_token', user.accessToken)
         setUser(user);
       } else {
         setUser(null);

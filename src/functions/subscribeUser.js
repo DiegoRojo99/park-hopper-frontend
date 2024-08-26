@@ -17,7 +17,7 @@ export async function subscribeUser() {
   if ('serviceWorker' in navigator && 'PushManager' in window && accessToken) {
     try {
       const registration = await navigator.serviceWorker.ready;
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/vapidPublicKey`);
+      const response = await fetch(`${apiUrl}/vapidPublicKey`);
       const { publicKey } = await response.json();
 
       const subscription = await registration.pushManager.subscribe({

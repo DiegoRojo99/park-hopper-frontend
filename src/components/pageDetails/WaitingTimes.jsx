@@ -2,14 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faX, faTriangleExclamation, faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as lineStar } from '@fortawesome/free-regular-svg-icons';
+import AlarmIcon from './../../img/bell.png';
+import FullAlarmIcon from './../../img/fullBell.png';
 import './Utils.css';
 import { useAuth } from '../../contexts/AuthContext';
 import { Loader } from '../common/Loader';
 import { Status } from './../common/Status';
+import AlertModal from '../v2/Extras/AlertModal';
 
 export function WaitingTimes({ attractions , favorites}){
   
-  const [userAttractions, setUserAttractions] = useState(favorites);
+  const [ userAttractions, setUserAttractions] = useState(favorites);
+  const [ userAlerts, setUserAlerts] = useState(false);
+  const [ showModal, setShowModal] = useState(false);
   const { user } = useAuth(); 
   const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -139,6 +144,57 @@ export function WaitingTimes({ attractions , favorites}){
     }  
     
   }
+  
+  async function showAlertModal(attraction, alert){
+    if(!user){
+      alert("You have to be logged in");
+      console.error('User is not logged in.');
+      return;
+    }
+
+    setShowModal(attraction);
+  }
+
+  function hideAlertModal() {
+    setShowModal(false);
+  }
+
+  function handleSetAlert(attraction, time) {
+    setAlertTime(attraction, time);
+  }
+
+  async function setAlertTime(attraction, time){
+    if(!user){
+      alert("You have to be logged in");
+      console.error('User is not logged in.');
+      return;
+    }
+
+    const body = {
+      "attractionId": attraction.id,
+      "time": time
+    }
+  
+    try {
+      const response = await fetch(`${apiUrl}/setWaitTimeAlert`, { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.accessToken}`
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      
+      alert(`Alert set for ${attraction.name} for waiting time less than ${time} minutes!`);
+
+    } catch (error) {
+      console.error('Failed to add favorite:', error);
+    }    
+  }
 
   return (
     <div className='waiting-times'>
@@ -150,20 +206,34 @@ export function WaitingTimes({ attractions , favorites}){
       </div>
       { attractions.sort((a,b) => sortByWaitTime(a, b)).map((att) => {
         const fav = userAttractions ? userAttractions.some(userAtt => userAtt.EntityID === att.id || userAtt.EntityID === att.EntityID) : false;
+        const alert = userAlerts ? userAlerts.some(userAtt => userAtt.EntityID === att.id || userAtt.EntityID === att.EntityID) : false;
         const waitingTime = att?.WaitTime ? att.WaitTime : att.queue?.STANDBY?.waitTime ? att.queue["STANDBY"].waitTime : "-";
         return (
           <div className='attraction-row'> 
-            <FontAwesomeIcon 
-              icon={!fav ? lineStar : solidStar} 
-              className='star-icon' 
-              onClick={() => selectFavAttraction(att, fav)} 
-            />
+            <div>
+              <FontAwesomeIcon 
+                icon={!fav ? lineStar : solidStar} 
+                className='star-icon' 
+                onClick={() => selectFavAttraction(att, fav)} 
+              />
+              <img 
+                alt="Alarm" 
+                src={alert ? FullAlarmIcon : AlarmIcon} 
+                className='alarm-icon'
+                onClick={() => showAlertModal(att, alert)} 
+              />
+            </div>
             <p>{att.name}</p>
             <p>{waitingTime}</p>
             <Status status={att.status} />
           </div>
         )
       })}
+      <AlertModal
+        show={showModal}
+        onClose={hideAlertModal}
+        onSetAlert={handleSetAlert}
+      />
     </div>
   );
 };

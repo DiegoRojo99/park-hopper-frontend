@@ -5,10 +5,22 @@
 }
 
 .star-icon{
-  margin-left: 6px;
+  float: left;
+  margin: 2.5px 0 2.5px 6px;
 }
 
 .star-icon:hover{
+ transform: scale(1.25);
+ cursor: pointer;
+}
+
+.alarm-icon{
+  float: left;
+  margin: 2.5px 0 2.5px 6px;
+  width: 1em;
+  height: 1em;
+}
+.alarm-icon:hover{
  transform: scale(1.25);
  cursor: pointer;
 }

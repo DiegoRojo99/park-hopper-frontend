@@ -22,8 +22,11 @@
   text-align: center;
 }
 
-.alert-modal h2 {
+.alert-modal h1 {
   margin-bottom: 15px;
+}
+.alert-modal h3 {
+  margin-bottom: 12px;
 }
 
 .alert-modal input {

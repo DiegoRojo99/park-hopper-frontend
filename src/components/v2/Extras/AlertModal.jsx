@@ -4,16 +4,23 @@ import './Extras.css';
 function AlertModal({ show, onClose, onSetAlert, alertTime = false }) {
   const [waitingTime, setWaitingTime] = useState(getWaitingTime())
   const [time, setTime] = useState(getInitialValue());
+  
+  useEffect(() => {
+    if(show){
+      setWaitingTime(getWaitingTime());
+      setTime(getInitialValue());
+    }
+  }, [show])
 
   function getWaitingTime(){
     if(!show){
       return 0;
     }
     else if(show?.WaitTime){
-      return (show.WaitTime - 5);
+      return (show.WaitTime);
     }
     else if(show?.queue?.STANDBY?.waitTime){
-      return (show.queue.STANDBY.waitTime - 5);
+      return (show.queue.STANDBY.waitTime);
     }
   }
 
@@ -25,7 +32,7 @@ function AlertModal({ show, onClose, onSetAlert, alertTime = false }) {
       return 5;
     }
     else {
-      return getWaitingTime();
+      return getWaitingTime() - 5;
     }
   }
 
@@ -41,24 +48,21 @@ function AlertModal({ show, onClose, onSetAlert, alertTime = false }) {
       alert("Submit a positive time threshold");
     }
     else if(time >= waitingTime){
-      alert("Waiting time is already below threshold time");
+      alert(`Waiting time (${waitingTime}min) is already below threshold time (${time}min)`);
     }
   }
 
-  useEffect(() => {
-    if(show){
-      setWaitingTime(getWaitingTime());
-      setTime(getInitialValue());
-    }
-  }, [show])
+  function handleModalClick(event) {
+    event.stopPropagation();
+  }
 
   if (!show) return null;
 
   return (
-    <div className="alert-modal-backdrop">
-      <div className="alert-modal">
-        <h2>{show.name}</h2>
-        <h3>Set Waiting Time Alert</h3>
+    <div className="alert-modal-backdrop" onClick={onClose}>
+      <div className="alert-modal" onClick={handleModalClick}>
+        <h1>{show.name}</h1>
+        {/* <h3>Set Waiting Time Alert</h3> */}
         <label htmlFor="waitTime">Alert me when wait time is less than:</label>
         <input
           type="number"

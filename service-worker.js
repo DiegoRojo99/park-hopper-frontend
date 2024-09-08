@@ -1,3 +1,4 @@
+import { sendLogToServer } from "../src/functions/logs";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 self.addEventListener('push', function(event) {
@@ -19,12 +20,13 @@ self.addEventListener('push', function(event) {
 self.addEventListener('notificationclick', function(event) {
   const attractionId = event.notification.data.attractionId;
   const userId = event.notification.data.userId;
+  sendLogToServer(`Notification clicked. Attraction ID: ${attractionId}, User ID: ${userId}`);
   event.notification.close();
 
   if (attractionId && userId) {
     markNotificationAsSeen(attractionId, userId);
   } else {
-    console.error('Attraction ID or User ID is missing');
+    sendLogToServer('Missing attractionId or userId on missing');
   }
 });
 
@@ -34,7 +36,7 @@ self.addEventListener('notificationclose', function(event) {
   if (attractionId && userId) {
     markNotificationAsSeen(attractionId, userId);
   } else {
-    console.error('Attraction ID or User ID is missing on close');
+    sendLogToServer('Missing attractionId or userId on close');
   }
 });
 
@@ -52,11 +54,11 @@ async function markNotificationAsSeen(attractionId, userId) {
     });
 
     if (response.ok) {
-      console.log('Notification marked as seen for user:', userId);
+      sendLogToServer(`Notification marked as seen. Attraction ID: ${attractionId}, User ID: ${userId}`);
     } else {
-      console.error('Failed to mark notification as seen:', response.status);
+      sendLogToServer(`Failed to mark notification as seen: ${response.status}`);
     }
   } catch (error) {
-    console.error('Error marking notification as seen:', error);
+    sendLogToServer(`Failed to mark notification as seen: ${error}`);
   }
 };

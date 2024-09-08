@@ -1,3 +1,5 @@
+const apiUrl = process.env.REACT_APP_API_URL; 
+
 self.addEventListener('push', function(event) {
 
   const data = event.data.json();
@@ -35,7 +37,7 @@ async function markNotificationAsSeen(attractionId, userId) {
   if (!attractionId || !userId) return;
 
   try {
-    await fetch('/api/notifications/seen', {
+    await fetch(`${apiUrl}/notifications/seen`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

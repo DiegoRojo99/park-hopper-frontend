@@ -18,8 +18,9 @@ self.addEventListener('push', function(event) {
 });
 
 self.addEventListener('notificationclick', function(event) {
-  const attractionId = event.notification.data.attractionId;
-  const userId = event.notification.data.userId;
+  sendLogToServer(`Notification clicked event triggered`);
+  const attractionId = event?.notification?.data?.attractionId;
+  const userId = event?.notification?.data?.userId;
   sendLogToServer(`Notification clicked. Attraction ID: ${attractionId}, User ID: ${userId}`);
   event.notification.close();
 

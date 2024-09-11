@@ -141,9 +141,8 @@ export function Showtimes({ shows }){
         <p></p>
         <p>Show</p>
         <p>Showtimes</p>
-        <p>Status</p>
       </div>
-      { shows.filter(show => show?.showtimes?.length).map((a) => {
+      { shows.filter(show => show?.status === "OPERATING").map((a) => {
         const fav = false; // userAttractions ? userAttractions.some(userAtt => userAtt.EntityID === a.id) : false;
         return (
           <div className='show-row'> 
@@ -162,7 +161,6 @@ export function Showtimes({ shows }){
               }
             ) : "-"}
             </p>
-            <Status status={a.status} />
           </div>
         )
       })}

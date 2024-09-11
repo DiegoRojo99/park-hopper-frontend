@@ -200,7 +200,7 @@
 
 .show-row{
   display: grid;
-  grid-template-columns: 1fr 6fr 3fr 2fr;
+  grid-template-columns: 1fr 6fr 3fr;
   padding: 8px 0;
   border-bottom: 1px solid rgb(128,128,128,0.5);
   width: 100%;

@@ -87,9 +87,9 @@
     background-color: #ddd;
     width: fit-content;
     text-align: center;
-    height: 30px;
+    height: 40px;
     border-radius: 4px;
-    font-size: 10px;
+    font-size: 14px;
     align-self: center;
   }
   .tab-group-row{
@@ -100,23 +100,22 @@
   }
   .tab-element{
     width: fit-content;
-    padding: 4px 8px;
+    padding: 6px 12px 8px;
     cursor: pointer;
     border-radius: 4px;
-    height: 20px;
+    height: 32px;
     margin: 4px;
   }
   .active-tab-element{
     width: fit-content;
-    padding: 4px 8px;
+    padding: 6px 12px 8px;
     cursor: pointer;
     border-radius: 4px;
-    height: 20px;
+    height: 32px;
     margin: 4px;
     background-color: #fff;
   }
 }
-
 
 .center {
   position: absolute;

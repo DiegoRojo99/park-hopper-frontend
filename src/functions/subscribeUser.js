@@ -39,7 +39,6 @@ export async function subscribeUser() {
         throw new Error('Failed to save subscription');
       }
 
-      console.log('User subscribed successfully');
     } catch (error) {
       console.error('Failed to subscribe the user:', error);
     }

@@ -48,7 +48,16 @@ export function FavPage(){
             'Authorization': `Bearer ${user.accessToken}`
           }
         })
-        .then(response => response.json());
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          else if(response.status === "401"){
+            throw new Error('Not logged in');
+          }
+          throw new Error('Something went wrong');
+        });
+
         setLoading(false);
         setUserAttractions(result);
         setFilteredData(result);

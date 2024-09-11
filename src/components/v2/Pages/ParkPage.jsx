@@ -61,7 +61,7 @@ export function ParkPage(){
         setChildren(dividedChildren);
         setData(result);
         const groupedByDate = scheduleObj.schedule.reduce((acc, obj) => {
-          const date = new Date(obj.date).toLocaleDateString(); // Extracting only the date part
+          const date = new Date(obj.date).toLocaleDateString();
           if (!acc[date]) {
             acc[date] = [];
           }
@@ -85,7 +85,15 @@ export function ParkPage(){
             'Authorization': `Bearer ${user.accessToken}`
           }
         })
-        .then(response => response.json());
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          else if(response.status === "401"){
+            throw new Error('Not logged in');
+          }
+          throw new Error('Something went wrong');
+        });
         
         setUserAttractions(result);
       } catch (error) {

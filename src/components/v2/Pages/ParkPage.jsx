@@ -7,6 +7,7 @@ import Card from '../../common/Card';
 import { Loader } from '../../common/Loader';
 import { Showtimes } from '../../pageDetails/Showtimes';
 import { useAuth } from '../../../contexts/AuthContext';
+import Calendar from '../Extras/Calendar';
 
 export function ParkPage(){
   const { id } = useParams();
@@ -35,7 +36,7 @@ export function ParkPage(){
 
       const dividedChildren = {attractions, restaurants, hotels, shows};
       const tabsOrder = ["Attractions", "Shows", "Restaurants", "Hotels"];
-      const filteredTabs = tabsOrder.filter(tab => dividedChildren[tab.toLocaleLowerCase()]?.length);
+      const filteredTabs = [...tabsOrder.filter(tab => dividedChildren[tab.toLocaleLowerCase()]?.length), "Calendar"];
       setTabs(filteredTabs);
       
       return dividedChildren;
@@ -61,7 +62,12 @@ export function ParkPage(){
         setChildren(dividedChildren);
         setData(result);
         const groupedByDate = scheduleObj.schedule.reduce((acc, obj) => {
-          const date = new Date(obj.date).toLocaleDateString();
+          const date = new Date(obj.date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+          });
+          console.log("DATE: ", date)
           if (!acc[date]) {
             acc[date] = [];
           }
@@ -120,6 +126,13 @@ export function ParkPage(){
     navigate(url); 
   }
 
+  function renderCalendar(){
+    if(loading){
+      return <></>
+    }
+    return <Calendar schedule={schedule} />
+  }
+
   function renderChildrenObjects(){
     let selectedChildren = filteredData.length || name ? filteredData : children[activeTab.toLowerCase()];
     if(loading){
@@ -149,7 +162,6 @@ export function ParkPage(){
       );
     }
   }
-
   
   if(loading){
     return <Loader />;
@@ -167,8 +179,15 @@ export function ParkPage(){
         <TabGroup tabs={tabs} activeTab={activeTab} changeTab={setActiveTab} />
         {/* <ToggleSwitch setViewType={setViewType} />   */}
       </div>
-      <FilterBar name={name} searchName={searchName} />
-      {renderChildrenObjects()}
+      {/* <FilterBar name={name} searchName={searchName} /> */}
+      {activeTab !== "Calendar" ? 
+        <>
+        <FilterBar name={name} searchName={searchName} />
+        {renderChildrenObjects()}
+        </>
+      : 
+        renderCalendar()
+      }
 
     </div>
   );

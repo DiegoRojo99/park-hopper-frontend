@@ -181,10 +181,14 @@ button:hover {
   border-radius: 3px;
 }
 
-/* .calendar-event.OPERATING {
-  background-color: #add8e6; 
-} */
+.OPERATING {
+  background-color: #ccc; 
+}
 
 .EXTRA_HOURS {
   background-color: plum;
+}
+
+.TICKETED_EVENT {
+  background-color: #add8e6; 
 }

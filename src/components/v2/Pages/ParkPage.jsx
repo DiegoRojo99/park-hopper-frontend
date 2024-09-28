@@ -17,6 +17,7 @@ export function ParkPage(){
   const [data, setData] = useState(null);
   const [children, setChildren] = useState(null);
   const [userAttractions, setUserAttractions] = useState(false);
+  const [timezone, setTimezone] = useState(false);
   const [schedule, setSchedule] = useState(null);
   const [name, setName] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
@@ -67,13 +68,13 @@ export function ParkPage(){
             month: '2-digit',
             day: '2-digit'
           });
-          console.log("DATE: ", date)
           if (!acc[date]) {
             acc[date] = [];
           }
           acc[date].push(obj);
           return acc;
         }, {});
+        setTimezone(scheduleObj.timezone)
         setSchedule(groupedByDate);
         setLoading(false);
       } catch (error) {
@@ -130,7 +131,7 @@ export function ParkPage(){
     if(loading){
       return <></>
     }
-    return <Calendar schedule={schedule} />
+    return <Calendar schedule={schedule} timezone={timezone} />
   }
 
   function renderChildrenObjects(){

@@ -6,7 +6,7 @@ function getCurrentMonthAndYear() {
   return { month: now.getMonth(), year: now.getFullYear() };
 }
 
-export default function Calendar({ schedule }) {
+export default function Calendar({ schedule, timezone }) {
   const [{ month, year }, setMonthYear] = useState(getCurrentMonthAndYear());
 
   function generateCalendarDays(year, month) {
@@ -90,13 +90,13 @@ export default function Calendar({ schedule }) {
                     <span className="calendar-date">{day < 10 ? `0${day}` : day}</span>
                     {schedule[formatDate(year, month, day)] && (
                       <div className="calendar-events">
-                        {schedule[formatDate(year, month, day)].map((event, index) => (
+                        {schedule[formatDate(year, month, day)].filter(e => !["INFO", "ATTRACTION"].includes(e.type)).map((event, index) => (
                           <div key={index} style={{display: 'flex'}}>
                             <div className={`calendar-event ${event.type}`}></div>
                             <span>
-                              {new Date(event.openingTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}{" "}
+                              {new Date(event.openingTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", timeZone: timezone })}{" "}
                               -{" "}
-                              {new Date(event.closingTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                              {new Date(event.closingTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", timeZone: timezone })}
                             </span>
                           </div>
                         ))}
@@ -118,6 +118,10 @@ export default function Calendar({ schedule }) {
         <div className="legend-item">
           <div className="calendar-event EXTRA_HOURS"></div>
           <span>Extra Hours</span>
+        </div>
+        <div className="legend-item">
+          <div className="calendar-event TICKETED_EVENT"></div>
+          <span>Ticketed Event</span>
         </div>
       </div>
     </div>

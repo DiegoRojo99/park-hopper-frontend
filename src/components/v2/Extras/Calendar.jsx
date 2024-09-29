@@ -1,5 +1,6 @@
 import { useState } from "react";
 import './Calendar.css';
+import { capitalizeFirstLetter } from "../../../functions/common";
 
 function getCurrentMonthAndYear() {
   const now = new Date();
@@ -63,13 +64,16 @@ export default function Calendar({ schedule, timezone }) {
   }
 
   const weeks = generateCalendarDays(year, month);
+  const monthName = capitalizeFirstLetter(new Date(year, month).toLocaleString('default', { month: 'long' }));
 
   return (
     <div className="calendar">
       <div className="calendar-navigation">
-        <button onClick={goToPreviousMonth}>Previous</button>
-        <h2>{new Date(year, month).toLocaleString('default', { month: 'long' })} {year}</h2>
-        <button onClick={goToNextMonth}>Next</button>
+        <button onClick={goToPreviousMonth}>{"<"}</button>
+          <h2>
+            {`${monthName} ${year}`}
+          </h2>
+        <button onClick={goToNextMonth}>{">"}</button>
       </div>
 
       <div className="calendar-header">

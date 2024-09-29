@@ -10,30 +10,31 @@
 /* Calendar navigation buttons and title */
 .calendar-navigation {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 1rem;
 }
 
 .calendar-navigation h2 {
-  margin: 0;
+  margin: 0 16px;
   font-size: 1.5rem;
   text-align: center;
 }
 
-button {
-  background-color: #007bff;
+.calendar-navigation button {
+  background-color: #444;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
   cursor: pointer;
   font-size: 1rem;
   border-radius: 4px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.5s ease;
 }
 
-button:hover {
-  background-color: #0056b3;
+.calendar-navigation button:hover {
+  background-color: #ddd;
+  color: black;
 }
 
 /* Days of the week header */

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './LoginRegister.css';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from '@firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../../Firebase';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGooglePlusG, faFacebookF, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons'
+import { faGooglePlusG, faFacebookF, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 
 const LoginRegister = () => {
   const [username, setUsername] = useState('');
@@ -13,6 +13,7 @@ const LoginRegister = () => {
   const [isLogin, setIsLogin] = useState(true);
   const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
+  const provider = new GoogleAuthProvider();
 
   async function login(email, password) {
     try {
@@ -50,6 +51,17 @@ const LoginRegister = () => {
     }
   }
 
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+      navigate('/');
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error('Error signing in with Google:', errorCode, errorMessage);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isLogin) {
@@ -61,102 +73,102 @@ const LoginRegister = () => {
 
   return (
     <div className='login-page'>
-    <div className={`login-container ${!isLogin ? 'active' : ''}`} id="container">
-      <div className="form-container sign-up">
-        <form onSubmit={handleSubmit}>
-          <h1>Create Account</h1>
-          <div className="social-icons">
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faGooglePlusG} />
-            </a>
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faFacebookF} />
-            </a>
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faGithub} />
-            </a>
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faLinkedinIn} />
-            </a>
-          </div>
-          <span>or use your email for registration</span>
-          <input 
-            type="text" 
-            placeholder="Name" 
-            value={username} 
-            onChange={(e) => setUsername(e.target.value)} 
-            required={!isLogin}
-          />
-          <input 
-            type="email" 
-            placeholder="Email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required
-          />
-          <input 
-            type="password" 
-            placeholder="Password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required
-          />
-          <button type="submit">{isLogin ? 'Sign Up' : 'Sign In'}</button>
-        </form>
-      </div>
+      <div className={`login-container ${!isLogin ? 'active' : ''}`} id="container">
+        <div className="form-container sign-up">
+          <form onSubmit={handleSubmit}>
+            <h1>Create Account</h1>
+            <div className="social-icons">
+              <a href="#" className="icon" onClick={handleGoogleSignIn}>
+                <FontAwesomeIcon icon={faGooglePlusG} />
+              </a>
+              {/* <a href="#" className="icon">
+                <FontAwesomeIcon icon={faFacebookF} />
+              </a>
+              <a href="#" className="icon">
+                <FontAwesomeIcon icon={faGithub} />
+              </a>
+              <a href="#" className="icon">
+                <FontAwesomeIcon icon={faLinkedinIn} />
+              </a> */}
+            </div>
+            <span>or use your email for registration</span>
+            <input
+              type="text"
+              placeholder="Name"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required={!isLogin}
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button type="submit">{isLogin ? 'Sign Up' : 'Sign In'}</button>
+          </form>
+        </div>
 
-      <div className="form-container sign-in">
-        <form onSubmit={handleSubmit}>
-          <h1>Sign In</h1>          
-          <div className="social-icons">
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faGooglePlusG} />
-            </a>
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faFacebookF} />
-            </a>
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faGithub} />
-            </a>
-            <a href="#" className="icon">
-              <FontAwesomeIcon icon={faLinkedinIn} />
-            </a>
-          </div>
-          <span>or use your email for password</span>
-          <input 
-            type="email" 
-            placeholder="Email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required
-          />
-          <input 
-            type="password" 
-            placeholder="Password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required
-          />
-          <a href="#">Forgot your password?</a>
-          <button type="submit">Sign In</button>
-        </form>
-      </div>
+        <div className="form-container sign-in">
+          <form onSubmit={handleSubmit}>
+            <h1>Sign In</h1>
+            <div className="social-icons">
+              <a href="#" className="icon" onClick={handleGoogleSignIn}>
+                <FontAwesomeIcon icon={faGooglePlusG} />
+              </a>
+              {/* <a href="#" className="icon">
+                <FontAwesomeIcon icon={faFacebookF} />
+              </a>
+              <a href="#" className="icon">
+                <FontAwesomeIcon icon={faGithub} />
+              </a>
+              <a href="#" className="icon">
+                <FontAwesomeIcon icon={faLinkedinIn} />
+              </a> */}
+            </div>
+            <span>or use your email for password</span>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <a href="#">Forgot your password?</a>
+            <button type="submit">Sign In</button>
+          </form>
+        </div>
 
-      <div className="toggle-container">
-        <div className="toggle">
-          <div className="toggle-panel toggle-left">
-            <h1>Welcome Back!</h1>
-            <p>To keep connected with us please login with your personal info</p>
-            <button className="hidden" id="login" onClick={() => setIsLogin(true)}>Sign In</button>
-          </div>
-          <div className="toggle-panel toggle-right">
-            <h1>Hello, Friend!</h1>
-            <p>Enter your personal details and start your journey with us</p>
-            <button className="hidden" id="register" onClick={() => setIsLogin(false)}>Sign Up</button>
+        <div className="toggle-container">
+          <div className="toggle">
+            <div className="toggle-panel toggle-left">
+              <h1>Welcome Back!</h1>
+              <p>To keep connected with us please login with your personal info</p>
+              <button className="hidden" id="login" onClick={() => setIsLogin(true)}>Sign In</button>
+            </div>
+            <div className="toggle-panel toggle-right">
+              <h1>Hello, Friend!</h1>
+              <p>Enter your personal details and start your journey with us</p>
+              <button className="hidden" id="register" onClick={() => setIsLogin(false)}>Sign Up</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };

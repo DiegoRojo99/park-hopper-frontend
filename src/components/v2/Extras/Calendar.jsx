@@ -9,6 +9,7 @@ function getCurrentMonthAndYear() {
 
 export default function Calendar({ schedule, timezone }) {
   const [{ month, year }, setMonthYear] = useState(getCurrentMonthAndYear());
+  const [ eventsInfo, setEventsInfo ] = useState(false);
 
   function generateCalendarDays(year, month) {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -64,7 +65,12 @@ export default function Calendar({ schedule, timezone }) {
   }
 
   const weeks = generateCalendarDays(year, month);
-  const monthName = capitalizeFirstLetter(new Date(year, month).toLocaleString('default', { month: 'long' }));
+  const monthName = capitalizeFirstLetter(new Date(year, month).toLocaleString('en-US', { month: 'long' }));
+
+  function selectDate(year, month, day){
+    let dateEvents = schedule?.[formatDate(year, month, day)]?.filter(e => !["INFO", "ATTRACTION"].includes(e.type));
+    setEventsInfo(dateEvents);
+  }
 
   return (
     <div className="calendar">
@@ -76,7 +82,7 @@ export default function Calendar({ schedule, timezone }) {
         <button onClick={goToNextMonth}>{">"}</button>
       </div>
 
-      <div className="calendar-header">
+      <div className="calendar-header calendar-row">
         {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
           <div key={day} className="calendar-day-header">
             {day}
@@ -89,30 +95,29 @@ export default function Calendar({ schedule, timezone }) {
           <div key={i} className="calendar-row">
             {week.map((day, j) => (
               <div key={j} className="calendar-cell">
-                {day && (
-                  <>
+                {day ? (
+                  <div className="existing-calendar-cell" onClick={() => selectDate(year, month, day)}>
+                    <div className="calendar-cell-space"></div>
                     <span className="calendar-date">{day < 10 ? `0${day}` : day}</span>
-                    {schedule[formatDate(year, month, day)] && (
-                      <div className="calendar-events">
-                        {schedule[formatDate(year, month, day)].filter(e => !["INFO", "ATTRACTION"].includes(e.type)).map((event, index) => (
+                    <div className="calendar-date-events">     
+                      {schedule?.[formatDate(year, month, day)]?.filter(e => !["INFO", "ATTRACTION"].includes(e.type)).map((event, index) => (
                           <div key={index} style={{display: 'flex'}}>
-                            <div className={`calendar-event ${event.type}`}></div>
-                            <span>
-                              {new Date(event.openingTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", timeZone: timezone })}{" "}
-                              -{" "}
-                              {new Date(event.closingTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", timeZone: timezone })}
-                            </span>
+                            <div className={`calendar-cell-event ${event.type}`}></div>
                           </div>
-                        ))}
-                      </div>
-                    )}
-                  </>
-                )}
+                        ))
+                      }
+                    </div>
+                    <div className="calendar-cell-space"></div>
+                  </div>
+                ) : <></>}
               </div>
             ))}
           </div>
         ))}
       </div>
+
+      <CalendarEvents events={eventsInfo} timezone={timezone} />
+
       <div className="calendar-legend">
         <h3>Legend</h3>
         <div className="legend-item">
@@ -130,4 +135,39 @@ export default function Calendar({ schedule, timezone }) {
       </div>
     </div>
   );
+}
+
+function CalendarEvents({events, timezone}){
+
+  function formatTime(datetime){
+    return new Date(datetime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", timeZone: timezone })
+  }
+
+  function formatDate(dateString) {
+    return capitalizeFirstLetter(new Date(dateString).toLocaleDateString('en-US', { month: 'long', day: 'numeric'}));
+  }
+
+  console.log("Events: ", events);
+  if(!events?.length){
+    return (
+      <>
+      </>
+    )
+  }
+  return (
+    <div className="calendar-info-div" >
+      <h5>Opening hours for {`${formatDate(events[0].date)}`}</h5>
+      <div className="calendar-info">
+        {events.map((event, index) => (
+          <div className="calendar-info-item">
+            <span>
+              <div className={`calendar-cell-event ${event.type}`}></div>
+              {`${formatTime(event.openingTime)} - ${formatTime(event.closingTime)}`}
+            </span>
+            <span>{event.description ? `${event.description}` : "Park Hours"}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }

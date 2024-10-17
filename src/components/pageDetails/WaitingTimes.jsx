@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faX, faTriangleExclamation, faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as lineStar } from '@fortawesome/free-regular-svg-icons';
 import AlarmIcon from './../../img/bell.png';
 import FullAlarmIcon from './../../img/fullBell.png';
@@ -10,7 +10,7 @@ import { Loader } from '../common/Loader';
 import { Status } from './../common/Status';
 import AlertModal from '../v2/Extras/AlertModal';
 
-export function WaitingTimes({ attractions , favorites}){
+export function WaitingTimes({ attractions , favorites, openLink}){
   
   const [ userAttractions, setUserAttractions] = useState(favorites);
   const [ userAlerts, setUserAlerts] = useState(false);
@@ -54,35 +54,6 @@ export function WaitingTimes({ attractions , favorites}){
     else{
       return bWaitTime - aWaitTime;
     }
-  }
-
-  function statusData(status){
-    switch(status){
-      case "OPERATING":
-        return (
-          <div className='status-div'>
-            <p>OPEN</p>
-            <FontAwesomeIcon icon={faCheck} style={{color: "#197328", margin: '0 4px'}} />
-          </div>
-        );
-      case "REFURBISHMENT":
-      case "CLOSED":
-        return (
-          <div className='status-div'>
-            <p>CLOSED</p>
-            <FontAwesomeIcon icon={faX} style={{color: "#f00", margin: '0 4px'}} />
-          </div>
-        );
-      case "DOWN":
-        return (
-          <div className='status-div'>
-            <p>DOWN</p>
-            <FontAwesomeIcon icon={faTriangleExclamation} style={{color: "#fcb00a", margin: '0 4px'}} />
-          </div>
-        );
-      default:
-        return <p>{status}</p>
-    }  
   }
 
   async function selectFavAttraction(attraction, fav){
@@ -223,7 +194,7 @@ export function WaitingTimes({ attractions , favorites}){
                 onClick={() => showAlertModal(att, alert)} 
               />
             </div>
-            <p>{att.name}</p>
+            <p className={openLink ? 'div-clickable' : ''} onClick={openLink ? () => openLink(att.id) : null}>{att.name}</p>
             <p>{waitingTime}</p>
             <Status status={att.status} />
           </div>

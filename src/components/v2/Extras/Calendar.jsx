@@ -147,7 +147,6 @@ function CalendarEvents({events, timezone}){
     return capitalizeFirstLetter(new Date(dateString).toLocaleDateString('en-US', { month: 'long', day: 'numeric'}));
   }
 
-  console.log("Events: ", events);
   if(!events?.length){
     return (
       <>

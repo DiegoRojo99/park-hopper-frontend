@@ -8,6 +8,8 @@ import { Loader } from '../../common/Loader';
 import { Showtimes } from '../../pageDetails/Showtimes';
 import { useAuth } from '../../../contexts/AuthContext';
 import Calendar from '../Extras/Calendar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendar, faCalendarXmark } from '@fortawesome/free-regular-svg-icons';
 
 export function ParkPage(){
   const { id } = useParams();
@@ -23,6 +25,7 @@ export function ParkPage(){
   const [filteredData, setFilteredData] = useState([]);
   const [viewType, setViewType] = useState("List");
   const [activeTab, setActiveTab] = useState("Attractions");
+  const [showCalendar, setShowCalendar] = useState(false);
   const [tabs, setTabs] = useState(["Attractions", "Shows", "Restaurants", "Hotels"]);
   const apiUrl = process.env.REACT_APP_API_URL; 
   const { user } = useAuth(); 
@@ -37,7 +40,7 @@ export function ParkPage(){
 
       const dividedChildren = {attractions, restaurants, hotels, shows};
       const tabsOrder = ["Attractions", "Shows", "Restaurants", "Hotels"];
-      const filteredTabs = [...tabsOrder.filter(tab => dividedChildren[tab.toLocaleLowerCase()]?.length), "Calendar"];
+      const filteredTabs = [...tabsOrder.filter(tab => dividedChildren[tab.toLocaleLowerCase()]?.length)];
       setTabs(filteredTabs);
       
       return dividedChildren;
@@ -170,23 +173,21 @@ export function ParkPage(){
   return (
     <div className='details-page'>
       <div className='page-header'>
-        <h1>{data.name}</h1>
+        <h1>
+          <span>{data.name}</span>
+          <FontAwesomeIcon icon={showCalendar ? faCalendarXmark : faCalendar} className='calendar-icon' onClick={() => setShowCalendar(!showCalendar)} />
+        </h1>
       </div>
-      {/* <div style={{display: 'flex'}} >
-        <img src='../../img/logo512.png' style={{width: '128px', height: '128px', marginLeft: '32px'}} />
-      </div> */}
-               
-      <div className='tab-group-row' >
-        <TabGroup tabs={tabs} activeTab={activeTab} changeTab={setActiveTab} />
-        {/* <ToggleSwitch setViewType={setViewType} />   */}
-      </div>
-      {/* <FilterBar name={name} searchName={searchName} /> */}
-      {activeTab !== "Calendar" ? 
-        <>
-        <FilterBar name={name} searchName={searchName} />
-        {renderChildrenObjects()}
-        </>
-      : 
+
+      {!showCalendar ? 
+        <>    
+          <div className='tab-group-row' >
+            <TabGroup tabs={tabs} activeTab={activeTab} changeTab={setActiveTab} />
+            {/* <ToggleSwitch setViewType={setViewType} />   */}
+          </div>
+          <FilterBar name={name} searchName={searchName} />
+          {renderChildrenObjects()}
+        </> : 
         renderCalendar()
       }
 

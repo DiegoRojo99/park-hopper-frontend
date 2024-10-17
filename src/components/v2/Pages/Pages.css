@@ -196,3 +196,13 @@
 .not-found-container{
   padding: 376px 0 32px;
 }
+
+.calendar-icon{
+  margin-left: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.calendar-icon:hover{
+  transform: scale(1.25);
+}

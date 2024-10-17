@@ -11,7 +11,7 @@
   color: #f2f2f2;
   text-decoration: none;
   font-size: 20px;
-  padding: 14px 0;
+  padding: 14px 32px;
 }
 
 .menu-items {
@@ -74,6 +74,10 @@
 
   .icon {
     display: block;
+  }
+  
+  .nav-logo {
+    padding: 14px 0px;
   }
 }
 

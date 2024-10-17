@@ -3,8 +3,6 @@
   background-color: #333;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
   height: 60px;
   z-index: 1000; 
 }
@@ -60,11 +58,28 @@
     border-top: 1px solid #444;
   }
 
+  .menu-items {
+    display: flex;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.5s ease, max-height 0.5s ease;
+  }
+  
   .menu-items.open {
     display: flex;
+    opacity: 1;
+    max-height: 500px;
   }
 
   .icon {
     display: block;
   }
+}
+
+#hamburger-icon{
+  transition: transform 0.5s ease;
+}
+#hamburger-icon.clicked{
+  transform: rotate(90deg);
 }

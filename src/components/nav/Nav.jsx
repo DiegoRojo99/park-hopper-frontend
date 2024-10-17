@@ -13,6 +13,9 @@ function Nav() {
 
   return (
     <div className="nav-menu">
+      <a id="hamburger-icon" className={openMenu ? 'clicked icon' : 'icon'} onClick={() => setOpenMenu(!openMenu)}>
+        <FontAwesomeIcon icon={faBars} />
+      </a>
       <Link className='nav-logo' to='/'  onClick={handleLinkClick}>Park Hopper</Link>
       <div className={openMenu ? "menu-items open" : "menu-items"}>
         <Link to="/explore" onClick={handleLinkClick}>Explore</Link>
@@ -20,9 +23,6 @@ function Nav() {
         {/* <Link to="/settings" onClick={handleLinkClick}>Settings</Link> */}
         <Link to="/login" onClick={handleLinkClick}>Login/Logout</Link>     
       </div>
-      <a className='icon' onClick={() => setOpenMenu(!openMenu)}>
-        <FontAwesomeIcon icon={faBars} />
-      </a>
     </div>
   );
 }

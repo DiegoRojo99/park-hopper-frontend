@@ -38,6 +38,7 @@
   .page-header h1{
     margin: 32px 0 20px;
     text-align: center;
+    font-size: 24px;
     width: 100%;
   }
   .toggle-switch{
@@ -58,7 +59,7 @@
     margin: 32px 0 20px;
     text-align: center;
     width: 100%;
-    font-size: 24px;
+    font-size: 20px;
   }
   .toggle-switch{
     margin: 0 calc(50% - 40px) 16px !important;

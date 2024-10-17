@@ -14,6 +14,10 @@
   padding: 14px 32px;
 }
 
+.nav-icon{
+  margin-right: 8px;
+}
+
 .menu-items {
   display: flex;
   align-items: center;
@@ -63,7 +67,7 @@
     opacity: 0;
     max-height: 0;
     overflow: hidden;
-    transition: opacity 0.5s ease, max-height 0.5s ease;
+    transition: opacity 0.5s ease, max-height 0s ease;
   }
   
   .menu-items.open {

@@ -1,0 +1,41 @@
+.scroll-tab-container {
+  width: 70%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scroll-tab-wrapper {
+  display: flex;
+  transition: transform 0.3s ease;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.scroll-tab {
+  flex: 0 0 100px; /* All tabs are 100px wide */
+  padding: 10px;
+  margin: 0 5px;
+  text-align: center;
+  border-radius: 20px;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.scroll-tab.active {
+  opacity: 1;
+  border: 2px solid #007bff;
+  background-color: #f0f8ff;
+  transform: scale(1.2); /* Enlarge the active tab */
+}
+
+.scroll-tab.left,
+.scroll-tab.right {
+  opacity: 0.75;
+}
+
+.scroll-tab-container .scroll-tab-wrapper {
+  transform: translateX(calc(-100px * var(--active-index)));
+}

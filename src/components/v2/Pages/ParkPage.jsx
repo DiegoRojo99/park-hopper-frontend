@@ -10,6 +10,7 @@ import { useAuth } from '../../../contexts/AuthContext';
 import Calendar from '../Extras/Calendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faCalendarXmark } from '@fortawesome/free-regular-svg-icons';
+import TabSelector from '../Extras/Tabs/TabSelector';
 
 export function ParkPage(){
   const { id } = useParams();
@@ -181,10 +182,11 @@ export function ParkPage(){
 
       {!showCalendar ? 
         <>    
-          <div className='tab-group-row' >
+          {/* <div className='tab-group-row' >
             <TabGroup tabs={tabs} activeTab={activeTab} changeTab={setActiveTab} />
-            {/* <ToggleSwitch setViewType={setViewType} />   */}
-          </div>
+          </div> */}
+          {/* <ToggleSwitch setViewType={setViewType} />   */}
+          <TabSelector tabs={tabs} setActiveTab={setActiveTab} />
           <FilterBar name={name} searchName={searchName} />
           {renderChildrenObjects()}
         </> : 

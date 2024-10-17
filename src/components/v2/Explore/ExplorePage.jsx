@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import '../Pages/Pages.css';
 import './Explore.css';
 import '../../common/Common.css';
-import TabGroup from '../../common/TabGroup';
 import FilterBar from '../../common/FilterBar';
 import { Loader } from '../../common/Loader';
 import ParksMap from '../Map/ParksMap';
+import TabSelector from '../Extras/Tabs/TabSelector';
 
 function ExplorePage(){
   const navigate = useNavigate();
@@ -158,7 +158,7 @@ function ExplorePage(){
       <div className='landing-big-img' alt="Generic Theme Park" />
       <FilterBar name={name} searchName={searchName} placeholder={'Search a theme park...'} />
       <div className='landing-main'>
-        <TabGroup tabs={["Country", "Map", "Destination"]} activeTab={activeTab} changeTab={changeTab} />
+        <TabSelector tabs={["Country", "Map", "Destination"]} changeTab={changeTab} />
         {renderLandingContent()}
       </div>
       

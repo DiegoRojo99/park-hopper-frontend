@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import TabGroup from '../../common/TabGroup';
 import FilterBar from '../../common/FilterBar';
 import { WaitingTimes } from '../../pageDetails/WaitingTimes';
 import Card from '../../common/Card';
@@ -181,12 +180,9 @@ export function ParkPage(){
       </div>
 
       {!showCalendar ? 
-        <>    
-          {/* <div className='tab-group-row' >
-            <TabGroup tabs={tabs} activeTab={activeTab} changeTab={setActiveTab} />
-          </div> */}
+        <>
           {/* <ToggleSwitch setViewType={setViewType} />   */}
-          <TabSelector tabs={tabs} setActiveTab={setActiveTab} />
+          <TabSelector tabs={tabs} changeTab={setActiveTab} />
           <FilterBar name={name} searchName={searchName} />
           {renderChildrenObjects()}
         </> : 

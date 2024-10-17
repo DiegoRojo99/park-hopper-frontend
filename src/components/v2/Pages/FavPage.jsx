@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import TabGroup from '../../common/TabGroup';
 import FilterBar from '../../common/FilterBar';
 import { WaitingTimes } from '../../pageDetails/WaitingTimes';
 import Card from '../../common/Card';
 import { Loader } from '../../common/Loader';
 import { Showtimes } from '../../pageDetails/Showtimes';
 import { useAuth } from '../../../contexts/AuthContext';
+import TabSelector from '../Extras/Tabs/TabSelector';
 
 export function FavPage(){
   const navigate = useNavigate();
@@ -133,7 +133,7 @@ export function FavPage(){
       
       {tabs.length > 1 ? 
         <div className='tab-group-row' >
-          <TabGroup tabs={tabs} activeTab={activeTab} changeTab={setActiveTab} />
+          <TabSelector tabs={tabs} changeTab={setActiveTab} />
           {/* <ToggleSwitch setViewType={setViewType} />   */}
         </div> : 
         <></>

@@ -3,12 +3,12 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 
-export default function TabSelector({tabs, setActiveTab}) {
+export default function TabSelector({tabs, changeTab}) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setActiveTab(tabs[newValue])
+    changeTab(tabs[newValue])
   };
 
   return (

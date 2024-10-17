@@ -80,3 +80,7 @@
   text-align: center;
   margin-top: 50px;
 }
+
+.div-clickable{
+  cursor: pointer;
+}

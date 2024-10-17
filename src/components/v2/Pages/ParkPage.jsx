@@ -152,7 +152,7 @@ export function ParkPage(){
     else if(viewType==="List"){
       return(
         <div className='grid-element'>
-          <WaitingTimes attractions={selectedChildren} favorites={userAttractions} openLink={openLink} />
+          <WaitingTimes attractions={selectedChildren} favorites={userAttractions} openLink={activeTab === "Attractions" ? openLink : null} />
         </div>
       );
     }

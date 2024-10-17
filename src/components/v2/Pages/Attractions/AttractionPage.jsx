@@ -39,8 +39,7 @@ export function AttractionPage(){
         const attractionObject = await attractionRequest.json();
 
         if(!result?.liveData?.[0] || !attractionObject?.[0]){
-          setError(true);
-          setLoading(false);
+          throw new Error('Data is empty');
         }
         setAttractionData(attractionObject[0]);
         setLiveData(result.liveData[0]);

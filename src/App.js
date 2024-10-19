@@ -13,6 +13,7 @@ import LandingPage from './components/v2/Pages/LandingPage';
 import NotFoundPage from './components/v2/Pages/NotFoundPage';
 import { subscribeUser } from './functions/subscribeUser';
 import { AttractionPage } from './components/v2/Pages/Attractions/AttractionPage';
+import { RestaurantPage } from './components/v2/Pages/Restaurants/RestaurantPage';
 
 function App() {
 
@@ -46,7 +47,8 @@ function App() {
             <Route path="/destinations" element={<Destinations />} />
             <Route path="/destinations/:id" element={<DestinationDetails />} />
             <Route path="/parks/:id" element={<ParkPage />} />            
-            <Route path="/attractions/:id" element={<AttractionPage />} />            
+            <Route path="/attractions/:id" element={<AttractionPage />} />       
+            <Route path="/restaurants/:id" element={<RestaurantPage />} />            
             <Route path="/login" element={<LoginRegister />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

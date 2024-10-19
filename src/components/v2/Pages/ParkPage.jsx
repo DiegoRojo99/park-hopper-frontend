@@ -51,18 +51,21 @@ export function ParkPage(){
         const response = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/live`);
         const scheduleRes = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/schedule`);
         const parkAttractionsResponse = await fetch(`${apiUrl}/parks/${id}/attractions`);
-        if (!response.ok || !scheduleRes.ok) {
+        const childrenResponse = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/children`);
+        if (!response.ok || !scheduleRes.ok || !childrenResponse.ok) {
           throw new Error('Network response was not ok');
         }
 
         const result = await response.json();
         const scheduleObj = await scheduleRes.json();
+        const childrenObj = await childrenResponse.json();
         
         let parkAttractions = await parkAttractionsResponse.json();
         parkAttractions = parkAttractions.map(att => att.id);
         
-        let dividedChildren = divideChildren(result.liveData);
-        dividedChildren.attractions = dividedChildren.attractions.filter(att => !parkAttractions.includes(att.id));
+        let dividedLiveChildren = divideChildren(result.liveData);
+        let dividedChildren = divideChildren(childrenObj.children);
+        dividedChildren.attractions = dividedLiveChildren.attractions.filter(att => !parkAttractions.includes(att.id));
         setChildren(dividedChildren);
         setData(result);
         const groupedByDate = scheduleObj.schedule.reduce((acc, obj) => {
@@ -126,7 +129,7 @@ export function ParkPage(){
   }
   
   function openLink(id) {
-    const url = `/attractions/${id}`;
+    const url = `/${activeTab}/${id}`;
     navigate(url); 
   }
 
@@ -152,7 +155,7 @@ export function ParkPage(){
     else if(viewType==="List"){
       return(
         <div className='grid-element'>
-          <WaitingTimes attractions={selectedChildren} favorites={userAttractions} openLink={activeTab === "Attractions" ? openLink : null} />
+          <WaitingTimes attractions={selectedChildren} favorites={userAttractions} openLink={ openLink } />
         </div>
       );
     }

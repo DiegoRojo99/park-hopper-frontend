@@ -1,0 +1,97 @@
+.waiting-time-circle-div{
+  width: 100%;
+  height: 96px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.waiting-time-circle{
+  width: 80px;
+  height: 80px;
+  background-color: whitesmoke;
+  border-radius: 200%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.circle-waiting-time{
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.circle-minutes{
+  font-size: 12px;
+  color: #777;
+}
+
+/* .restaurant-details-info{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+} */
+
+.restaurant-details-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.restaurant-details-left {
+  display: flex;
+  align-items: center;
+  width: 15%;
+}
+
+.restaurant-details-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.restaurant-details-text-light {
+  color: #777;
+  font-size: 14px;
+}
+
+.restaurant-details-right {
+  display: flex;
+  justify-content: flex-end;
+  width: 82.5%;
+}
+
+.restaurant-details-text {
+  color: black;
+  text-align: right;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.restaurant-details-text div{
+  justify-content: end;
+}
+
+.page-icons{
+  width: 100%;
+  height: 48px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 8px;
+  padding-top: 8px;
+}
+
+.page-icons svg, .page-icons img{
+  padding: 4px;
+  border: 1px solid lightgray;
+  border-radius: 8px;
+  margin-right: 8px;
+}

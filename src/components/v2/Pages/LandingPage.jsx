@@ -27,10 +27,10 @@ function LandingPage() {
               <h3>2. Add to Favorites</h3>
               <p>Easily track and manage your favorite places.</p>
             </div>
-            {/* <div className="step">
+            <div className="step">
               <h3>3. Get Alerts</h3>
               <p>Set wait time alerts and get notified instantly.</p>
-            </div> */}
+            </div>
           </div>
         </div>
       </section>

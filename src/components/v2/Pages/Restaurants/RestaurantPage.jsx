@@ -171,20 +171,26 @@ export function RestaurantPage(){
           </div>
           }
           {
-            restaurantData.Cuisines && restaurantData.Cuisines !== "null" ?            
-              <div className="restaurant-details-row">
-                <div className="restaurant-details-left">
-                  {/* <img src={""} alt="icon" className="restaurant-details-icon" /> */}
-                  <span className="restaurant-details-text-light">
-                    Cuisines:
-                  </span>
+            restaurantData.Cuisines && restaurantData.Cuisines !== "null" ? 
+              <>      
+                <div className="restaurant-details-row">
+                  <div className="restaurant-details-left">
+                    {/* <img src={""} alt="icon" className="restaurant-details-icon" /> */}
+                    <span className="restaurant-details-text-light">
+                      Cuisines:
+                    </span>
+                  </div>
+                  <div className="restaurant-details-right">
+                    {restaurantData.Cuisines.split(",").map((cuisine, index) => {
+                      return (
+                        <span className="restaurant-details-text">
+                          {cuisine}
+                        </span>
+                      )
+                    })}
+                  </div>
                 </div>
-                <div className="restaurant-details-right">
-                  <span className={"restaurant-details-text div-clickable"}>
-                    {restaurantData.Cuisines}
-                  </span>
-                </div>
-              </div> 
+              </>
             : 
               <></> 
           }

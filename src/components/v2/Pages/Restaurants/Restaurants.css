@@ -61,6 +61,7 @@
 .restaurant-details-right {
   display: flex;
   justify-content: flex-end;
+  flex-direction: column;
   width: 82.5%;
 }
 
@@ -72,6 +73,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .restaurant-details-text div{

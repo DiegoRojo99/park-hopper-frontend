@@ -34,12 +34,6 @@ function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* Footer Section */}
-      <footer className="footer">
-        <p>Visit us at <a href="https://parkhopper.live" target="_blank" rel="noopener noreferrer">parkhopper.live</a></p>
-        <p>&copy; 2024 Park Hopper. All rights reserved.</p>
-      </footer>
     </div>
   );
 }

@@ -14,6 +14,7 @@ import NotFoundPage from './components/v2/Pages/NotFoundPage';
 import { subscribeUser } from './functions/subscribeUser';
 import { AttractionPage } from './components/v2/Pages/Attractions/AttractionPage';
 import { RestaurantPage } from './components/v2/Pages/Restaurants/RestaurantPage';
+import Footer from './components/v2/Extras/Footer';
 
 function App() {
 
@@ -39,7 +40,7 @@ function App() {
     <Router basename="/">
       <div id='main-container' className="App">
         <Nav />
-        <div style={{width: '100%', height: '100%', backgroundColor: 'white'}}>
+        <div style={{width: '100%', minHeight: 'calc(100vh - 60px)', height: '100%', backgroundColor: 'white'}}>
           <Routes>
             <Route path="/" exact element={<LandingPage />} />
             <Route path="/explore" element={<ExplorePage />} />
@@ -53,6 +54,7 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
+        <Footer />
       </div>
     </Router>
   );

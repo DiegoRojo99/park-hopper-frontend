@@ -84,3 +84,34 @@
 .div-clickable{
   cursor: pointer;
 }
+
+.footer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: start;
+  width: 100%;
+  max-width: 1200px;
+}
+
+@media only screen and (max-width: 600px) {
+  .footer p, .footer span, .restaurant-footer p, .restaurant-footer span {
+    font-size: 12px;
+  }
+
+  .restaurant-details-text {
+    font-size: 14px;
+  }
+}

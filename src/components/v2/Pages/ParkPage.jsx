@@ -129,7 +129,7 @@ export function ParkPage(){
   }
   
   function openLink(id) {
-    const url = `/${activeTab}/${id}`;
+    const url = `/${activeTab.toLowerCase()}/${id}`;
     navigate(url); 
   }
 

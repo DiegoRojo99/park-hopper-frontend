@@ -1,6 +1,6 @@
 .details-page{
   width: 100%;
-  height: calc(100vh - 60px);
+  min-height: calc(100vh - 60px);
 }
 
 .group-list{
@@ -177,12 +177,6 @@
 .step h3 {
   margin-bottom: 10px;
   font-size: 24px;
-}
-
-/* Footer */
-.footer {
-  padding: 20px;
-  margin-top: 40px;
 }
 
 .footer a {

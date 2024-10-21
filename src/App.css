@@ -43,15 +43,8 @@
   }
 }
 
-html{
-  min-height: 100%;
-}
-
-body{
-  /* background: linear-gradient(#051f30,#000000);
-  background-size: cover; */
-  /* color: white; */
-  min-height: 100%;
+html, body{
+  min-height: 100vh;
 }
 
 *{

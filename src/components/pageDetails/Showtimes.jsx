@@ -6,9 +6,9 @@ import './Utils.css';
 import { useAuth } from '../../contexts/AuthContext';
 import { Loader } from '../common/Loader';
 import { Status } from '../common/Status';
-import { parseTime } from '../common/Functions';
+import { getNextShowtime } from './showHelper';
 
-export function Showtimes({ shows }){
+export function Showtimes({ shows, timezone }){
   
   // const [userAttractions, setUserAttractions] = useState(false);
   const { user } = useAuth(); 
@@ -142,7 +142,9 @@ export function Showtimes({ shows }){
         <p>Show</p>
         <p>Showtimes</p>
       </div>
-      { shows.filter(show => show?.status === "OPERATING").map((a) => {
+      { shows
+        .filter(show => show?.status === "OPERATING")
+        .map((a) => {
         const fav = false; // userAttractions ? userAttractions.some(userAtt => userAtt.EntityID === a.id) : false;
         return (
           <div className='show-row'> 
@@ -153,13 +155,7 @@ export function Showtimes({ shows }){
             />
             <p>{a.name}</p>
             <p>
-            {a.showtimes?.length ? a.showtimes.map((show, index) => 
-              {
-                const time = parseTime(show?.startTime);
-                const comma = (index !== 0) ? ", " : "";
-                return comma + time;
-              }
-            ) : "-"}
+              {a.showtimes?.length ? getNextShowtime(a.showtimes, timezone) : "-"}
             </p>
           </div>
         )

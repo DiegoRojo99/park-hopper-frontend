@@ -10,6 +10,8 @@ import Calendar from '../Extras/Calendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faCalendarXmark } from '@fortawesome/free-regular-svg-icons';
 import TabSelector from '../Extras/Tabs/TabSelector';
+import { getCurrentTimeInTimezone } from '../../pageDetails/showHelper';
+import { parseTime } from './../../common/Functions'
 
 export function ParkPage(){
   const { id } = useParams();
@@ -66,6 +68,7 @@ export function ParkPage(){
         let dividedLiveChildren = divideChildren(result.liveData);
         let dividedChildren = divideChildren(childrenObj.children);
         dividedChildren.attractions = dividedLiveChildren.attractions.filter(att => !parkAttractions.includes(att.id));
+        dividedChildren.shows = dividedLiveChildren.shows;
         setChildren(dividedChildren);
         setData(result);
         const groupedByDate = scheduleObj.schedule.reduce((acc, obj) => {
@@ -103,7 +106,7 @@ export function ParkPage(){
             return response.json();
           }
           else if(response.status === "401"){
-            throw new Error('Not logged in');
+            return [];
           }
           throw new Error('Something went wrong');
         });
@@ -148,7 +151,7 @@ export function ParkPage(){
     if(activeTab === "Shows"){
       return(
         <div className='grid-element'>
-          <Showtimes shows={selectedChildren} />
+          <Showtimes shows={selectedChildren} timezone={timezone}/>
         </div>
       );
     }
@@ -180,6 +183,10 @@ export function ParkPage(){
           <span>{data.name}</span>
           <FontAwesomeIcon icon={showCalendar ? faCalendarXmark : faCalendar} className='calendar-icon' onClick={() => setShowCalendar(!showCalendar)} />
         </h1>
+      </div>
+      <div>
+        {/* <p>Park Hours: xx - xx</p> */}
+        {/* <p>Local Hour: {getCurrentTimeInTimezone(timezone)}</p> */}
       </div>
 
       {!showCalendar ? 

@@ -7,12 +7,19 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Loader } from '../common/Loader';
 import { Status } from '../common/Status';
 import { getNextShowtime } from './showHelper';
+import { useNavigate } from 'react-router-dom';
 
 export function Showtimes({ shows, timezone }){
   
   // const [userAttractions, setUserAttractions] = useState(false);
   const { user } = useAuth(); 
   const apiUrl = process.env.REACT_APP_API_URL;
+  const navigate = useNavigate();
+  
+  function openLink(id) {
+    const url = `/shows/${id}`;
+    navigate(url); 
+  }
 
   // async function loadUserFavorites(){
   //   try {
@@ -144,18 +151,18 @@ export function Showtimes({ shows, timezone }){
       </div>
       { shows
         .filter(show => show?.status === "OPERATING")
-        .map((a) => {
-        const fav = false; // userAttractions ? userAttractions.some(userAtt => userAtt.EntityID === a.id) : false;
+        .map((show) => {
+        const fav = false; // userAttractions ? userAttractions.some(userAtt => userAtt.EntityID === show.id) : false;
         return (
           <div className='show-row'> 
             <FontAwesomeIcon 
               icon={!fav ? lineStar : solidStar} 
               className='star-icon' 
-              onClick={() => selectFavShow(a, fav)} 
+              onClick={() => selectFavShow(show, fav)} 
             />
-            <p>{a.name}</p>
+            <p className='div-clickable' onClick={() => openLink(show.id)}>{show.name}</p>
             <p>
-              {a.showtimes?.length ? getNextShowtime(a.showtimes, timezone) : "-"}
+              {show.showtimes?.length ? getNextShowtime(show.showtimes, timezone) : "-"}
             </p>
           </div>
         )

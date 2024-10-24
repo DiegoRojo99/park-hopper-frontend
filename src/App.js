@@ -15,6 +15,7 @@ import { subscribeUser } from './functions/subscribeUser';
 import { AttractionPage } from './components/v2/Pages/Attractions/AttractionPage';
 import { RestaurantPage } from './components/v2/Pages/Restaurants/RestaurantPage';
 import Footer from './components/v2/Extras/Footer';
+import { ShowPage } from './components/v2/Pages/Shows/ShowPage';
 
 function App() {
 
@@ -47,9 +48,10 @@ function App() {
             <Route path="/favs" element={<FavPage />} />
             <Route path="/destinations" element={<Destinations />} />
             <Route path="/destinations/:id" element={<DestinationDetails />} />
-            <Route path="/parks/:id" element={<ParkPage />} />            
-            <Route path="/attractions/:id" element={<AttractionPage />} />       
-            <Route path="/restaurants/:id" element={<RestaurantPage />} />            
+            <Route path="/parks/:id" element={<ParkPage />} />
+            <Route path="/attractions/:id" element={<AttractionPage />} />
+            <Route path="/restaurants/:id" element={<RestaurantPage />} />  
+            <Route path="/shows/:id" element={<ShowPage />} />
             <Route path="/login" element={<LoginRegister />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

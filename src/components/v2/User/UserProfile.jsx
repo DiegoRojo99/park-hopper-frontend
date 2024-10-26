@@ -8,20 +8,20 @@ import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 import { Link } from 'react-router-dom';
 
 function UserProfile({closeMenu}) {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const navigate = useNavigate();
 
   function toggleDropdown(){
     closeMenu();
     setDropdownOpen((prev) => !prev);
   };
 
-  function closeDropdown(){
+  function handleLogout() {
+    logout();
     setDropdownOpen(false);
   }
-  
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -37,7 +37,7 @@ function UserProfile({closeMenu}) {
 
   function UserProfileLink({ link, name, icon }) {
     return (
-      <Link to={link} onClick={closeDropdown}>
+      <Link to={link} onClick={() => { setTimeout(() => setDropdownOpen(false), 100); }}>
         <FontAwesomeIcon icon={icon} className="nav-icon" />
         <span>{name}</span>
       </Link>
@@ -64,7 +64,10 @@ function UserProfile({closeMenu}) {
       {dropdownOpen && (
         <div className="dropdown-menu">
           <UserProfileLink link={'/settings'} icon={faGear} name={"Settings"} />
-          <UserProfileLink link={'/'} icon={faArrowRightFromBracket} name={"Log Out"} />
+          <p onClick={handleLogout}>
+            <FontAwesomeIcon icon={faArrowRightFromBracket} className="nav-icon" />
+            <span>{"Log Out"}</span>
+          </p>
         </div>
       )}
       </>

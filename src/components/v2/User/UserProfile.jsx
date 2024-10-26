@@ -63,7 +63,7 @@ function UserProfile({closeMenu}) {
       
       {dropdownOpen && (
         <div className="dropdown-menu">
-          <UserProfileLink link={'/settings'} icon={faGear} name={"Settings"} />
+          {/* <UserProfileLink link={'/settings'} icon={faGear} name={"Settings"} /> */}
           <p onClick={handleLogout}>
             <FontAwesomeIcon icon={faArrowRightFromBracket} className="nav-icon" />
             <span>{"Log Out"}</span>

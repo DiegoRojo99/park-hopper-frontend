@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons';
 import './Nav.css';
@@ -8,7 +8,10 @@ import UserProfile from '../v2/User/UserProfile';
 
 function Nav() {
   const [openMenu, setOpenMenu] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const navRef = useRef(null);
+  const navigate = useNavigate();
 
   function handleLinkClick() {
     setOpenMenu(false);
@@ -25,10 +28,24 @@ function Nav() {
 
   const toggleMenu = () => setOpenMenu((prev) => !prev);
 
+  function handleSearchIconClick() {
+    setSearchOpen((prev) => !prev);
+  }
+
+  function handleSearchSubmit(e) {
+    e.preventDefault();
+    if (searchTerm) {
+      navigate(`/search/${searchTerm}`); // Navigate to the details page based on search term
+      setSearchTerm('');
+      setSearchOpen(false);
+    }
+  }
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (navRef.current && !navRef.current.contains(event.target)) {
         setOpenMenu(false);
+        setSearchOpen(false); // Close search if clicked outside
       }
     }
 
@@ -43,15 +60,32 @@ function Nav() {
       <a id="hamburger-icon" className={openMenu ? 'clicked icon' : 'icon'} onClick={toggleMenu}>
         <FontAwesomeIcon icon={faBars} />
       </a>
-      <Link className="nav-logo" to="/" onClick={handleLinkClick}>
+      <Link className={searchOpen ? 'short-nav-logo' : "nav-logo"} to="/" onClick={handleLinkClick}>
         Park Hopper
       </Link>
       <div className={openMenu ? 'menu-items open' : 'menu-items'}>
         <NavItem link="/explore" name="Explore" icon={faCompass} />
-      </div>
-      <div className='nav-space'></div>
-      <div className='option-icons'>
-        {/* <FontAwesomeIcon className='util-icon' icon={faSearch} style={{color: 'white'}} /> */}
+      </div>  
+      {searchOpen ? 
+        (
+          <form onSubmit={handleSearchSubmit} className="search-bar">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search..."
+            />
+          </form>
+        ) :
+        <div className="nav-space"></div>      
+      }
+      <div className="option-icons">
+        <FontAwesomeIcon
+          className="util-icon"
+          icon={faSearch}
+          style={{ color: 'white' }}
+          onClick={handleSearchIconClick}
+        />
         <Link to="/favs">
           <FontAwesomeIcon className="util-icon" icon={faStar} style={{ color: 'white' }} />
         </Link>

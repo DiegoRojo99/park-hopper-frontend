@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons';
 import './Nav.css';
 import { faCompass, faStar, faUser } from '@fortawesome/free-regular-svg-icons';
 import UserProfile from '../v2/User/UserProfile';
@@ -49,6 +49,25 @@ function Nav() {
       <div className={openMenu ? 'menu-items open' : 'menu-items'}>
         <NavItem link="/explore" name="Explore" icon={faCompass} />
         <NavItem link="/favs" name="Favorites" icon={faStar} />
+      </div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div className='option-icons'>
+        <FontAwesomeIcon className='util-icon' icon={faStar} style={{color: 'white'}} />
+        <FontAwesomeIcon className='util-icon' icon={faSearch} style={{color: 'white'}} />
       </div>
       <UserProfile className="user-profile-icon" closeMenu={() => setOpenMenu(false)} />
     </div>

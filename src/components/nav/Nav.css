@@ -44,6 +44,15 @@
   cursor: pointer;
 }
 
+.util-icon{
+  margin: 0 6px;
+  padding: 4px;
+  border: 1px solid lightgray;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
 @media screen and (max-width: 600px) {
   .menu-items {
     display: none;
@@ -90,7 +99,7 @@
 }
 
 @media (min-width: 600px) {
-  .user-profile {
+  .option-icons {
     margin-left: auto;
   }
 }

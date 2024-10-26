@@ -44,13 +44,22 @@
   cursor: pointer;
 }
 
+.option-icons{
+  display: flex;
+  flex-direction: row;
+}
+
 .util-icon{
-  margin: 0 6px;
+  margin: 18px 6px 16px;
   padding: 4px;
   border: 1px solid lightgray;
   width: 16px;
   height: 16px;
   border-radius: 4px;
+}
+
+.nav-space {
+  margin-left: auto;
 }
 
 @media screen and (max-width: 600px) {
@@ -90,7 +99,7 @@
   }
   
   .nav-logo {
-    padding: 14px 0px;
+    padding: 18px 0px 22px;
   }
 
   .nav-menu{
@@ -98,14 +107,19 @@
   }
 }
 
-@media (min-width: 600px) {
+@media screen and (min-width: 600px) {
   .option-icons {
-    margin-left: auto;
+    margin-right: 16px;
   }
 }
 
 #hamburger-icon{
   transition: transform 0.5s ease;
+  color: #f2f2f2;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  margin: 18px 20px 22px;
 }
 #hamburger-icon.clicked{
   transform: rotate(90deg);

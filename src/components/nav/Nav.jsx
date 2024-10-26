@@ -40,7 +40,7 @@ function Nav() {
 
   return (
     <div className="nav-menu" ref={navRef}>
-      <a id="hamburger-icon" className={openMenu ? 'clicked icon' : 'icon'} onClick={toggleMenu}>
+      <a id="hamburger-icon" className={openMenu ? 'clicked' : ''} onClick={toggleMenu}>
         <FontAwesomeIcon icon={faBars} />
       </a>
       <Link className="nav-logo" to="/" onClick={handleLinkClick}>
@@ -50,21 +50,7 @@ function Nav() {
         <NavItem link="/explore" name="Explore" icon={faCompass} />
         <NavItem link="/favs" name="Favorites" icon={faStar} />
       </div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+      <div className='nav-space'></div>
       <div className='option-icons'>
         <FontAwesomeIcon className='util-icon' icon={faStar} style={{color: 'white'}} />
         <FontAwesomeIcon className='util-icon' icon={faSearch} style={{color: 'white'}} />

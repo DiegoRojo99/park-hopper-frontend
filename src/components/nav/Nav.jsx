@@ -5,11 +5,11 @@ import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons';
 import './Nav.css';
 import { faCompass, faStar, faUser } from '@fortawesome/free-regular-svg-icons';
 import UserProfile from '../v2/User/UserProfile';
+import Search from '../v2/Extras/Search/Search';
 
 function Nav() {
   const [openMenu, setOpenMenu] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
   const navRef = useRef(null);
   const navigate = useNavigate();
 
@@ -31,14 +31,9 @@ function Nav() {
   function handleSearchIconClick() {
     setSearchOpen((prev) => !prev);
   }
-
-  function handleSearchSubmit(e) {
-    e.preventDefault();
-    if (searchTerm) {
-      navigate(`/search/${searchTerm}`); // Navigate to the details page based on search term
-      setSearchTerm('');
-      setSearchOpen(false);
-    }
+  
+  function closeSearchBar(){
+    setSearchOpen(false);
   }
 
   useEffect(() => {
@@ -65,20 +60,10 @@ function Nav() {
       </Link>
       <div className={openMenu ? 'menu-items open' : 'menu-items'}>
         <NavItem link="/explore" name="Explore" icon={faCompass} />
-      </div>  
-      {searchOpen ? 
-        (
-          <form onSubmit={handleSearchSubmit} className="search-bar">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search..."
-            />
-          </form>
-        ) :
-        <div className="nav-space"></div>      
-      }
+      </div>
+
+      { searchOpen ? <Search closeSearchBar={closeSearchBar} /> : <div className="nav-space"></div> }
+      
       <div className="option-icons">
         <FontAwesomeIcon
           className="util-icon"

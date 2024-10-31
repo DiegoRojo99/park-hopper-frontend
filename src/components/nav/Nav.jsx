@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons';
 import './Nav.css';
-import { faCompass, faStar, faUser } from '@fortawesome/free-regular-svg-icons';
+import { faCompass, faStar } from '@fortawesome/free-regular-svg-icons';
 import UserProfile from '../v2/User/UserProfile';
 import Search from '../v2/Extras/Search/Search';
 
@@ -11,7 +11,6 @@ function Nav() {
   const [openMenu, setOpenMenu] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const navRef = useRef(null);
-  const navigate = useNavigate();
 
   function handleLinkClick() {
     setOpenMenu(false);
@@ -63,7 +62,7 @@ function Nav() {
       </div>
 
       { searchOpen ? <Search closeSearchBar={closeSearchBar} /> : <div className="nav-space"></div> }
-      
+
       <div className="option-icons">
         <FontAwesomeIcon
           className="util-icon"

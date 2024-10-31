@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faHouse, faSearch } from '@fortawesome/free-solid-svg-icons';
 import './Nav.css';
 import { faCompass, faStar } from '@fortawesome/free-regular-svg-icons';
 import UserProfile from '../v2/User/UserProfile';
@@ -54,11 +54,13 @@ function Nav() {
       <a id="hamburger-icon" className={openMenu ? 'clicked icon' : 'icon'} onClick={toggleMenu}>
         <FontAwesomeIcon icon={faBars} />
       </a>
-      <Link className={searchOpen ? 'short-nav-logo' : "nav-logo"} to="/" onClick={handleLinkClick}>
+      <p className={searchOpen ? 'short-nav-logo' : "nav-logo"}>
         Park Hopper
-      </Link>
+      </p>
       <div className={openMenu ? 'menu-items open' : 'menu-items'}>
+        <NavItem link="/" name="Home" icon={faHouse} />
         <NavItem link="/explore" name="Explore" icon={faCompass} />
+        <NavItem link="/favorites" name="Favorites" icon={faStar} />
       </div>
 
       { searchOpen ? <Search closeSearchBar={closeSearchBar} /> : <div className="nav-space"></div> }
@@ -70,9 +72,9 @@ function Nav() {
           style={{ color: 'white' }}
           onClick={handleSearchIconClick}
         />
-        <Link to="/favs">
+        {/* <Link to="/favorites">
           <FontAwesomeIcon className="util-icon" icon={faStar} style={{ color: 'white' }} />
-        </Link>
+        </Link> */}
       </div>
       <UserProfile className="user-profile-icon" closeMenu={() => setOpenMenu(false)} />
     </div>

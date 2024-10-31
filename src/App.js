@@ -45,7 +45,7 @@ function App() {
           <Routes>
             <Route path="/" exact element={<LandingPage />} />
             <Route path="/explore" element={<ExplorePage />} />
-            <Route path="/favs" element={<FavPage />} />
+            <Route path="/favorites" element={<FavPage />} />
             <Route path="/destinations" element={<Destinations />} />
             <Route path="/destinations/:id" element={<DestinationDetails />} />
             <Route path="/parks/:id" element={<ParkPage />} />

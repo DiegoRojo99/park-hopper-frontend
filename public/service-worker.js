@@ -6,8 +6,8 @@ self.addEventListener('push', function(event) {
   const title = data.title || 'Default Title';
   const options = {
     body: data.body || 'Default body',
-    icon: data.icon || '/favicon.ico',
-    badge: data.badge || '/favicon.ico',
+    icon: data.icon || '/park-hopper.jpeg',
+    badge: data.badge || '/park-hopper.jpeg',
     data: {
       attractionId: data.attractionId
     }

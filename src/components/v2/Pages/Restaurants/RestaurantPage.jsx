@@ -202,8 +202,6 @@ export function RestaurantPage(){
   if(loading || !restaurantData){
     return <Loader />;
   }
-  console.log("Rest Data: ", restaurantData)
-  console.log("Live Data: ", liveData)
   return (
     <div className='details-page'>
       <div className='page-header'>

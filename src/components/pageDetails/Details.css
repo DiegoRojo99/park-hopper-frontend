@@ -1,0 +1,285 @@
+.grid-element{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 95%;
+  margin:  0 2.5% 16px;
+}
+.grid-all{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom: 16px;
+}
+.page-header{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.page-header h1{
+  margin: 24px 0;
+  text-align: center;
+  width: 100%;
+}
+
+@media screen and (max-width: 720px) {
+  .grid-element{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 95%;
+    font-size: 14px;
+  }
+  .page-header{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .page-header h1{
+    margin: 24px 0 20px;
+    text-align: center;
+    font-size: 24px;
+    width: 100%;
+  }
+  .toggle-switch{
+    margin: 0 calc(50% - 40px) 16px !important;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .grid-element{
+    font-size: 10px;
+  }
+  .page-header{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .page-header h1{
+    margin: 24px 0 20px;
+    text-align: center;
+    width: 100%;
+    font-size: 20px;
+  }
+  .toggle-switch{
+    margin: 0 calc(50% - 40px) 16px !important;
+  }
+}
+
+
+@media screen and (max-width: 363px) {
+  .card, .card2{
+    width: 100% !important;
+  }
+  .card-img{
+    height: 78% !important;
+  }
+  .card-row{
+    width: calc(100% - 32px);
+    font-size: 14px !important;
+  }
+  .card-name{
+    margin: 0 16px !important;
+  }
+  .wide-card{
+    font-size: 12px;
+  }
+  .overlay-name{
+    margin-bottom: 0 !important;
+    width: 85% !important;
+  }
+  .overlay-wait{
+    width: 5% !important;
+  }
+  .overlay i{
+    width: 7.5% !important;
+  }
+}
+
+.destination-cards{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.full-card {
+  width: 80%;
+  padding: 8px;
+  margin: 0 10%;
+  border: 1px solid #000;
+  background-color: grey;
+  border-radius: 16px;
+  box-sizing: border-box;
+  cursor: pointer;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 166px;
+  height: 254px;
+  background-image: linear-gradient(163deg, #00ff75 0%, #3700ff 100%);
+  border-radius: 20px;
+  transition: all .3s;
+  margin: 8px;
+}
+
+.card2 {
+  width: 166px;
+  height: 254px;
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  transition: all .2s;
+}
+
+.card-img{
+  height: 70%;
+  width: 94%;
+  border: 1px solid white;
+  border-radius: 8px;
+  margin: 2.5%;
+}
+
+.card-stars{
+  width: 10%;
+  display: flex;
+  margin-right: 4px;
+}
+
+.card-row{
+  width: 100%;
+  display: flex;
+  font-size: 12px;
+}
+
+.card-name{
+  width: 75%;
+  margin-left: 8px;
+  text-align: left;
+}
+
+.card2:hover {
+  transform: scale(0.98);
+  border-radius: 20px;
+}
+
+.park-card {
+  width: 100%;
+  max-width: 480px;
+  margin: 10px;
+  padding: 15px;
+  border: 1px solid #000;
+  background-color: grey;
+  border-radius: 16px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.card:hover {
+  background-color: rgb(255,255,255,0.8);
+}
+
+.waiting-times{
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0;
+  width: 100%;
+  background-color: white;
+  color: black;
+}
+.header-row{
+  font-weight: bold;
+  width: 100%;
+  border-bottom: 1px solid black !important;
+}
+
+.attraction-row{
+  display: grid;
+  grid-template-columns: 1fr 5fr 1fr 1fr;
+  padding: 8px 0;
+  border-bottom: 1px solid rgb(128,128,128,0.5);
+  width: 100%;
+}
+
+.show-row{
+  display: grid;
+  grid-template-columns: 1fr 6fr 3fr;
+  padding: 8px 0;
+  border-bottom: 1px solid rgb(128,128,128,0.5);
+  width: 100%;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 40px;
+  margin: auto 0;
+  background-color: #ccc;
+  border-radius: 20px;
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 20px;
+  transition: transform 0.3s ease;
+}
+
+.toggle-slider.checked {
+  transform: translateX(100%);
+}
+
+.toggle-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.left-icon {
+  left: 0;
+}
+
+.right-icon {
+  right: 0;
+}
+
+.park-header{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.park-header-info{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.breadcrumbs{
+  width: 100%; 
+  height: 12px; 
+  font-size: 10px; 
+  text-align: left;
+}
+.park-logo-hours{
+  width: 30%;
+}
+
+@media screen and (max-width: 720px){
+  .park-header-info{
+    flex-direction: column;
+  }
+  .park-header-info div{
+    width: 100%;
+  }
+  .park-logo-hours{
+    width: 100%;
+  }
+}

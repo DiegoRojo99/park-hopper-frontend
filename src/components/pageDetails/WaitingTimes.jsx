@@ -4,11 +4,12 @@ import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as lineStar } from '@fortawesome/free-regular-svg-icons';
 import AlarmIcon from './../../img/bell.png';
 import FullAlarmIcon from './../../img/fullBell.png';
-import './Utils.css';
 import { useAuth } from '../../contexts/AuthContext';
 import { Loader } from '../common/Loader';
 import { Status } from './../common/Status';
 import AlertModal from '../v2/Extras/AlertModal';
+import './Details.css';
+import './Utils.css';
 
 export function WaitingTimes({ attractions , favorites, openLink}){
   

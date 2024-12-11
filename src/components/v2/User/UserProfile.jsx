@@ -49,6 +49,7 @@ function UserProfile({closeMenu}) {
   }
 
   function loggedInUser(){
+    console.log("User: ", user);
     return (
       <>
       {user.photoURL ?

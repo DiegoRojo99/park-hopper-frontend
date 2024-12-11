@@ -1,13 +1,10 @@
 import './App.css';
 import Nav from './components/nav/Nav';
-import Destinations from './components/destinations/Destinations';
-import DestinationDetails from './components/destinations/DestinationDetails';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import LoginRegister from './components/login/LoginRegister';
 import ExplorePage from './components/v2/Explore/ExplorePage';
 import { ParkPage } from './components/v2/Pages/ParkPage';
-import Home from './components/home/Home';
 import { FavPage } from './components/v2/Pages/FavPage';
 import LandingPage from './components/v2/Pages/LandingPage';
 import NotFoundPage from './components/v2/Pages/NotFoundPage';
@@ -46,8 +43,6 @@ function App() {
             <Route path="/" exact element={<LandingPage />} />
             <Route path="/explore" element={<ExplorePage />} />
             <Route path="/favorites" element={<FavPage />} />
-            <Route path="/destinations" element={<Destinations />} />
-            <Route path="/destinations/:id" element={<DestinationDetails />} />
             <Route path="/parks/:id" element={<ParkPage />} />
             <Route path="/attractions/:id" element={<AttractionPage />} />
             <Route path="/restaurants/:id" element={<RestaurantPage />} />  

@@ -7,6 +7,15 @@ function getCurrentMonthAndYear() {
   return { month: now.getMonth(), year: now.getFullYear() };
 }
 
+function isToday(year, month, day) {
+  const today = new Date();
+  return (
+    today.getFullYear() === year &&
+    today.getMonth() === month &&
+    today.getDate() === day
+  );
+}
+
 export default function Calendar({ schedule, timezone }) {
   const [{ month, year }, setMonthYear] = useState(getCurrentMonthAndYear());
   const [ eventsInfo, setEventsInfo ] = useState(false);
@@ -94,7 +103,9 @@ export default function Calendar({ schedule, timezone }) {
         {weeks.map((week, i) => (
           <div key={i} className="calendar-row">
             {week.map((day, j) => (
-              <div key={j} className="calendar-cell">
+              <div key={j}  className={`calendar-cell ${
+                day && isToday(year, month, day) ? "calendar-today" : ""
+              }`}>
                 {day ? (
                   <div className="existing-calendar-cell" onClick={() => selectDate(year, month, day)}>
                     <div className="calendar-cell-space"></div>

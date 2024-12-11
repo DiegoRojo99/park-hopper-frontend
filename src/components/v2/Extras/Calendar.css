@@ -78,6 +78,14 @@
   border-radius: 4px;
 }
 
+.calendar-today .existing-calendar-cell {
+  background-color: #aaa;
+}
+
+.calendar-today .existing-calendar-cell  .calendar-date {
+  font-weight: bold;
+}
+
 @media screen and (min-width: 1200px)  {
   .calendar-cell{
     min-height: 128px;

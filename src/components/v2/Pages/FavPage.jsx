@@ -26,10 +26,10 @@ export function FavPage(){
   useEffect(() => {
 
     function divideChildren(entitites){
-      let attractions = entitites.filter((child) => child.entityType.toUpperCase() === "ATTRACTION");
-      let restaurants = entitites.filter((child) => child.entityType.toUpperCase() === "RESTAURANT");
-      let hotels = entitites.filter((child) => child.entityType.toUpperCase() === "HOTEL");
-      let shows = entitites.filter((child) => child.entityType.toUpperCase() === "SHOW");
+      let attractions = entitites.filter((child) => child.EntityType.toUpperCase() === "ATTRACTION");
+      let restaurants = entitites.filter((child) => child.EntityType.toUpperCase() === "RESTAURANT");
+      let hotels = entitites.filter((child) => child.EntityType.toUpperCase() === "HOTEL");
+      let shows = entitites.filter((child) => child.EntityType.toUpperCase() === "SHOW");
 
       const dividedChildren = {attractions, restaurants, hotels, shows};
       const tabsOrder = ["Attractions", "Shows", "Restaurants", "Hotels"];

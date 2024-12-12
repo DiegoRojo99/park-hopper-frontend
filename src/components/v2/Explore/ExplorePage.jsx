@@ -42,9 +42,9 @@ function ExplorePage(){
     setName(text);
     const filteredNames = data.filter((dest) => {
       return (
-        (dest.ParkName?.toLowerCase().includes(text.toLowerCase())) ||
-        (activeTab === "Country" && dest.Country.toLowerCase().includes(text.toLowerCase()))||
-        (activeTab === "Destination" && dest.DestinationName.toLowerCase().includes(text.toLowerCase()))
+        (dest.name?.toLowerCase().includes(text.toLowerCase())) ||
+        (activeTab === "Country" && dest.Country?.toLowerCase().includes(text.toLowerCase()))||
+        (activeTab === "Destination" && dest.DestinationName?.toLowerCase().includes(text.toLowerCase()))
       )
     })
     setFilteredData(filteredNames);
@@ -66,10 +66,10 @@ function ExplorePage(){
       case "Map":
         const places = filteredData.map(park => {
           let reducedPark = {
-            name: park.ParkName,
-            lng: park.Longitude,
-            lat: park.Latitude,
-            id: park.ParkID,
+            name: park.name,
+            lng: park.location?.longitude,
+            lat: park.location?.latitude,
+            id: park.id,
           }
           return reducedPark;
         });
@@ -88,10 +88,10 @@ function ExplorePage(){
   function renderGroupList(){
     const groupMap = {};
     filteredData.forEach((row) => {
-      if(groupMap[row.ParkName]?.length){
-        groupMap[row.ParkName] = [...groupMap[row.ParkName], row];
+      if(groupMap[row.name]?.length){
+        groupMap[row.name] = [...groupMap[row.name], row];
       }else{
-        groupMap[row.ParkName] = [row];
+        groupMap[row.name] = [row];
       }
     });
     const groupedParks = Object.keys(groupMap);
@@ -169,14 +169,14 @@ function ExplorePage(){
 };
 
 function ParkGroup({list, name, openLink}){
-  list.sort((a,b) => a.ParkName.localeCompare(b.ParkName));
+  list.sort((a,b) => a?.name?.localeCompare(b?.name));
   return (
     <div className='group-list' key={name + "-group"}>
       <p className='group-name'>{name}</p>
       {list.map(park => 
         <div className='group-park'>
-          <p className='group-park-name' onClick={() => openLink(park.ParkID)}>
-            {park.ParkName}
+          <p className='group-park-name' onClick={() => openLink(park.id)}>
+            {park.name}
           </p>
           <div className='group-park-link'>
             

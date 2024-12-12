@@ -146,7 +146,7 @@ export function ParkPage(){
       default:
         return (
           <div className="grid-element">
-            <WaitingTimes attractions={selectedData} favorites={userAttractions} openLink={openLink} />
+            <WaitingTimes attractions={selectedData} bookmarks={userAttractions} openLink={openLink} />
           </div>
         );
     }
@@ -168,15 +168,15 @@ export function ParkPage(){
           />
         </h1>
       </div>
-      <div className='park-details'>
+      {/* <div className='park-details'>
         <p>
           {`Park Hours: 
-            ${data.schedule.find(element => element.type === "OPERATING").openingTime.split("T")[1].split(":00-")[0]} - 
-            ${data.schedule.find(element => element.type === "OPERATING").closingTime.split("T")[1].split(":00-")[0]}`
+            ${data.schedule.find(element => element.type === "OPERATING")?.openingTime.split("T")[1].split(":00-")[0]} - 
+            ${data.schedule.find(element => element.type === "OPERATING")?.closingTime.split("T")[1].split(":00-")[0]}`
           }
         </p>
         <p>Local Hour: {getCurrentTimeInTimezone(timezone)}</p>
-      </div>
+      </div> */}
   
       {!showCalendar ? (
         <>

@@ -103,7 +103,7 @@ export function FavPage(){
     else if(viewType==="List"){
       return(
         <div className='grid-element'>
-          <WaitingTimes attractions={userAttractions} favorites={userAttractions} />
+          <WaitingTimes attractions={userAttractions} bookmarks={userAttractions} />
         </div>
       );
     }
@@ -111,7 +111,7 @@ export function FavPage(){
       return(
         <>
           <div className='grid-element'>
-            <WaitingTimes attractions={userAttractions} favorites={userAttractions} />
+            <WaitingTimes attractions={userAttractions} bookmarks={userAttractions} />
           </div>
         </>
       );

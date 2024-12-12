@@ -3,6 +3,10 @@
   min-height: calc(100vh - 60px);
 }
 
+.park-details p{
+  margin: 4px auto;
+}
+
 .group-list{
   border: 1px solid lightgray;
   border-radius: 4px;

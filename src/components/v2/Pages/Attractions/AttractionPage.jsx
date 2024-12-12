@@ -29,7 +29,7 @@ export function AttractionPage(){
       try {
         const response = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/live`);
         const scheduleRes = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/schedule`);
-        const attractionRequest = await fetch(`${apiUrl}/attractions/${id}`);
+        const attractionRequest = await fetch(`${apiUrl}/entities/${id}`);
         if (!response.ok || !scheduleRes.ok || !attractionRequest.ok) {
           throw new Error('Network response was not ok');
         }

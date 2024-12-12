@@ -55,34 +55,8 @@ export function ShowPage(){
         setLoading(false);
       }
     };
-    
-    // async function loadUserFavorites(){
-    //   try {
-    //     const result = await fetch(`${apiUrl}/favorites`, { 
-    //       method: 'GET',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //         'Authorization': `Bearer ${user.accessToken}`
-    //       }
-    //     })
-    //     .then((response) => {
-    //       if (response.ok) {
-    //         return response.json();
-    //       }
-    //       else if(response.status === "401"){
-    //         throw new Error('Not logged in');
-    //       }
-    //       throw new Error('Something went wrong');
-    //     });
-        
-    //     setUserShows(result);
-    //   } catch (error) {
-    //     console.error(error)
-    //   }
-    // }
 
     fetchData();
-    // loadUserFavorites();
   }, [id]);
 
   if (error) {

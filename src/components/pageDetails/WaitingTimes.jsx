@@ -151,15 +151,15 @@ export function WaitingTimes({ attractions , bookmarks, openLink}){
       { attractions.sort((a,b) => sortByWaitTime(a, b)).map((att) => {
         const fav = userAttractions ? userAttractions.some(userAtt => userAtt.EntityID === att.id || userAtt.EntityID === att.EntityID) : false;
         const alert = userAlerts ? userAlerts.some(userAtt => userAtt.EntityID === att.id || userAtt.EntityID === att.EntityID) : false;
-        const waitingTime = att?.WaitTime ? att.WaitTime : att.queue?.STANDBY?.waitTime ? att.queue["STANDBY"].waitTime : "-";
+        const waitingTime = att.queue?.STANDBY?.waitTime ?? "-";
         return (
           <div className='attraction-row'> 
             <div>
-              <FontAwesomeIcon 
+              {/* <FontAwesomeIcon 
                 icon={!fav ? lineBookmark : solidBookmark} 
                 className='star-icon' 
                 onClick={() => bookmarkAttraction(att, fav)} 
-              />
+              /> */}
               <img 
                 alt="Alarm" 
                 src={alert ? FullAlarmIcon : AlarmIcon} 

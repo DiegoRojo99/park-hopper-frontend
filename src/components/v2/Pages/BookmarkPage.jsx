@@ -55,7 +55,6 @@ export function BookmarkPage(){
           }
           throw new Error('Something went wrong');
         });
-        console.log("Result: ", result);
         setLoading(false);
         setUserAttractions(result);
         setFilteredData(result);

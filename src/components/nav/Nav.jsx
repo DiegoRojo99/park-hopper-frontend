@@ -60,7 +60,7 @@ function Nav() {
       <div className={openMenu ? 'menu-items open' : 'menu-items'}>
         <NavItem link="/" name="Home" icon={faHouse} />
         <NavItem link="/explore" name="Explore" icon={faCompass} />
-        <NavItem link="/favorites" name="Favorites" icon={faStar} />
+        {/* <NavItem link="/favorites" name="Favorites" icon={faStar} /> */}
         <NavItem link="/bookmarks" name="Bookmarks" icon={faBookmark} />
       </div>
 

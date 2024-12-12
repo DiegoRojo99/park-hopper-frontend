@@ -43,8 +43,8 @@ function ExplorePage(){
     const filteredNames = data.filter((dest) => {
       return (
         (dest.name?.toLowerCase().includes(text.toLowerCase())) ||
-        (activeTab === "Country" && dest.Country?.toLowerCase().includes(text.toLowerCase()))||
-        (activeTab === "Destination" && dest.DestinationName?.toLowerCase().includes(text.toLowerCase()))
+        (activeTab === "Country" && dest.country?.toLowerCase().includes(text.toLowerCase()))||
+        (activeTab === "Destination" && dest["Destination Name"]?.toLowerCase().includes(text.toLowerCase()))
       )
     })
     setFilteredData(filteredNames);
@@ -58,11 +58,11 @@ function ExplorePage(){
   function renderLandingContent(){
     switch(activeTab){
       case "Country":
-        return renderFieldList("Country");
+        return renderFieldList("country");
       case "Group":
         return renderGroupList();        
       case "Destination":
-        return renderFieldList("DestinationName");
+        return renderFieldList("Destination Name");
       case "Map":
         const places = filteredData.map(park => {
           let reducedPark = {
@@ -124,7 +124,7 @@ function ExplorePage(){
     });
     const groupedParks = Object.keys(groupedMap);
     groupedParks.sort((a,b) => a.localeCompare(b));
-    let number = field === "Country" ? 10 : groupedParks.length / 2 
+    let number = field === "country" ? 10 : groupedParks.length / 2 
     const firstColumn = groupedParks.length > number ? 
       groupedParks.splice(0, number + 3) : 
       groupedParks.splice(0, Math.ceil(groupedParks.length / 2));
@@ -158,7 +158,7 @@ function ExplorePage(){
       <div className='landing-big-img' alt="Generic Theme Park" />
       <FilterBar name={name} searchName={searchName} placeholder={'Search a theme park...'} />
       <div className='landing-main'>
-        <TabSelector tabs={["Country", "Map", "Destination"]} changeTab={changeTab} />
+        <TabSelector tabs={["Country", "Destination"]} changeTab={changeTab} />
         {renderLandingContent()}
       </div>
       

@@ -43,21 +43,8 @@ export function RestaurantPage(){
         }
         setRestaurantData(restaurantObject);
         setLiveData(result.liveData?.[0]);
-        
-        const groupedByDate = scheduleObj.schedule.reduce((acc, obj) => {
-          const date = new Date(obj.date).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-          });
-          if (!acc[date]) {
-            acc[date] = [];
-          }
-          acc[date].push(obj);
-          return acc;
-        }, {});
         setTimezone(scheduleObj.timezone)
-        setSchedule(groupedByDate);
+        setSchedule(groupSchedule(scheduleObj.schedule));
         setLoading(false);
       } catch (error) {
         setError(error);

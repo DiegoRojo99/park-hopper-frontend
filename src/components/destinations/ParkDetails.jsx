@@ -38,15 +38,7 @@ export function ParkDetails(){
         const scheduleObj = await scheduleRes.json();
         divideChildren(result.liveData);
         setData(result);
-        const groupedByDate = scheduleObj.schedule.reduce((acc, obj) => {
-          const date = new Date(obj.date).toLocaleDateString(); // Extracting only the date part
-          if (!acc[date]) {
-            acc[date] = [];
-          }
-          acc[date].push(obj);
-          return acc;
-        }, {});
-        setSchedule(groupedByDate);
+        setSchedule(groupSchedule(scheduleObj.schedule));
         setLoading(false);
       } catch (error) {
         setError(error);

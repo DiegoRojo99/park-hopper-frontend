@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faCalendarXmark } from '@fortawesome/free-regular-svg-icons';
 import TabSelector from '../Extras/Tabs/TabSelector';
 import { getCurrentTimeInTimezone } from '../../pageDetails/showHelper';
+import { groupSchedule } from '../../../functions/data';
 
 export function ParkPage(){
   const { id } = useParams();
@@ -30,22 +31,6 @@ export function ParkPage(){
   const { user } = useAuth(); 
 
   useEffect(() => {
-
-    function groupSchedule(schedule){
-      const groupedByDate = schedule.reduce((acc, obj) => {
-        const date = new Date(obj.date).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit'
-        });
-        if (!acc[date]) {
-          acc[date] = [];
-        }
-        acc[date].push(obj);
-        return acc;
-      }, {});
-      return groupedByDate;
-    }
 
     const fetchData = async () => {
       try {

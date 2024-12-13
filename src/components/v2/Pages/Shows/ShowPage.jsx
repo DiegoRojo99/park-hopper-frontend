@@ -16,7 +16,7 @@ export function ShowPage(){
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const attractionResponse = await fetch(`${apiUrl}/entity/${id}`);
+        const attractionResponse = await fetch(`${apiUrl}/entities/${id}`);
         if (!attractionResponse.ok) {
           throw new Error('Network response was not ok');
         }

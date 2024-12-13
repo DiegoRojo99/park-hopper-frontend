@@ -2,23 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Loader } from '../../../common/Loader';
 import { useAuth } from '../../../../contexts/AuthContext';
-import Calendar from '../../Extras/Calendar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import './Shows.css'
 import { Status } from '../../../common/Status';
-import { faStar } from '@fortawesome/free-regular-svg-icons';
+import './Shows.css'
 import { formatShowtime } from '../../../pageDetails/showHelper';
-import { groupSchedule } from '../../../../functions/data';
 
 export function ShowPage(){
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);  
-  const [liveData, setLiveData] = useState(null);
-  const [timezone, setTimezone] = useState(false);
-  const [schedule, setSchedule] = useState(null);;
-  const [showCalendar, setShowCalendar] = useState(false);
+  const [data, setData] = useState(null);
   const apiUrl = process.env.REACT_APP_API_URL; 
   const { user } = useAuth(); 
 
@@ -26,24 +19,21 @@ export function ShowPage(){
 
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/live`);
-        const scheduleRes = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/schedule`);
-        if (!response.ok || !scheduleRes.ok) {
+        const attractionResponse = await fetch(`${apiUrl}/entity/${id}`);
+        if (!attractionResponse.ok) {
           throw new Error('Network response was not ok');
         }
 
-        const result = await response.json();
-        const scheduleObj = await scheduleRes.json();
-        setLiveData(result.liveData?.[0]);
-        setTimezone(scheduleObj.timezone)
-        setSchedule(groupSchedule(scheduleObj.schedule));
+        const result = await attractionResponse.json();
+        setData(result);
         setLoading(false);
-      } catch (error) {
+      } 
+      catch (error) {
         setError(error);
         setLoading(false);
       }
     };
-
+    
     fetchData();
   }, [id]);
 
@@ -55,73 +45,6 @@ export function ShowPage(){
     const url = `/parks/${id}`;
     navigate(url); 
   }
-
-  function renderCalendar(){
-    if(loading){
-      return <></>
-    }
-    return <Calendar schedule={schedule} timezone={timezone} />
-  }
-
-  function renderShow(){
-    return (
-      <>
-        <div className='waiting-time-circle-div'>
-          {/* 
-          <div className='waiting-time-circle'>
-            <span className='circle-waiting-time'>
-              {liveData?.queue?.STANDBY?.waitTime ?? "-"}
-            </span>
-            <span className='circle-minutes'>
-              Minutes
-            </span>
-          </div> 
-          */}
-        </div>
-        <div className='show-details-info'>
-        
-          <div className="show-details-row">
-            <div className="show-details-left">
-              {/* <img src={""} alt="icon" className="show-details-icon" /> */}
-              <span className="show-details-text-light">
-                Status:
-              </span>
-            </div>
-            <div className="show-details-right">
-              <span className="show-details-text">
-                <Status status={liveData.status} />
-              </span>
-            </div>
-          </div>
-         
-          {
-            liveData.showtimes?.length ? 
-              <>      
-                <div className="show-details-row">
-                  <div className="show-details-left">
-                    {/* <img src={""} alt="icon" className="show-details-icon" /> */}
-                    <span className="show-details-text-light">
-                      Showtimes:
-                    </span>
-                  </div>
-                  <div className="show-details-right">
-                    {liveData.showtimes.map((show, index) => {
-                      return (
-                        <span className="show-details-text">
-                          {formatShowtime(show.startTime, show.endTime, timezone)}
-                        </span>
-                      )
-                    })}
-                  </div>
-                </div>
-              </>
-            : 
-              <></> 
-          }
-        </div>
-      </>
-    )
-  }
   
   if(loading){
     return <Loader />;
@@ -130,15 +53,67 @@ export function ShowPage(){
     <div className='details-page'>
       <div className='page-header'>
         <div className='page-icons'>
-          {/* <FontAwesomeIcon icon={faStar} />
-          <img src={AlarmIcon} style={{height: '26px', width: '28px'}} /> */}
         </div>
         <h1>
-          <span>{liveData.name}</span>
-          {/* <FontAwesomeIcon icon={showCalendar ? faCalendarXmark : faCalendar} className='calendar-icon' onClick={() => setShowCalendar(!showCalendar)} /> */}
+          <span>{data.name}</span>
         </h1>
       </div>
-      {!showCalendar ? renderShow() : renderCalendar()}
+      <div className='waiting-time-circle-div'>
+      </div>
+      <div className='attraction-details-info'>
+        <div className="attraction-details-row">
+          <div className="attraction-details-left">
+            {/* <img src={""} alt="icon" className="attraction-details-icon" /> */}
+            <span className="attraction-details-text-light">
+              Status:
+            </span>
+          </div>
+          <div className="attraction-details-right">
+            <span className="attraction-details-text">
+              <Status status={data.liveData.status} />
+            </span>
+          </div>
+        </div>
+        {
+          data.liveData.showtimes?.length ?   
+            <>      
+              <div className="show-details-row">
+                <div className="show-details-left">
+                  {/* <img src={""} alt="icon" className="show-details-icon" /> */}
+                  <span className="show-details-text-light">
+                    Showtimes:
+                  </span>
+                </div>
+                <div className="show-details-right">
+                  {data.liveData.showtimes.map((show, index) => {
+                    return (
+                      <span className="show-details-text">
+                        {formatShowtime(show.startTime, show.endTime, data.timezone)}
+                      </span>
+                    )
+                  })}
+                </div>
+              </div>
+            </>
+          : 
+            <></> 
+        }
+        <div className="attraction-details-row">
+          <div className="attraction-details-left">
+            {/* <img src={""} alt="icon" className="attraction-details-icon" /> */}
+            <span className="attraction-details-text-light">
+              Park:
+            </span>
+          </div>
+          <div className="attraction-details-right">
+            <span
+              className={data.parkId ? "attraction-details-text div-clickable" : "attraction-details-text"}
+              onClick={data.parkId ? () => openLink(data.parkId) : null}>
+              {data.parkName}
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

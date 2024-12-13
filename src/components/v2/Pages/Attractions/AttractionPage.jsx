@@ -10,7 +10,7 @@ export function AttractionPage(){
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);  
-  const [attractionData, setAttractionData] = useState(null);
+  const [data, setData] = useState(null);
   const apiUrl = process.env.REACT_APP_API_URL; 
   const { user } = useAuth(); 
 
@@ -18,13 +18,13 @@ export function AttractionPage(){
 
     const fetchData = async () => {
       try {
-        const attractionResponse = await fetch(`${apiUrl}/attractions/${id}`);
+        const attractionResponse = await fetch(`${apiUrl}/entity/${id}`);
         if (!attractionResponse.ok) {
           throw new Error('Network response was not ok');
         }
 
         const result = await attractionResponse.json();
-        setAttractionData(result);
+        setData(result);
         setLoading(false);
       } 
       catch (error) {
@@ -54,13 +54,13 @@ export function AttractionPage(){
         <div className='page-icons'>
         </div>
         <h1>
-          <span>{attractionData.name}</span>
+          <span>{data.name}</span>
         </h1>
       </div>
       <div className='waiting-time-circle-div'>
         <div className='waiting-time-circle'>
           <span className='circle-waiting-time'>
-            {attractionData.liveData?.queue?.STANDBY?.waitTime ?? "-"}
+            {data.liveData?.queue?.STANDBY?.waitTime ?? "-"}
           </span>
           <span className='circle-minutes'>
             Minutes
@@ -77,7 +77,7 @@ export function AttractionPage(){
           </div>
           <div className="attraction-details-right">
             <span className="attraction-details-text">
-              <Status status={attractionData.liveData.status} />
+              <Status status={data.liveData.status} />
             </span>
           </div>
         </div>
@@ -90,9 +90,9 @@ export function AttractionPage(){
           </div>
           <div className="attraction-details-right">
             <span
-              className={attractionData.parkId ? "attraction-details-text div-clickable" : "attraction-details-text"}
-              onClick={attractionData.parkId ? () => openLink(attractionData.parkId) : null}>
-              {attractionData.parkName}
+              className={data.parkId ? "attraction-details-text div-clickable" : "attraction-details-text"}
+              onClick={data.parkId ? () => openLink(data.parkId) : null}>
+              {data.parkName}
             </span>
           </div>
         </div>

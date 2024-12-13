@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Loader } from '../../../common/Loader';
 import './Restaurants.css'
 
 export function RestaurantPage(){
   const { id } = useParams();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-
     const fetchData = async () => {
-
       try {
         const restaurantRequest = await fetch(`${apiUrl}/restaurants/details/${id}`);
         if (!restaurantRequest.ok) {
@@ -36,15 +33,10 @@ export function RestaurantPage(){
     };
 
     fetchData();
-  }, [id]);
+  }, [id, apiUrl]);
 
   if (error) {
     return <p>Error: {error.message}</p>;
-  }
-  
-  function openLink(id) {
-    const url = `/parks/${id}`;
-    navigate(url); 
   }
 
   function renderRestaurant(){

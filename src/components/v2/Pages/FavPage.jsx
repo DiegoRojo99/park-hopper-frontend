@@ -19,7 +19,6 @@ export function FavPage(){
   const { user } = useAuth(); 
 
   useEffect(() => {
-
     function divideChildren(entitites){
       let attractions = entitites.filter((child) => child.EntityType.toUpperCase() === "ATTRACTION");
       let restaurants = entitites.filter((child) => child.EntityType.toUpperCase() === "RESTAURANT");
@@ -57,8 +56,9 @@ export function FavPage(){
         setUserAttractions(result);
         setFilteredData(result);
         setChildren(divideChildren(result));
-      } catch (error) {
-        console.error(error)
+      } 
+      catch (error) {
+        setError(error)
       }
     }
 
@@ -66,7 +66,7 @@ export function FavPage(){
       loadUserFavorites();
     }
 
-  }, [user]);
+  }, [user, apiUrl]);
 
   if (error) {
     return <p>Error: {error.message}</p>;

@@ -36,7 +36,7 @@ function ExplorePage(){
     };
 
     fetchData();
-  }, []);
+  }, [apiUrl]);
 
   function searchName(text){
     setName(text);

@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import FilterBar from '../../common/FilterBar';
 import { WaitingTimes } from '../../pageDetails/WaitingTimes';
-import Card from '../../common/Card';
 import { Loader } from '../../common/Loader';
 import { Showtimes } from '../../pageDetails/Showtimes';
 import { useAuth } from '../../../contexts/AuthContext';
 import TabSelector from '../Extras/Tabs/TabSelector';
 
 export function BookmarkPage(){
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [children, setChildren] = useState(null);
@@ -59,8 +56,9 @@ export function BookmarkPage(){
         setUserAttractions(result);
         setFilteredData(result);
         setChildren(divideChildren(result));
-      } catch (error) {
-        console.error(error)
+      } 
+      catch (error) {
+        setError(error);
       }
     }
 
@@ -68,7 +66,7 @@ export function BookmarkPage(){
       loadUserBookmarks();
     }
 
-  }, [user]);
+  }, [user, apiUrl]);
 
   if (error) {
     return <p>Error: {error.message}</p>;
@@ -78,11 +76,6 @@ export function BookmarkPage(){
     setName(text);
     const filteredNames = children[activeTab.toLowerCase()].filter((c) => c.name?.toLowerCase().includes(text.toLowerCase()));
     setFilteredData(filteredNames);
-  }
-  
-  function openLink(id) {
-    const url = `/attractions/${id}`;
-    navigate(url); 
   }
 
   function renderChildrenObjects(){

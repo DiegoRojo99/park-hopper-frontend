@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import FilterBar from '../../common/FilterBar';
 import { WaitingTimes } from '../../pageDetails/WaitingTimes';
-import Card from '../../common/Card';
 import { Loader } from '../../common/Loader';
 import { Showtimes } from '../../pageDetails/Showtimes';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -10,8 +9,7 @@ import Calendar from '../Extras/Calendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faCalendarXmark } from '@fortawesome/free-regular-svg-icons';
 import TabSelector from '../Extras/Tabs/TabSelector';
-import { getCurrentTimeInTimezone } from '../../pageDetails/showHelper';
-import { parseTime } from './../../common/Functions'
+import { groupSchedule } from '../../../functions/data';
 
 export function ParkPage(){
   const { id } = useParams();
@@ -19,82 +17,42 @@ export function ParkPage(){
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);  
   const [data, setData] = useState(null);
-  const [children, setChildren] = useState(null);
   const [userAttractions, setUserAttractions] = useState(false);
   const [timezone, setTimezone] = useState(false);
   const [schedule, setSchedule] = useState(null);
-  const [name, setName] = useState(null);
+  const [name, setName] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-  const [viewType, setViewType] = useState("List");
   const [activeTab, setActiveTab] = useState("Attractions");
   const [showCalendar, setShowCalendar] = useState(false);
-  const [tabs, setTabs] = useState(["Attractions", "Shows", "Restaurants", "Hotels"]);
+  const tabs = ["Attractions", "Shows"];
   const apiUrl = process.env.REACT_APP_API_URL; 
   const { user } = useAuth(); 
 
   useEffect(() => {
 
-    function divideChildren(children){
-      let attractions = children.filter((child) => child.entityType === "ATTRACTION");
-      let restaurants = children.filter((child) => child.entityType === "RESTAURANT");
-      let hotels = children.filter((child) => child.entityType === "HOTEL");
-      let shows = children.filter((child) => child.entityType === "SHOW");
-
-      const dividedChildren = {attractions, restaurants, hotels, shows};
-      const tabsOrder = ["Attractions", "Shows", "Restaurants", "Hotels"];
-      const filteredTabs = [...tabsOrder.filter(tab => dividedChildren[tab.toLocaleLowerCase()]?.length)];
-      setTabs(filteredTabs);
-      
-      return dividedChildren;
-    }
-
     const fetchData = async () => {
+
       try {
-        const response = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/live`);
-        const scheduleRes = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/schedule`);
-        const parkAttractionsResponse = await fetch(`${apiUrl}/parks/${id}/attractions`);
-        const childrenResponse = await fetch(`https://api.themeparks.wiki/v1/entity/${id}/children`);
-        if (!response.ok || !scheduleRes.ok || !childrenResponse.ok) {
+        const parkResponse = await fetch(`${apiUrl}/parks/${id}`);
+        if (!parkResponse.ok) {
           throw new Error('Network response was not ok');
         }
-
-        const result = await response.json();
-        const scheduleObj = await scheduleRes.json();
-        const childrenObj = await childrenResponse.json();
         
-        let parkAttractions = await parkAttractionsResponse.json();
-        parkAttractions = parkAttractions.map(att => att.id);
-        
-        let dividedLiveChildren = divideChildren(result.liveData);
-        let dividedChildren = divideChildren(childrenObj.children);
-        dividedChildren.attractions = dividedLiveChildren.attractions.filter(att => !parkAttractions.includes(att.id));
-        dividedChildren.shows = dividedLiveChildren.shows;
-        setChildren(dividedChildren);
-        setData(result);
-        const groupedByDate = scheduleObj.schedule.reduce((acc, obj) => {
-          const date = new Date(obj.date).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-          });
-          if (!acc[date]) {
-            acc[date] = [];
-          }
-          acc[date].push(obj);
-          return acc;
-        }, {});
-        setTimezone(scheduleObj.timezone)
-        setSchedule(groupedByDate);
+        const parkData = await parkResponse.json();
+        setData(parkData);
+        setTimezone(parkData.timezone)
+        setSchedule(groupSchedule(parkData.schedule));
         setLoading(false);
-      } catch (error) {
+      } 
+      catch (error) {
         setError(error);
         setLoading(false);
       }
     };
     
-    async function loadUserFavorites(){
+    async function loadUserBookmarks(){
       try {
-        const result = await fetch(`${apiUrl}/favorites`, { 
+        const result = await fetch(`${apiUrl}/bookmarks`, { 
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -118,16 +76,18 @@ export function ParkPage(){
     }
 
     fetchData();
-    loadUserFavorites()
+    loadUserBookmarks()
   }, [id]);
 
   if (error) {
     return <p>Error: {error.message}</p>;
   }
-  
-  function searchName(text){
+
+  function searchName(text) {
     setName(text);
-    const filteredNames = children[activeTab.toLowerCase()].filter((c) => c.name?.toLowerCase().includes(text.toLowerCase()));
+    const filteredNames = data[activeTab.toLowerCase()]?.filter((item) =>
+      item.name?.toLowerCase().includes(text.toLowerCase())
+    ) || [];
     setFilteredData(filteredNames);
   }
   
@@ -136,91 +96,81 @@ export function ParkPage(){
     navigate(url); 
   }
 
-  function renderCalendar(){
-    if(loading){
-      return <></>
-    }
-    return <Calendar schedule={schedule} timezone={timezone} />
+  function changeTab(tab){
+    setFilteredData([]);
+    setName("");
+    setActiveTab(tab);
   }
-
-  function renderChildrenObjects(){
-    let selectedChildren = filteredData.length || name ? filteredData : children[activeTab.toLowerCase()];
-    if(loading){
-      return <></>
+  
+  function renderTabContent() {
+    const selectedData = filteredData.length || name ? filteredData : data[activeTab.toLowerCase()] || [];
+    
+    if (loading) {
+      return <></>;
     }
-    if(activeTab === "Shows"){
-      return(
-        <div className='grid-element'>
-          <Showtimes shows={selectedChildren} timezone={timezone}/>
-        </div>
-      );
-    }
-    else if(viewType==="List"){
-      return(
-        <div className='grid-element'>
-          <WaitingTimes attractions={selectedChildren} favorites={userAttractions} openLink={ openLink } />
-        </div>
-      );
-    }
-    else{
-      return(
-        <>
-          <div className='grid-element'>
-            <WaitingTimes attractions={children.attractions} favorites={userAttractions} />
+  
+    switch (activeTab) {
+      case "Shows":
+        return (
+          <div className="grid-element">
+            <Showtimes shows={selectedData} timezone={timezone} />
           </div>
-        </>
-      );
+        );
+      case "Restaurants":
+        return (
+          <div className="grid-element">
+            {/* <RestaurantList
+              restaurants={selectedData}
+              openLink={openLink}
+            /> */}
+          </div>
+        );
+      case "Attractions":
+      default:
+        return (
+          <div className="grid-element">
+            <WaitingTimes attractions={selectedData} bookmarks={userAttractions} openLink={openLink} />
+          </div>
+        );
     }
   }
   
-  if(loading){
+  if (loading) {
     return <Loader />;
   }
+  
   return (
-    <div className='details-page'>
-      <div className='page-header'>
+    <div className="details-page">
+      <div className="page-header">
         <h1>
           <span>{data.name}</span>
-          <FontAwesomeIcon icon={showCalendar ? faCalendarXmark : faCalendar} className='calendar-icon' onClick={() => setShowCalendar(!showCalendar)} />
+          <FontAwesomeIcon
+            icon={showCalendar ? faCalendarXmark : faCalendar}
+            className="calendar-icon"
+            onClick={() => setShowCalendar(!showCalendar)}
+          />
         </h1>
       </div>
-      <div>
-        {/* <p>Park Hours: xx - xx</p> */}
-        {/* <p>Local Hour: {getCurrentTimeInTimezone(timezone)}</p> */}
-      </div>
-
-      {!showCalendar ? 
+      {/* <div className='park-details'>
+        <p>
+          {`Park Hours: 
+            ${data.schedule.find(element => element.type === "OPERATING")?.openingTime.split("T")[1].split(":00-")[0]} - 
+            ${data.schedule.find(element => element.type === "OPERATING")?.closingTime.split("T")[1].split(":00-")[0]}`
+          }
+        </p>
+        <p>Local Hour: {getCurrentTimeInTimezone(timezone)}</p>
+      </div> */}
+  
+      {!showCalendar ? (
         <>
-          {/* <ToggleSwitch setViewType={setViewType} />   */}
-          <TabSelector tabs={tabs} changeTab={setActiveTab} />
+          <TabSelector tabs={tabs} changeTab={changeTab} />
           <FilterBar name={name} searchName={searchName} />
-          {renderChildrenObjects()}
-        </> : 
-        renderCalendar()
-      }
-
+          {renderTabContent()}
+        </>
+      ) : (
+        <Calendar schedule={schedule} timezone={timezone} />
+      )}
     </div>
-  );
-};
-
-function ToggleSwitch({setViewType}) {
-  const [isChecked, setIsChecked] = useState(true);
-
-  function handleToggle(){
-    setViewType(!isChecked ? "Card" : "List")
-    setIsChecked(!isChecked);
-  };
-
-  return (
-    <div className="toggle-switch">
-      <span className="toggle-icon left-icon" onClick={handleToggle}>
-        &#x2630; {/* Left icon */}
-      </span>
-      <div className={`toggle-slider ${isChecked ? 'checked' : ''}`}></div>
-      <span className="toggle-icon right-icon" onClick={handleToggle}>
-        &#x2609; {/* Right icon */}
-      </span>
-    </div>
-  );
+  );  
 }
 

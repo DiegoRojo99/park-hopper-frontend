@@ -42,9 +42,9 @@ function ExplorePage(){
     setName(text);
     const filteredNames = data.filter((dest) => {
       return (
-        (dest.ParkName?.toLowerCase().includes(text.toLowerCase())) ||
-        (activeTab === "Country" && dest.Country.toLowerCase().includes(text.toLowerCase()))||
-        (activeTab === "Destination" && dest.DestinationName.toLowerCase().includes(text.toLowerCase()))
+        (dest.name?.toLowerCase().includes(text.toLowerCase())) ||
+        (activeTab === "Country" && dest.country?.toLowerCase().includes(text.toLowerCase()))||
+        (activeTab === "Destination" && dest["Destination Name"]?.toLowerCase().includes(text.toLowerCase()))
       )
     })
     setFilteredData(filteredNames);
@@ -58,18 +58,18 @@ function ExplorePage(){
   function renderLandingContent(){
     switch(activeTab){
       case "Country":
-        return renderFieldList("Country");
+        return renderFieldList("country");
       case "Group":
         return renderGroupList();        
       case "Destination":
-        return renderFieldList("DestinationName");
+        return renderFieldList("Destination Name");
       case "Map":
         const places = filteredData.map(park => {
           let reducedPark = {
-            name: park.ParkName,
-            lng: park.Longitude,
-            lat: park.Latitude,
-            id: park.ParkID,
+            name: park.name,
+            lng: park.location?.longitude,
+            lat: park.location?.latitude,
+            id: park.id,
           }
           return reducedPark;
         });
@@ -88,10 +88,10 @@ function ExplorePage(){
   function renderGroupList(){
     const groupMap = {};
     filteredData.forEach((row) => {
-      if(groupMap[row.ParkName]?.length){
-        groupMap[row.ParkName] = [...groupMap[row.ParkName], row];
+      if(groupMap[row.name]?.length){
+        groupMap[row.name] = [...groupMap[row.name], row];
       }else{
-        groupMap[row.ParkName] = [row];
+        groupMap[row.name] = [row];
       }
     });
     const groupedParks = Object.keys(groupMap);
@@ -124,7 +124,7 @@ function ExplorePage(){
     });
     const groupedParks = Object.keys(groupedMap);
     groupedParks.sort((a,b) => a.localeCompare(b));
-    let number = field === "Country" ? 10 : groupedParks.length / 2 
+    let number = field === "country" ? 10 : groupedParks.length / 2 
     const firstColumn = groupedParks.length > number ? 
       groupedParks.splice(0, number + 3) : 
       groupedParks.splice(0, Math.ceil(groupedParks.length / 2));
@@ -158,7 +158,7 @@ function ExplorePage(){
       <div className='landing-big-img' alt="Generic Theme Park" />
       <FilterBar name={name} searchName={searchName} placeholder={'Search a theme park...'} />
       <div className='landing-main'>
-        <TabSelector tabs={["Country", "Map", "Destination"]} changeTab={changeTab} />
+        <TabSelector tabs={["Country", "Destination"]} changeTab={changeTab} />
         {renderLandingContent()}
       </div>
       
@@ -169,14 +169,14 @@ function ExplorePage(){
 };
 
 function ParkGroup({list, name, openLink}){
-  list.sort((a,b) => a.ParkName.localeCompare(b.ParkName));
+  list.sort((a,b) => a?.name?.localeCompare(b?.name));
   return (
     <div className='group-list' key={name + "-group"}>
       <p className='group-name'>{name}</p>
       {list.map(park => 
         <div className='group-park'>
-          <p className='group-park-name' onClick={() => openLink(park.ParkID)}>
-            {park.ParkName}
+          <p className='group-park-name' onClick={() => openLink(park.id)}>
+            {park.name}
           </p>
           <div className='group-park-link'>
             

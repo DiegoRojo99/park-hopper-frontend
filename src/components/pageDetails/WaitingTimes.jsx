@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
-import { faStar as lineStar } from '@fortawesome/free-regular-svg-icons';
+import { faBookmark as solidBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as lineBookmark } from '@fortawesome/free-regular-svg-icons';
 import AlarmIcon from './../../img/bell.png';
 import FullAlarmIcon from './../../img/fullBell.png';
 import { useAuth } from '../../contexts/AuthContext';
@@ -11,9 +11,9 @@ import AlertModal from '../v2/Extras/AlertModal';
 import './Details.css';
 import './Utils.css';
 
-export function WaitingTimes({ attractions , favorites, openLink}){
+export function WaitingTimes({ attractions , bookmarks, openLink}){
   
-  const [ userAttractions, setUserAttractions] = useState(favorites);
+  const [ userAttractions, setUserAttractions] = useState(bookmarks);
   const [ userAlerts, setUserAlerts] = useState(false);
   const [ showModal, setShowModal] = useState(false);
   const { user } = useAuth(); 
@@ -57,63 +57,35 @@ export function WaitingTimes({ attractions , favorites, openLink}){
     }
   }
 
-  async function selectFavAttraction(attraction, fav){
+  async function bookmarkAttraction(attraction, bookmarked){
     if(!user){
       alert("You have to be logged in");
       console.error('User is not logged in.');
       return;
     }
 
-    if(!fav){
-      const body = {
-        "entityId": attraction.id,
-        "type": "ATTRACTION",
-        "name": attraction.name
-      }
-  
-      try {
-        const response = await fetch(`${apiUrl}/addFavorite`, { 
-          method: 'POST',
+    const body = {
+      "entityId": attraction.id ?? attraction.EntityID,
+    };
+
+    const method = bookmarked ? 'DELETE' : 'POST';
+
+    try {
+      const response = await fetch(`${apiUrl}/bookmarks`, {
+          method,
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.accessToken}`
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${user.accessToken}`,
           },
           body: JSON.stringify(body),
-        });
-  
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+      });
 
-      } catch (error) {
-        console.error('Failed to add favorite:', error);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-    } 
-    else{
-      const body = {
-        "entityId": attraction.id ?? attraction.EntityID,
-        "type": "attraction"
-      }
-  
-      try {
-        const response = await fetch(`${apiUrl}/removeFavorite`, { 
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.accessToken}`
-          },
-          body: JSON.stringify(body),
-        });
-  
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        // loadUserFavorites();
-      } catch (error) {
-        console.error('Failed to add favorite:', error);
-      }
-    }  
+    } catch (error) {
+      console.error(`Failed to ${bookmarked ? 'remove' : 'add'} favorite:`, error);
+    }
     
   }
   
@@ -179,15 +151,15 @@ export function WaitingTimes({ attractions , favorites, openLink}){
       { attractions.sort((a,b) => sortByWaitTime(a, b)).map((att) => {
         const fav = userAttractions ? userAttractions.some(userAtt => userAtt.EntityID === att.id || userAtt.EntityID === att.EntityID) : false;
         const alert = userAlerts ? userAlerts.some(userAtt => userAtt.EntityID === att.id || userAtt.EntityID === att.EntityID) : false;
-        const waitingTime = att?.WaitTime ? att.WaitTime : att.queue?.STANDBY?.waitTime ? att.queue["STANDBY"].waitTime : "-";
+        const waitingTime = att.queue?.STANDBY?.waitTime ?? "-";
         return (
           <div className='attraction-row'> 
             <div>
-              <FontAwesomeIcon 
-                icon={!fav ? lineStar : solidStar} 
+              {/* <FontAwesomeIcon 
+                icon={!fav ? lineBookmark : solidBookmark} 
                 className='star-icon' 
-                onClick={() => selectFavAttraction(att, fav)} 
-              />
+                onClick={() => bookmarkAttraction(att, fav)} 
+              /> */}
               <img 
                 alt="Alarm" 
                 src={alert ? FullAlarmIcon : AlarmIcon} 

@@ -3,6 +3,10 @@
   min-height: calc(100vh - 60px);
 }
 
+.park-details p{
+  margin: 4px auto;
+}
+
 .group-list{
   border: 1px solid lightgray;
   border-radius: 4px;
@@ -81,7 +85,7 @@
 @media screen and (min-width: 780px) {
   .country-list-div{
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
   }
 }
 

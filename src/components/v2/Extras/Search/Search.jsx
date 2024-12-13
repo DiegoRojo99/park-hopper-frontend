@@ -31,7 +31,7 @@ export default function Search({closeSearchBar}) {
   };
 
   const handleSuggestionClick = (suggestion) => {
-    navigate(`/${suggestion.type}s/${suggestion.id}`);
+    navigate(`/${suggestion.entityType}s/${suggestion.id}`);
     setSearchTerm('');
     setSuggestions([]);
     closeSearchBar();
@@ -50,7 +50,7 @@ export default function Search({closeSearchBar}) {
           {suggestions.map((suggestion) => (
             <li key={suggestion.id} onClick={() => handleSuggestionClick(suggestion)}>
               {suggestion.name}
-              <span className="suggestion-type"> ({suggestion.type}) </span>
+              <span className="suggestion-type"> ({suggestion.entityType}) </span>
               {
                 suggestion.type !== "Attraction" ? <></> :
                 <span className="suggestion-type">({suggestion.parentName})</span>

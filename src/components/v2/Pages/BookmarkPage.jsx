@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import FilterBar from '../../common/FilterBar';
 import { WaitingTimes } from '../../pageDetails/WaitingTimes';
+import Card from '../../common/Card';
 import { Loader } from '../../common/Loader';
 import { Showtimes } from '../../pageDetails/Showtimes';
 import { useAuth } from '../../../contexts/AuthContext';
 import TabSelector from '../Extras/Tabs/TabSelector';
 
-export function FavPage(){
+export function BookmarkPage(){
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);  
+  const [error, setError] = useState(null);
   const [children, setChildren] = useState(null);
   const [userAttractions, setUserAttractions] = useState(false);
   const [name, setName] = useState(null);
@@ -21,10 +24,10 @@ export function FavPage(){
   useEffect(() => {
 
     function divideChildren(entitites){
-      let attractions = entitites.filter((child) => child.EntityType.toUpperCase() === "ATTRACTION");
-      let restaurants = entitites.filter((child) => child.EntityType.toUpperCase() === "RESTAURANT");
-      let hotels = entitites.filter((child) => child.EntityType.toUpperCase() === "HOTEL");
-      let shows = entitites.filter((child) => child.EntityType.toUpperCase() === "SHOW");
+      let attractions = entitites.filter((child) => child.entityType === "ATTRACTION");
+      let restaurants = entitites.filter((child) => child.entityType === "RESTAURANT");
+      let hotels = entitites.filter((child) => child.entityType === "HOTEL");
+      let shows = entitites.filter((child) => child.entityType === "SHOW");
 
       const dividedChildren = {attractions, restaurants, hotels, shows};
       const tabsOrder = ["Attractions", "Shows", "Restaurants", "Hotels"];
@@ -34,9 +37,9 @@ export function FavPage(){
       return dividedChildren;
     }
 
-    async function loadUserFavorites(){
+    async function loadUserBookmarks(){
       try {
-        const result = await fetch(`${apiUrl}/favorites`, { 
+        const result = await fetch(`${apiUrl}/bookmarks`, { 
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -52,7 +55,6 @@ export function FavPage(){
           }
           throw new Error('Something went wrong');
         });
-
         setLoading(false);
         setUserAttractions(result);
         setFilteredData(result);
@@ -63,7 +65,7 @@ export function FavPage(){
     }
 
     if(user){
-      loadUserFavorites();
+      loadUserBookmarks();
     }
 
   }, [user]);
@@ -76,6 +78,11 @@ export function FavPage(){
     setName(text);
     const filteredNames = children[activeTab.toLowerCase()].filter((c) => c.name?.toLowerCase().includes(text.toLowerCase()));
     setFilteredData(filteredNames);
+  }
+  
+  function openLink(id) {
+    const url = `/attractions/${id}`;
+    navigate(url); 
   }
 
   function renderChildrenObjects(){
@@ -90,11 +97,13 @@ export function FavPage(){
         </div>
       );
     }
-    else {
+    else{
       return(
-        <div className='grid-element'>
-          <WaitingTimes attractions={userAttractions} bookmarks={userAttractions} />
-        </div>
+        <>
+          <div className='grid-element'>
+            <WaitingTimes attractions={userAttractions} bookmarks={userAttractions} />
+          </div>
+        </>
       );
     }
   }
@@ -109,18 +118,20 @@ export function FavPage(){
   return (
     <div className='details-page'>
       <div className='page-header'>
-        <h1>Favorites</h1>
+        <h1>Bookmarks</h1>
       </div>
       
       {tabs.length > 1 ? 
         <div className='tab-group-row' >
           <TabSelector tabs={tabs} changeTab={setActiveTab} />
-        </div> 
-      : 
+          {/* <ToggleSwitch setViewType={setViewType} />   */}
+        </div> : 
         <></>
       }
       <FilterBar name={name} searchName={searchName} />
       {renderChildrenObjects()}
+
     </div>
   );
 };
+

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faHouse, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faBookmark, faHouse, faSearch } from '@fortawesome/free-solid-svg-icons';
 import './Nav.css';
 import { faCompass, faStar } from '@fortawesome/free-regular-svg-icons';
 import UserProfile from '../v2/User/UserProfile';
@@ -60,7 +60,8 @@ function Nav() {
       <div className={openMenu ? 'menu-items open' : 'menu-items'}>
         <NavItem link="/" name="Home" icon={faHouse} />
         <NavItem link="/explore" name="Explore" icon={faCompass} />
-        <NavItem link="/favorites" name="Favorites" icon={faStar} />
+        {/* <NavItem link="/favorites" name="Favorites" icon={faStar} /> */}
+        {/* <NavItem link="/bookmarks" name="Bookmarks" icon={faBookmark} /> */}
       </div>
 
       { searchOpen ? <Search closeSearchBar={closeSearchBar} /> : <div className="nav-space"></div> }

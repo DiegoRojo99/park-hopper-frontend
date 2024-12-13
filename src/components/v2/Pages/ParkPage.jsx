@@ -35,12 +35,12 @@ export function ParkPage(){
     const fetchData = async () => {
       try {
 
-        const wholeParkResponse = await fetch(`${apiUrl}/parks/${id}`);
-        if (!wholeParkResponse.ok) {
+        const parkResponse = await fetch(`${apiUrl}/parks/${id}`);
+        if (!parkResponse.ok) {
           throw new Error('Network response was not ok');
         }
         
-        const parkData = await wholeParkResponse.json();
+        const parkData = await parkResponse.json();
         setData(parkData);
         setTimezone(parkData.timezone)
         setSchedule(groupSchedule(parkData.schedule));

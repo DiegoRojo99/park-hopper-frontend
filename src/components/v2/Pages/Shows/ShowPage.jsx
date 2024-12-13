@@ -8,6 +8,7 @@ import './Shows.css'
 import { Status } from '../../../common/Status';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
 import { formatShowtime } from '../../../pageDetails/showHelper';
+import { groupSchedule } from '../../../../functions/data';
 
 export function ShowPage(){
   const { id } = useParams();

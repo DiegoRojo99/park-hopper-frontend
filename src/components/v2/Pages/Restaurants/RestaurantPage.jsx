@@ -9,6 +9,7 @@ import { Status } from '../../../common/Status';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
 import AlarmIcon from './../../../../img/bell.png';
 import FullAlarmIcon from './../../../../img/fullBell.png';
+import { groupSchedule } from '../../../../functions/data';
 
 export function RestaurantPage(){
   const { id } = useParams();

@@ -1,4 +1,4 @@
-function groupSchedule(schedule: any[]){
+function groupSchedule(schedule){
   const groupedByDate = schedule.reduce((acc, obj) => {
     const date = new Date(obj.date).toLocaleDateString('en-US', {
       year: 'numeric',

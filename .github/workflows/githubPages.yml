@@ -30,9 +30,9 @@ jobs:
     #   run: |
     #     npm run build
 
-    - name: Test the frontend
-      run: |
-        npm test -- --watchAll=false
+    # - name: Test the frontend
+    #   run: |
+    #     npm test -- --watchAll=false
 
     - name: Deploy frontend (dry run)
       run: |

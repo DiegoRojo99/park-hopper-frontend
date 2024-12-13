@@ -22,9 +22,13 @@ jobs:
       run: |
         npm install
 
-    - name: Build the frontend
+    - name: Set environment variables
       run: |
-        npm run build
+        echo "REACT_APP_BACKEND_URL=https://park-hopper-backend-8a49b628e08c.herokuapp.com/api" >> .env
+
+    # - name: Build the frontend
+    #   run: |
+    #     npm run build
 
     - name: Test the frontend
       run: |

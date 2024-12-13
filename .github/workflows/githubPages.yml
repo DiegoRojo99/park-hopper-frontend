@@ -34,6 +34,6 @@ jobs:
     #   run: |
     #     npm test -- --watchAll=false
 
-    - name: Deploy frontend (dry run)
-      run: |
-        npm run predeploy
+    # - name: Deploy frontend (dry run)
+    #   run: |
+    #     npm run predeploy

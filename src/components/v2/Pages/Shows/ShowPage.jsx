@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Loader } from '../../../common/Loader';
-import { useAuth } from '../../../../contexts/AuthContext';
 import { Status } from '../../../common/Status';
-import './Shows.css'
 import { formatShowtime } from '../../../pageDetails/showHelper';
+import './Shows.css'
 
 export function ShowPage(){
   const { id } = useParams();
@@ -12,11 +11,9 @@ export function ShowPage(){
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);  
   const [data, setData] = useState(null);
-  const apiUrl = process.env.REACT_APP_API_URL; 
-  const { user } = useAuth(); 
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-
     const fetchData = async () => {
       try {
         const attractionResponse = await fetch(`${apiUrl}/entity/${id}`);
@@ -35,7 +32,7 @@ export function ShowPage(){
     };
     
     fetchData();
-  }, [id]);
+  }, [id, apiUrl]);
 
   if (error) {
     return <p>Error: {error.message}</p>;

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import FilterBar from '../../common/FilterBar';
 import { WaitingTimes } from '../../pageDetails/WaitingTimes';
-import Card from '../../common/Card';
 import { Loader } from '../../common/Loader';
 import { Showtimes } from '../../pageDetails/Showtimes';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -10,7 +9,6 @@ import Calendar from '../Extras/Calendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faCalendarXmark } from '@fortawesome/free-regular-svg-icons';
 import TabSelector from '../Extras/Tabs/TabSelector';
-import { getCurrentTimeInTimezone } from '../../pageDetails/showHelper';
 import { groupSchedule } from '../../../functions/data';
 
 export function ParkPage(){
@@ -33,8 +31,8 @@ export function ParkPage(){
   useEffect(() => {
 
     const fetchData = async () => {
-      try {
 
+      try {
         const parkResponse = await fetch(`${apiUrl}/parks/${id}`);
         if (!parkResponse.ok) {
           throw new Error('Network response was not ok');

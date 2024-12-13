@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Loader } from '../../../common/Loader';
-import { useAuth } from '../../../../contexts/AuthContext';
 import { Status } from '../../../common/Status';
 import './Attractions.css'
 
@@ -11,8 +10,7 @@ export function AttractionPage(){
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);  
   const [data, setData] = useState(null);
-  const apiUrl = process.env.REACT_APP_API_URL; 
-  const { user } = useAuth(); 
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
 

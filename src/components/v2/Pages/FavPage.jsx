@@ -1,23 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import FilterBar from '../../common/FilterBar';
 import { WaitingTimes } from '../../pageDetails/WaitingTimes';
-import Card from '../../common/Card';
 import { Loader } from '../../common/Loader';
 import { Showtimes } from '../../pageDetails/Showtimes';
 import { useAuth } from '../../../contexts/AuthContext';
 import TabSelector from '../Extras/Tabs/TabSelector';
 
 export function FavPage(){
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);  
   const [children, setChildren] = useState(null);
   const [userAttractions, setUserAttractions] = useState(false);
-  const [schedule, setSchedule] = useState(null);
   const [name, setName] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
-  const [viewType, setViewType] = useState("List");
   const [activeTab, setActiveTab] = useState("Attractions");
   const [tabs, setTabs] = useState(["Attractions"]);
   const apiUrl = process.env.REACT_APP_API_URL; 
@@ -82,11 +77,6 @@ export function FavPage(){
     const filteredNames = children[activeTab.toLowerCase()].filter((c) => c.name?.toLowerCase().includes(text.toLowerCase()));
     setFilteredData(filteredNames);
   }
-  
-  function openLink(id) {
-    const url = `/attractions/${id}`;
-    navigate(url); 
-  }
 
   function renderChildrenObjects(){
     let selectedChildren = filteredData.length || name ? filteredData : children[activeTab.toLowerCase()];
@@ -100,20 +90,11 @@ export function FavPage(){
         </div>
       );
     }
-    else if(viewType==="List"){
+    else {
       return(
         <div className='grid-element'>
           <WaitingTimes attractions={userAttractions} bookmarks={userAttractions} />
         </div>
-      );
-    }
-    else{
-      return(
-        <>
-          <div className='grid-element'>
-            <WaitingTimes attractions={userAttractions} bookmarks={userAttractions} />
-          </div>
-        </>
       );
     }
   }
@@ -134,35 +115,12 @@ export function FavPage(){
       {tabs.length > 1 ? 
         <div className='tab-group-row' >
           <TabSelector tabs={tabs} changeTab={setActiveTab} />
-          {/* <ToggleSwitch setViewType={setViewType} />   */}
-        </div> : 
+        </div> 
+      : 
         <></>
       }
       <FilterBar name={name} searchName={searchName} />
       {renderChildrenObjects()}
-
     </div>
   );
 };
-
-function ToggleSwitch({setViewType}) {
-  const [isChecked, setIsChecked] = useState(true);
-
-  function handleToggle(){
-    setViewType(!isChecked ? "Card" : "List")
-    setIsChecked(!isChecked);
-  };
-
-  return (
-    <div className="toggle-switch">
-      <span className="toggle-icon left-icon" onClick={handleToggle}>
-        &#x2630; {/* Left icon */}
-      </span>
-      <div className={`toggle-slider ${isChecked ? 'checked' : ''}`}></div>
-      <span className="toggle-icon right-icon" onClick={handleToggle}>
-        &#x2609; {/* Right icon */}
-      </span>
-    </div>
-  );
-}
-

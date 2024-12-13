@@ -21,9 +21,10 @@ function ParksMap({ places, openLink }){
 
   const [userPosition, setUserPosition] = useState(false);
   const [zoom, setZoom] = useState(1);
-  const defaultPosition = [30, 0]; // Default coordinates (e.g., London)
 
   useEffect(() => {
+  const defaultPosition = [30, 0]; // Default coordinates (London)
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {

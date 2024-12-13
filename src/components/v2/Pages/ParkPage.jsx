@@ -29,9 +29,7 @@ export function ParkPage(){
   const { user } = useAuth(); 
 
   useEffect(() => {
-
     const fetchData = async () => {
-
       try {
         const parkResponse = await fetch(`${apiUrl}/parks/${id}`);
         if (!parkResponse.ok) {
@@ -77,7 +75,7 @@ export function ParkPage(){
 
     fetchData();
     loadUserBookmarks()
-  }, [id]);
+  }, [id, apiUrl, user]);
 
   if (error) {
     return <p>Error: {error.message}</p>;

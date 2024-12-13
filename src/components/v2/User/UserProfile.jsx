@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import './User.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightFromBracket, faArrowRightToBracket, faGear, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 import { Link } from 'react-router-dom';
+import './User.css';
 
 function UserProfile({closeMenu}) {
   const { user, logout } = useAuth();

@@ -13,7 +13,6 @@ export function AttractionPage(){
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-
     const fetchData = async () => {
       try {
         const attractionResponse = await fetch(`${apiUrl}/entities/${id}`);
@@ -32,7 +31,7 @@ export function AttractionPage(){
     };
     
     fetchData();
-  }, [id]);
+  }, [id, apiUrl]);
 
   if (error) {
     return <p>Error: {error.message}</p>;

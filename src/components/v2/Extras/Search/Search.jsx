@@ -31,7 +31,7 @@ export default function Search({closeSearchBar}) {
   };
 
   const handleSuggestionClick = (suggestion) => {
-    navigate(`/${suggestion.entityType}s/${suggestion.id}`);
+    navigate(`/${suggestion.entityType?.toLowerCase()}s/${suggestion.id}`);
     setSearchTerm('');
     setSuggestions([]);
     closeSearchBar();

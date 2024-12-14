@@ -65,14 +65,15 @@ function ExplorePage(){
         return renderFieldList("Destination Name");
       case "Map":
         const places = filteredData.map(park => {
+          let location = JSON.parse(park.location);
           let reducedPark = {
             name: park.name,
-            lng: park.location?.longitude,
-            lat: park.location?.latitude,
+            lng: location?.longitude,
+            lat: location?.latitude,
             id: park.id,
           }
           return reducedPark;
-        });
+        }).filter(park => park.lat && park.lng);
       
         return (
           <div className='explore-map-div'>
@@ -158,10 +159,9 @@ function ExplorePage(){
       <div className='landing-big-img' alt="Generic Theme Park" />
       <FilterBar name={name} searchName={searchName} placeholder={'Search a theme park...'} />
       <div className='landing-main'>
-        <TabSelector tabs={["Country", "Destination"]} changeTab={changeTab} />
+        <TabSelector tabs={["Country", "Destination", "Map"]} changeTab={changeTab} />
         {renderLandingContent()}
       </div>
-      
       <div>
       </div>
     </div>

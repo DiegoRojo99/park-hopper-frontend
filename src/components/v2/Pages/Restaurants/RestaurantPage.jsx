@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Loader } from '../../../common/Loader';
 import './Restaurants.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMap } from '@fortawesome/free-regular-svg-icons';
+import { openGoogleMaps } from '../../../../functions/externalLinks';
 
 export function RestaurantPage(){
   const { id } = useParams();
@@ -9,6 +12,12 @@ export function RestaurantPage(){
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const apiUrl = process.env.REACT_APP_API_URL;
+  const navigate = useNavigate();
+
+  function openLink(id) {
+    const url = `/parks/${id}`;
+    navigate(url); 
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,7 +54,7 @@ export function RestaurantPage(){
         <div className='waiting-time-circle-div'>
         </div>
         <div className='restaurant-details-info'>
-          {/* <div className="restaurant-details-row">
+          <div className="restaurant-details-row">
             <div className="restaurant-details-left">
               <span className="restaurant-details-text-light">
                 Park:
@@ -53,12 +62,12 @@ export function RestaurantPage(){
             </div>
             <div className="restaurant-details-right">
               <span className={"restaurant-details-text div-clickable"} onClick={() => openLink(data.parkId)}>
-                {data.parkId}
+                {data.parkName}
               </span>
             </div>
-          </div>  */}
+          </div> 
           {
-            data.cuisines.length ? 
+            data.cuisines?.length ? 
               <>      
                 <div className="restaurant-details-row">
                   <div className="restaurant-details-left">
@@ -81,6 +90,17 @@ export function RestaurantPage(){
             : 
               <></> 
           }
+          <div className="restaurant-details-row">
+            <div className="restaurant-details-left">
+              {/* <img src={""} alt="icon" className="restaurant-details-icon" /> */}
+              <span className="restaurant-details-text-light">
+                Location:
+              </span>
+            </div>
+            <div className="restaurant-details-right">
+              <FontAwesomeIcon className="center-align" icon={faMap} onClick={() => openGoogleMaps(data.location.latitude, data.location.longitude)} />
+            </div>
+          </div>
         </div>
       </>
     )

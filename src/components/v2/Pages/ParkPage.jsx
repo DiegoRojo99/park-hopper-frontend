@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faCalendarXmark } from '@fortawesome/free-regular-svg-icons';
 import TabSelector from '../Extras/Tabs/TabSelector';
 import { groupSchedule } from '../../../functions/data';
+import RestaurantList from './Restaurants/RestaurantList';
 
 export function ParkPage(){
   const { id } = useParams();
@@ -24,7 +25,8 @@ export function ParkPage(){
   const [filteredData, setFilteredData] = useState([]);
   const [activeTab, setActiveTab] = useState("Attractions");
   const [showCalendar, setShowCalendar] = useState(false);
-  const tabs = ["Attractions", "Shows"];
+  const [tabs, setTabs] = useState([]);
+  const possibleTabs = ["Attractions", "Shows", "Restaurants"];
   const apiUrl = process.env.REACT_APP_API_URL; 
   const { user } = useAuth(); 
 
@@ -40,6 +42,8 @@ export function ParkPage(){
         setData(parkData);
         setTimezone(parkData.timezone)
         setSchedule(groupSchedule(parkData.schedule));
+        let actualTabs = possibleTabs.filter(tab => parkData[tab.toLocaleLowerCase()].length);
+        setTabs(actualTabs);
         setLoading(false);
       } 
       catch (error) {
@@ -117,10 +121,9 @@ export function ParkPage(){
       case "Restaurants":
         return (
           <div className="grid-element">
-            {/* <RestaurantList
+            <RestaurantList
               restaurants={selectedData}
-              openLink={openLink}
-            /> */}
+            />
           </div>
         );
       case "Attractions":

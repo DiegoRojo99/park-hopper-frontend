@@ -125,7 +125,7 @@ export function ParkPage(){
       case "Shows":
         return (
           <div className="grid-element">
-            <Showtimes shows={selectedData} timezone={timezone} />
+            <Showtimes shows={selectedData} timezone={timezone} bookmarks={userBookmarks} />
           </div>
         );
       case "Restaurants":

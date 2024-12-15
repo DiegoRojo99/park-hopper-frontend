@@ -10,7 +10,7 @@ export function FavPage(){
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);  
   const [children, setChildren] = useState(null);
-  const [userAttractions, setUserAttractions] = useState(false);
+  const [userAttractions, setUserAttractions] = useState([]);
   const [name, setName] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
   const [activeTab, setActiveTab] = useState("Attractions");
@@ -86,7 +86,7 @@ export function FavPage(){
     if(activeTab === "Shows"){
       return(
         <div className='grid-element'>
-          <Showtimes shows={selectedChildren} />
+          <Showtimes shows={selectedChildren} bookmarks={userAttractions}/>
         </div>
       );
     }

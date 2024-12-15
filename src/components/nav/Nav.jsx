@@ -61,7 +61,7 @@ function Nav() {
         <NavItem link="/" name="Home" icon={faHouse} />
         <NavItem link="/explore" name="Explore" icon={faCompass} />
         {/* <NavItem link="/favorites" name="Favorites" icon={faStar} /> */}
-        {/* <NavItem link="/bookmarks" name="Bookmarks" icon={faBookmark} /> */}
+        <NavItem link="/bookmarks" name="Bookmarks" icon={faBookmark} />
       </div>
 
       { searchOpen ? <Search closeSearchBar={closeSearchBar} /> : <div className="nav-space"></div> }

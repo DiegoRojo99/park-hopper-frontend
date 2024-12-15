@@ -6,18 +6,20 @@ import AlarmIcon from './../../img/bell.png';
 import FullAlarmIcon from './../../img/fullBell.png';
 import { useAuth } from '../../contexts/AuthContext';
 import { Loader } from '../common/Loader';
-import { Status } from './../common/Status';
+import { Status } from '../common/Status';
 import AlertModal from '../v2/Extras/AlertModal';
 import './Details.css';
 import './Utils.css';
+import { useNavigate } from 'react-router-dom';
 
-export function WaitingTimes({ attractions, bookmarks, openLink}){
+export function ReducedWaitingTimes({ attractions, bookmarks}){
 
   const [ userBookmarks, setUserBookmarks] = useState(bookmarks);
   const [ userAlerts, setUserAlerts] = useState(false);
   const [ showModal, setShowModal] = useState(false);
   const { user } = useAuth(); 
   const apiUrl = process.env.REACT_APP_API_URL;
+  const navigate = useNavigate();
 
   useEffect(() => {
     setUserBookmarks(bookmarks);
@@ -153,20 +155,27 @@ export function WaitingTimes({ attractions, bookmarks, openLink}){
     setUserBookmarks(newBookmarks);
   }
 
+  function openLink(id) {
+    const url = `/attractions/${id}`;
+    navigate(url); 
+  }
+
+
   return (
     <div className='waiting-times'>
-      <div className='attraction-row header-row'>
+      <div className='reduced-row header-row'>
         <p></p>
         <p>Attraction</p>
-        <p>Waiting Time</p>
+        <p>Time</p>
         <p>Status</p>
       </div>
       { attractions.sort((a,b) => sortByWaitTime(a, b)).map((att) => {
         const booked = userBookmarks.some(userAtt => userAtt.id === att.id);
         const alert = userAlerts ? userAlerts.some(userAtt => userAtt.id === att.id || userAtt.id === att.EntityID) : false;
-        const waitingTime = att.queue?.STANDBY?.waitTime ?? "-";
+        const liveData = att.liveData;
+        const waitingTime = liveData?.queue?.STANDBY?.waitTime ?? "-";
         return (
-          <div className='attraction-row'> 
+          <div className='reduced-row'> 
             <div>
               <FontAwesomeIcon 
                 icon={!booked ? lineBookmark : solidBookmark} 
@@ -182,7 +191,7 @@ export function WaitingTimes({ attractions, bookmarks, openLink}){
             </div>
             <p className={openLink ? 'div-clickable' : ''} onClick={openLink ? () => openLink(att.id) : null}>{att.name}</p>
             <p>{waitingTime}</p>
-            <Status status={att.status} />
+            <Status status={liveData?.status} />
           </div>
         )
       })}

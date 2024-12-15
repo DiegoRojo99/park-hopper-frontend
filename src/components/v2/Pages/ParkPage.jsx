@@ -18,7 +18,7 @@ export function ParkPage(){
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);  
   const [data, setData] = useState(null);
-  const [userAttractions, setUserAttractions] = useState(false);
+  const [userBookmarks, setUserBookmarks] = useState([]);
   const [timezone, setTimezone] = useState(false);
   const [schedule, setSchedule] = useState(null);
   const [name, setName] = useState("");
@@ -44,7 +44,6 @@ export function ParkPage(){
         setSchedule(groupSchedule(parkData.schedule));
         let actualTabs = possibleTabs.filter(tab => parkData[tab.toLocaleLowerCase()].length);
         setTabs(actualTabs);
-        setLoading(false);
       } 
       catch (error) {
         setError(error);
@@ -71,14 +70,25 @@ export function ParkPage(){
           throw new Error('Something went wrong');
         });
         
-        setUserAttractions(result);
+        setUserBookmarks(result);
       } catch (error) {
         console.error(error)
       }
     }
 
-    fetchData();
-    loadUserBookmarks()
+    async function pullAllData() {
+      await fetchData();
+      await loadUserBookmarks();
+      setLoading(false);
+    }
+
+    if(!data){
+      pullAllData();
+    }
+    else if (!userBookmarks.length && user){
+      loadUserBookmarks();
+    }
+
   }, [id, apiUrl, user]);
 
   if (error) {
@@ -130,7 +140,7 @@ export function ParkPage(){
       default:
         return (
           <div className="grid-element">
-            <WaitingTimes attractions={selectedData} bookmarks={userAttractions} openLink={openLink} />
+            <WaitingTimes attractions={selectedData} bookmarks={userBookmarks} openLink={openLink} />
           </div>
         );
     }

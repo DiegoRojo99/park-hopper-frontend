@@ -11,13 +11,17 @@ import AlertModal from '../v2/Extras/AlertModal';
 import './Details.css';
 import './Utils.css';
 
-export function WaitingTimes({ attractions , bookmarks, openLink}){
-  
-  const [ userAttractions, setUserAttractions] = useState(bookmarks);
+export function WaitingTimes({ attractions, bookmarks, openLink}){
+
+  const [ userBookmarks, setUserBookmarks] = useState(bookmarks);
   const [ userAlerts, setUserAlerts] = useState(false);
   const [ showModal, setShowModal] = useState(false);
   const { user } = useAuth(); 
   const apiUrl = process.env.REACT_APP_API_URL;
+
+  useEffect(() => {
+    setUserBookmarks(bookmarks);
+  }, [bookmarks])
 
   if (!attractions) {
     return <Loader />;
@@ -83,8 +87,12 @@ export function WaitingTimes({ attractions , bookmarks, openLink}){
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-    } catch (error) {
+    } 
+    catch (error) {
       console.error(`Failed to ${bookmarked ? 'remove' : 'add'} favorite:`, error);
+    } 
+    finally {
+      addBookmark(attraction, bookmarked);
     }
     
   }
@@ -140,6 +148,11 @@ export function WaitingTimes({ attractions , bookmarks, openLink}){
     }    
   }
 
+  function addBookmark(att, bookmarked){
+    let newBookmarks = !bookmarked ? [...bookmarks, att] : bookmarks.filter(b => b.id !== att.id);
+    setUserBookmarks(newBookmarks);
+  }
+
   return (
     <div className='waiting-times'>
       <div className='attraction-row header-row'>
@@ -149,17 +162,17 @@ export function WaitingTimes({ attractions , bookmarks, openLink}){
         <p>Status</p>
       </div>
       { attractions.sort((a,b) => sortByWaitTime(a, b)).map((att) => {
-        const fav = userAttractions ? userAttractions.some(userAtt => userAtt.EntityID === att.id || userAtt.EntityID === att.EntityID) : false;
-        const alert = userAlerts ? userAlerts.some(userAtt => userAtt.EntityID === att.id || userAtt.EntityID === att.EntityID) : false;
+        const booked = userBookmarks.some(userAtt => userAtt.id === att.id);
+        const alert = userAlerts ? userAlerts.some(userAtt => userAtt.id === att.id || userAtt.id === att.EntityID) : false;
         const waitingTime = att.queue?.STANDBY?.waitTime ?? "-";
         return (
           <div className='attraction-row'> 
             <div>
-              {/* <FontAwesomeIcon 
-                icon={!fav ? lineBookmark : solidBookmark} 
+              <FontAwesomeIcon 
+                icon={!booked ? lineBookmark : solidBookmark} 
                 className='star-icon' 
-                onClick={() => bookmarkAttraction(att, fav)} 
-              /> */}
+                onClick={() => bookmarkAttraction(att, booked)} 
+              />
               <img 
                 alt="Alarm" 
                 src={alert ? FullAlarmIcon : AlarmIcon} 

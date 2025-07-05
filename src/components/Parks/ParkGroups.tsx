@@ -48,9 +48,6 @@ const ParkGroups: React.FC = () => {
           justifyContent: 'center',
         }}
       >
-        <h1 className='text-3xl font-bold mb-4 sm:mb-6 bg-white bg-opacity-70 px-4 py-2 rounded'>
-          Parks
-        </h1>
       </div>
       {parkGroups.length === 0 ? (
         <div>No parks found.</div>

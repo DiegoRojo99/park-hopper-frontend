@@ -7,7 +7,7 @@ export function Layout() {
     <div className="min-h-screen flex flex-col">
       <Nav />
       
-      <main className="flex flex-grow bg-white">
+      <main className="flex flex-grow bg-light-background dark:bg-dark-background transition-colors duration-300">
         <Outlet />
       </main>
 

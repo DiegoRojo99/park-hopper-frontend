@@ -1,5 +1,5 @@
 import React from "react";
-import { LandWithRides, ParkWithLandsAndRides, Ride } from "../../types/db";
+import { LandWithRides, ParkWithLandsAndRides } from "../../types/db";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Loader } from "../Loader";

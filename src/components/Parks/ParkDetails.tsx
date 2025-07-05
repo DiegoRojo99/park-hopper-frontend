@@ -1,8 +1,10 @@
 import React from "react";
-import { LandWithRides, ParkWithLandsAndRides } from "../../types/db";
+import { LandWithRides, ParkWithLandsAndRides, Ride } from "../../types/db";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Loader } from "../Loader";
+import ParkRidesTable from "./ParkRides";
+import RideGridSection from "./RideGridSection";
 
 type ParkDetailsProps = {
   park: ParkWithLandsAndRides;
@@ -55,50 +57,86 @@ export const ParkDetailsContainer: React.FC = () => {
   if (error) return <div>Error: {error}</div>;
   if (!park) return <div>Park not found.</div>;
 
-  console.log("Park details:", park);
   return <ParkDetails park={park} lands={lands} />;
 };
 
 const ParkDetails: React.FC<ParkDetailsProps> = ({ park, lands }) => {
+  const [gridView, setGridView] = useState(false);
+
   return (
     <div className="flex flex-col items-center justify-center h-full w-full p-4">
-      <h1 className="text-xl sm:text-3xl font-bold my-4">{park.name}</h1>
-      <table className="w-full mb-4 text-xs sm:text-base ">
-        <thead className="border-b border-black">
-          <tr>
-            <th className="text-left">Ride Name</th>
-            <th className="text-left">Status</th>
-            <th className="text-left">Wait</th>
-          </tr>
-        </thead>
-        <tbody>
-          {lands.length === 0 ? (
-            <tr>
-              <td colSpan={4}>No lands available.</td>
-            </tr>
-          ) : (
-            lands.map((land) => {
-              if (land.rides.length === 0) return <></>;
-              return land.rides.length === 0 ? (
-                <tr>
-                  <td colSpan={4}>No rides in this land.</td>
-                </tr>
-              ) : (
-                land.rides.map((ride: any) => (
-                  <tr key={ride.id} className="hover:bg-gray-100 transition-colors cursor-pointer">
-                    <td>
-                      <strong className="font-bold">{ride.name}</strong>
-                    </td>
-                    <td>{ride.is_open ? "Open" : "Closed"}</td>
-                    <td>{ride.is_open ? ride.wait_time : "N/A"}</td>
-                  </tr>
-                ))
-              )
-            })
-          )}
-        </tbody>
-      </table>
+      <ParkHeroSection park={park} />
+      <GridViewToggle gridView={gridView} setGridView={setGridView} />
+      { gridView ? (
+        <RideGridSection lands={lands} />
+      ) : (
+        <div className="w-full mx-auto">
+          <ParkRidesTable lands={lands} />
+        </div>
+      )}
     </div>
+  );
+};
+
+function GridViewToggle({
+  gridView,
+  setGridView,
+}: {
+  gridView: boolean;
+  setGridView: (value: boolean) => void;
+}) {
+  return (
+    <div className="flex justify-end w-full mb-4">
+      <div className="inline-flex bg-gray-200 rounded-md overflow-hidden shadow">
+        <button
+          onClick={() => setGridView(true)}
+          className={`flex items-center px-3 py-2 transition-colors ${
+            gridView ? "bg-blue-500 text-white" : "text-gray-700"
+          }`}
+        >
+          <img src='/icons/grid-2x2.svg' alt="Grid View" className="w-5 h-5 mr-1" />
+          {/* <span className="hidden sm:inline">Grid</span> */}
+        </button>
+        <button
+          onClick={() => setGridView(false)}
+          className={`flex items-center px-3 py-2 transition-colors ${
+            !gridView ? "bg-blue-500 text-white" : "text-gray-700"
+          }`}
+        >
+          <img src='/icons/list.svg' alt="List View" className="w-5 h-5 mr-1" />
+          {/* <span className="hidden sm:inline">List</span> */}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function ParkHeroSection({ park }: { park: ParkWithLandsAndRides }) {
+  const hasImage = Boolean(park.image_url);
+
+  return (
+    <section
+      className={`relative w-full text-center ${
+        hasImage ? "h-64" : "h-32"
+      }`}
+    >
+      {hasImage && (
+        <img
+          src={park.image_url}
+          alt={park.name}
+          className="absolute inset-0 w-full h-full object-cover opacity-30"
+        />
+      )}
+
+      <div className="relative z-10 p-6 flex flex-col justify-center h-full">
+        <h1 className="text-2xl sm:text-4xl font-bold text-gray-800 dark:text-white">
+          {park.name}
+        </h1>
+        <p className="text-md sm:text-lg text-gray-600 dark:text-gray-300">
+          {park.country}
+        </p>
+      </div>
+    </section>
   );
 };
 

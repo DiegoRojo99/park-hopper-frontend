@@ -5,7 +5,7 @@ const HomePage: React.FC = () => {
   return (
     <section className="flex flex-col items-center justify-center px-4 h-full my-auto mx-auto">
       <div className="mb-10 text-center">
-        <h1 className="text-5xl font-extrabold text-green-700 mb-4 drop-shadow-lg">
+        <h1 className="text-5xl font-extrabold text-light-text dark:text-dark-text mb-4 drop-shadow-lg">
           Park Hopper
         </h1>
         <p className="text-xl text-gray-700 max-w-xl mx-auto">
@@ -15,13 +15,13 @@ const HomePage: React.FC = () => {
       <div className="flex flex-col sm:flex-row gap-6">
         <Link
           to="/parks"
-          className="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition text-center"
+          className="bg-light-primary hover:bg-light-primary-dark text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition text-center"
         >
           Explore Parks
         </Link>
         <Link
           to="/login"
-          className="bg-white border border-green-500 text-green-700 font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-green-50 transition text-center"
+          className="bg-white border border-light-primary text-light-primary font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-light-accent hover:text-white transition text-center"
         >
           Sign In
         </Link>

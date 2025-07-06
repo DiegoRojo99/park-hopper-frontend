@@ -2,7 +2,7 @@ import React from "react";
 import { LandWithRides, ParkWithLandsAndRides } from "../../types/db";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Loader } from "../Loader";
+import { Loader } from "../../components/Loader";
 import ParkRidesTable from "./ParkRides";
 import RideGridSection from "./RideGridSection";
 

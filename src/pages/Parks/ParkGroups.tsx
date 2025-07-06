@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ParkGroupWithParks } from '../../types/db';
-import { Loader } from '../Loader';
+import { Loader } from '../../components/Loader';
 import { Link } from 'react-router-dom';
 
 const ParkGroups: React.FC = () => {

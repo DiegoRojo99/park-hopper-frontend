@@ -70,11 +70,9 @@ function ParkGroup({ group }: { group: ParkGroupWithParks }) {
         <tbody>
           {group.parks.sort((a, b) => a.name.localeCompare(b.name)).map((park) => (
             <tr key={park.id} className="hover:bg-gray-100 transition-colors cursor-pointer border-t p-2">
-              <Link to={`/parks/${park.id}`} className="w-full">
-                <td className="text-blue-600 hover:underline">
-                  {park.name}
-                </td>
-              </Link>
+              <td className="text-blue-600 hover:underline">
+                <Link to={`/parks/${park.id}`} className="w-full">{park.name}</Link>
+              </td>
               <td className="text-gray-600 text-sm">{park.country}</td>
             </tr>
           ))}

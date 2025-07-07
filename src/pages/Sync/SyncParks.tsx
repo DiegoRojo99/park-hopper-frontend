@@ -27,11 +27,14 @@ export default function SyncParksPage() {
     setLoading(true);
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const res = await fetch(`${apiUrl}/api/sync/parks?parkId=${id}`, {
+      const res = await fetch(`${apiUrl}/api/sync/parks`, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ parkId: id }),
       });
+      
       if (!res.ok) throw new Error('Sync failed');
-      alert('Sync triggered');
+      alert('Sync successful');
     } catch (err) {
       console.error(err);
       alert('Sync failed');

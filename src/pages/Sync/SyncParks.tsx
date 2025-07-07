@@ -48,7 +48,7 @@ export default function SyncParksPage() {
       <h1 className="text-2xl font-bold mb-4">Parks</h1>
       {error && <div className="text-red-500 mb-4">{error}</div>}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {parks.map((park) => (
+        {parks.sort((a, b) => a.name.localeCompare(b.name)).map((park) => (
           <button
             key={park.id}
             onClick={() => handleSync(park.id)}

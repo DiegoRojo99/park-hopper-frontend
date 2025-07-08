@@ -1,6 +1,6 @@
-import { Attraction } from "../../types/db";
+import { Attraction, LivePark } from "../../types/db";
 
-export default function ParkRidesTable({ attractions }: { attractions: Attraction[] }) {
+export default function ParkRidesTable({ attractions, liveData }: { attractions: Attraction[], liveData: LivePark["liveData"] }) {
   if (attractions.length === 0) {
     return <div>No rides available.</div>;
   }
@@ -15,25 +15,34 @@ export default function ParkRidesTable({ attractions }: { attractions: Attractio
         </tr>
       </thead>
       <tbody>
-        {attractions.map((attraction) => (
-          <AttractionRow key={attraction.id} attraction={attraction} />
+        {attractions.sort((a, b) => a.name.localeCompare(b.name)).map((attraction) => (
+          <AttractionRow key={attraction.id} attraction={attraction} liveData={liveData} />
         ))}
       </tbody>
     </table>
   );
 };
 
-function AttractionRow({ attraction }: { attraction: Attraction }) {
+function AttractionRow({ attraction, liveData }: { attraction: Attraction, liveData: LivePark["liveData"] }) {
   if (!attraction) return null;
+  const ride = liveData?.find((ride) => ride.id === attraction.id);
+  const waitTime = ride?.queue?.STANDBY?.waitTime || null;
+
   return (
     <tr key={attraction.id} className="hover:bg-gray-100 transition-colors cursor-pointer">
       <td>
         <strong className="font-bold">{attraction.name}</strong>
       </td>
-      {/* <td className={`${ride.isOpen ? "text-green-600" : "text-red-600"}`}>
-        {ride.isOpen ? "Open" : "Closed"}
-      </td>
-      <td>{ride.isOpen ? ride.waitTime : "N/A"}</td> */}
+      {ride ? (
+        <td className={`${ride.status === "OPERATING" ? "text-green-600" : "text-red-600"}`}>
+          {ride.status}
+        </td>
+      ) : null}
+      {waitTime ? (
+        <td>{waitTime}</td>
+      ) : (
+        <td>N/A</td>
+      )}
     </tr>
   );
 }

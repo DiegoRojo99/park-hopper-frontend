@@ -4,11 +4,12 @@ import { useParams } from "react-router-dom";
 import { Loader } from "../../components/Loader";
 import ParkRidesTable from "./ParkRides";
 import RideGridSection from "./RideGridSection";
-import { ParkWithDestinationAndChildren } from "../../types/db";
+import { LivePark } from "../../types/db";
+import ChildrenTab from "../../components/ChildrenTab";
 
 export const ParkDetailsContainer: React.FC = () => {
   const { parkId } = useParams<{ parkId: string }>();
-  const [park, setPark] = useState<ParkWithDestinationAndChildren | null>(null);
+  const [park, setPark] = useState<LivePark | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +29,7 @@ export const ParkDetailsContainer: React.FC = () => {
       return;
     }
 
-    fetch(`${apiUrl}/api/parks/${parkId}`)
+    fetch(`${apiUrl}/api/parks/${parkId}/live`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch park details");
         return res.json();
@@ -46,52 +47,36 @@ export const ParkDetailsContainer: React.FC = () => {
   return <ParkDetails park={park} />;
 };
 
-const ParkDetails: React.FC<{park: ParkWithDestinationAndChildren}> = ({ park }) => {
-  const [gridView, setGridView] = useState(false);
+const ParkDetails: React.FC<{park: LivePark}> = ({ park }) => {
+  const [selectedTab, setSelectedTab] = useState<"Attractions" | "Shows" | "Restaurants">("Attractions");
+  const handleTabChange = (tab: "Attractions" | "Shows" | "Restaurants") => {
+    setSelectedTab(tab);
+  };
+
+  function renderTabContent() {
+    switch (selectedTab) {
+      case "Attractions":
+        return <AttractionsSection attractions={park.attractions} liveData={park.liveData} />;
+      case "Shows":
+        return <ShowsSection shows={park.shows} liveData={park.liveData} />;
+      case "Restaurants":
+        return <RestaurantsSection restaurants={park.restaurants} liveData={park.liveData} />;
+      default:
+        return null;
+    }
+  }
 
   return (
     <div className="flex flex-col items-center justify-center h-full w-full p-4">
       <ParkHeroSection park={park} />
-      <GridViewToggle gridView={gridView} setGridView={setGridView} />
-      <AttractionsSection attractions={park.attractions} gridView={gridView} />
+      <ChildrenTab selectedTab={selectedTab} setTab={handleTabChange} />
+      {renderTabContent()}
     </div>
   );
 };
 
-function GridViewToggle({
-  gridView,
-  setGridView,
-}: {
-  gridView: boolean;
-  setGridView: (value: boolean) => void;
-}) {
-  return (
-    <div className="flex justify-end w-full mb-4">
-      <div className="inline-flex bg-gray-200 rounded-md overflow-hidden shadow">
-        <button
-          onClick={() => setGridView(true)}
-          className={`flex items-center px-3 py-2 transition-colors ${
-            gridView ? "bg-blue-500 text-white" : "text-gray-700"
-          }`}
-        >
-          <img src='/icons/grid-2x2.svg' alt="Grid View" className="w-5 h-5 mr-1" />
-          {/* <span className="hidden sm:inline">Grid</span> */}
-        </button>
-        <button
-          onClick={() => setGridView(false)}
-          className={`flex items-center px-3 py-2 transition-colors ${
-            !gridView ? "bg-blue-500 text-white" : "text-gray-700"
-          }`}
-        >
-          <img src='/icons/list.svg' alt="List View" className="w-5 h-5 mr-1" />
-          {/* <span className="hidden sm:inline">List</span> */}
-        </button>
-      </div>
-    </div>
-  );
-}
 
-function ParkHeroSection({ park }: { park: ParkWithDestinationAndChildren }) {
+function ParkHeroSection({ park }: { park: LivePark }) {
   return (
     <section
       className={`relative w-full text-center h-32`}
@@ -108,20 +93,94 @@ function ParkHeroSection({ park }: { park: ParkWithDestinationAndChildren }) {
   );
 };
 
-function AttractionsSection({ attractions, gridView }: { attractions: ParkWithDestinationAndChildren["attractions"], gridView: boolean }) {
-  if (!attractions || attractions.length === 0) {
-    return <div className="text-center text-gray-500">No attractions available.</div>;
-  }
+function AttractionsSection({ attractions, liveData }: { attractions: LivePark["attractions"], liveData: LivePark["liveData"] }) {
+  const [gridView, setGridView] = useState(false);
 
-  if (gridView) {
-    return <RideGridSection attractions={attractions} />;
+  function GridViewToggle({
+    gridView,
+    setGridView,
+  }: {
+    gridView: boolean;
+    setGridView: (value: boolean) => void;
+  }) {
+    return (
+      <div className="flex justify-end w-full mb-4">
+        <div className="inline-flex bg-gray-200 rounded-md overflow-hidden shadow">
+          <button
+            onClick={() => setGridView(true)}
+            className={`flex items-center px-3 py-2 transition-colors ${
+              gridView ? "bg-blue-500 text-white" : "text-gray-700"
+            }`}
+          >
+            <img src='/icons/grid-2x2.svg' alt="Grid View" className="w-5 h-5 mr-1" />
+            {/* <span className="hidden sm:inline">Grid</span> */}
+          </button>
+          <button
+            onClick={() => setGridView(false)}
+            className={`flex items-center px-3 py-2 transition-colors ${
+              !gridView ? "bg-blue-500 text-white" : "text-gray-700"
+            }`}
+          >
+            <img src='/icons/list.svg' alt="List View" className="w-5 h-5 mr-1" />
+            {/* <span className="hidden sm:inline">List</span> */}
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="w-full mx-auto">
-      <ParkRidesTable attractions={attractions} />
+    <div className="w-full max-w-6xl mx-auto p-4">
+      <GridViewToggle gridView={gridView} setGridView={setGridView} />
+      {attractions?.length ? (
+        <div>
+          {gridView ? (
+            <RideGridSection attractions={attractions} liveData={liveData} />
+          ) : (
+            <ParkRidesTable attractions={attractions} liveData={liveData} />
+          )}
+        </div>
+      ) : (
+        <div className="text-center text-gray-500">No attractions available.</div>
+      )}
     </div>
   );
-}
+};
+
+function ShowsSection({ shows, liveData }: { shows: LivePark["shows"], liveData: LivePark["liveData"] }) {
+  return (
+    <div className="w-full max-w-6xl mx-auto p-4">
+      {shows?.length ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {shows.map((show) => (
+            <div key={show.id} className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+              <h3 className="text-lg font-bold text-center">{show.name}</h3>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center text-gray-500">No shows available.</div>
+      )}
+    </div>
+  );
+};
+
+function RestaurantsSection({ restaurants, liveData }: { restaurants: LivePark["restaurants"], liveData: LivePark["liveData"] }) {
+  return (
+    <div className="w-full max-w-6xl mx-auto p-4">
+      {restaurants?.length ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {restaurants.map((restaurant) => (
+            <div key={restaurant.id} className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+              <h3 className="text-lg font-bold text-center">{restaurant.name}</h3>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center text-gray-500">No restaurants available.</div>
+      )}
+    </div>
+  );
+};
 
 export default ParkDetails;

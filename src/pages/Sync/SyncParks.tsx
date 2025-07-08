@@ -14,7 +14,7 @@ export default function SyncParksPage() {
 
   useEffect(() => {
     const apiUrl = process.env.REACT_APP_API_URL;
-    fetch(`${apiUrl}/api/parks`)
+    fetch(`${apiUrl}/api/sync/parks`)
       .then(res => res.json())
       .then(data => setParks(data))
       .catch(err => {
@@ -47,7 +47,7 @@ export default function SyncParksPage() {
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Parks</h1>
       {error && <div className="text-red-500 mb-4">{error}</div>}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mx-auto">
         {parks.sort((a, b) => a.name.localeCompare(b.name)).map((park) => (
           <button
             key={park.id}

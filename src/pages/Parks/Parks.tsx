@@ -52,7 +52,7 @@ const Parks: React.FC = () => {
       {parks.length === 0 ? (
         <div>No parks found.</div>
       ) : (
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+        <div className="w-full grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-6 p-4">
           {parks.sort((a, b) => a.name.localeCompare(b.name)).map((park) => (
             <ParkRow key={park.id} park={park} />
           ))}
@@ -64,13 +64,13 @@ const Parks: React.FC = () => {
 
 function ParkRow({ park }: { park: ParkWithDestination }) {
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 flex flex-col items-center">
-      <Link to={`/parks/${park.id}`} className="text-xl font-semibold text-blue-600 hover:underline">
+    <div className="bg-light-accent bg-dark-accent shadow-md rounded-lg p-1 flex flex-col items-center">
+      <Link to={`/parks/${park.id}`} className="text-lg font-semibold text-blue-600 hover:underline">
         {park.name}
       </Link>
       {park.destination && (
-        <p className="text-gray-600 mt-2">
-          Destination: {park.destination.name}
+        <p className="text-gray-600 mt-2 text-sm">
+          {park.destination.name}
         </p>
       )}
     </div>

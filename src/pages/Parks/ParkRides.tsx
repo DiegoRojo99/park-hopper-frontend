@@ -1,6 +1,19 @@
-import { Attraction, LivePark } from "../../types/db";
+import { LiveAttraction } from "../../types/db";
 
-export default function ParkRidesTable({ attractions, liveData }: { attractions: Attraction[], liveData: LivePark["liveData"] }) {
+function sortByWaitTime(a: LiveAttraction, b: LiveAttraction) {
+  const waitA = a.liveData?.queue?.STANDBY?.waitTime;
+  const waitB = b.liveData?.queue?.STANDBY?.waitTime;
+  if(!waitA) return 1; // Treat null as greater than any number
+  if(!waitB) return -1; // Treat null as greater than any number
+  return waitB - waitA;
+}
+
+function filterNonApplicableRide(attraction: LiveAttraction) {
+  const status = attraction.liveData?.status;
+  return status && ["OPERATING", "DOWN", "CLOSED"].includes(status);
+}
+
+export default function ParkRidesTable({ attractions }: { attractions: LiveAttraction[] }) {
   if (attractions.length === 0) {
     return <div>No rides available.</div>;
   }
@@ -15,27 +28,27 @@ export default function ParkRidesTable({ attractions, liveData }: { attractions:
         </tr>
       </thead>
       <tbody>
-        {attractions.sort((a, b) => a.name.localeCompare(b.name)).map((attraction) => (
-          <AttractionRow key={attraction.id} attraction={attraction} liveData={liveData} />
+        {attractions.filter(filterNonApplicableRide).sort(sortByWaitTime).map((attraction) => (
+          <AttractionRow key={attraction.id} attraction={attraction} />
         ))}
       </tbody>
     </table>
   );
 };
 
-function AttractionRow({ attraction, liveData }: { attraction: Attraction, liveData: LivePark["liveData"] }) {
+function AttractionRow({ attraction }: { attraction: LiveAttraction }) {
   if (!attraction) return null;
-  const ride = liveData?.find((ride) => ride.id === attraction.id);
-  const waitTime = ride?.queue?.STANDBY?.waitTime || null;
+  const liveData = attraction.liveData;
+  const waitTime = liveData?.queue?.STANDBY?.waitTime || null;
 
   return (
     <tr key={attraction.id} className="hover:bg-gray-100 transition-colors cursor-pointer">
       <td>
         <strong className="font-bold">{attraction.name}</strong>
       </td>
-      {ride ? (
-        <td className={`${ride.status === "OPERATING" ? "text-green-600" : "text-red-600"}`}>
-          {ride.status}
+      {liveData ? (
+        <td className={`${liveData.status === "OPERATING" ? "text-green-600" : "text-red-600"}`}>
+          {liveData.status}
         </td>
       ) : null}
       {waitTime ? (

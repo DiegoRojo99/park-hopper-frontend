@@ -56,11 +56,11 @@ const ParkDetails: React.FC<{park: LivePark}> = ({ park }) => {
   function renderTabContent() {
     switch (selectedTab) {
       case "Attractions":
-        return <AttractionsSection attractions={park.attractions} liveData={park.liveData} />;
+        return <AttractionsSection attractions={park.attractions} />;
       case "Shows":
-        return <ShowsSection shows={park.shows} liveData={park.liveData} />;
+        return <ShowsSection shows={park.shows} />;
       case "Restaurants":
-        return <RestaurantsSection restaurants={park.restaurants} liveData={park.liveData} />;
+        return <RestaurantsSection restaurants={park.restaurants} />;
       default:
         return null;
     }
@@ -93,7 +93,7 @@ function ParkHeroSection({ park }: { park: LivePark }) {
   );
 };
 
-function AttractionsSection({ attractions, liveData }: { attractions: LivePark["attractions"], liveData: LivePark["liveData"] }) {
+function AttractionsSection({ attractions }: { attractions: LivePark["attractions"] }) {
   const [gridView, setGridView] = useState(false);
 
   function GridViewToggle({
@@ -135,9 +135,9 @@ function AttractionsSection({ attractions, liveData }: { attractions: LivePark["
       {attractions?.length ? (
         <div>
           {gridView ? (
-            <RideGridSection attractions={attractions} liveData={liveData} />
+            <RideGridSection attractions={attractions} />
           ) : (
-            <ParkRidesTable attractions={attractions} liveData={liveData} />
+            <ParkRidesTable attractions={attractions} />
           )}
         </div>
       ) : (
@@ -147,7 +147,7 @@ function AttractionsSection({ attractions, liveData }: { attractions: LivePark["
   );
 };
 
-function ShowsSection({ shows, liveData }: { shows: LivePark["shows"], liveData: LivePark["liveData"] }) {
+function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
   return (
     <div className="w-full max-w-6xl mx-auto p-4">
       {shows?.length ? (
@@ -165,7 +165,7 @@ function ShowsSection({ shows, liveData }: { shows: LivePark["shows"], liveData:
   );
 };
 
-function RestaurantsSection({ restaurants, liveData }: { restaurants: LivePark["restaurants"], liveData: LivePark["liveData"] }) {
+function RestaurantsSection({ restaurants }: { restaurants: LivePark["restaurants"] }) {
   return (
     <div className="w-full max-w-6xl mx-auto p-4">
       {restaurants?.length ? (

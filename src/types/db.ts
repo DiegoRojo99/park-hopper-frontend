@@ -43,6 +43,7 @@ export type ParkWithDestinationAndChildren = ParkWithDestination & {
   restaurants?: Restaurant[];
 };
 
+/* LIVE DATA TYPES */
 export type EntityType = 'DESTINATION' | 'PARK' | 'ATTRACTION' | 'RESTAURANT' | 'SHOW';
 export type LiveDataStatus = 'CLOSED' | 'DOWN' | 'OPERATING';
 export type LiveDataElement = {
@@ -64,8 +65,13 @@ export type LiveDataElement = {
   lastUpdated: string;
 };
 
-export type LivePark = ParkWithDestinationAndChildren & {
-  liveData?: LiveDataElement[];
+export type LiveAttraction = Attraction & { liveData?: LiveDataElement }
+export type LiveShow = Show & { liveData?: LiveDataElement }
+export type LiveRestaurant = Restaurant & { liveData?: LiveDataElement }
+export type LivePark = ParkWithDestination & {
+  attractions?: LiveAttraction[];
+  shows?: LiveShow[];
+  restaurants?: LiveRestaurant[];
 };
 
 /* CHILDREN TYPES */

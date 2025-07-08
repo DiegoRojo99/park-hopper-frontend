@@ -1,65 +1,51 @@
-
-export type ParkGroup = {
-  id: number;
+/* ENTITY TYPES */
+export type GeneralEntity = {
+  id: string;
   name: string;
-};
+  slug: string | null;
+  
+  latitude?: number;
+  longitude?: number;
+  timezone?: string;
+  externalId?: string;
+}
 
-export type ParkGroupWithParks = ParkGroup & {
+export type ChildrenEntity = GeneralEntity & {
+  destinationId?: string | null;
+  parkId?: string | null;
+}
+
+/* DESTINATION TYPES */
+export type Destination = GeneralEntity
+
+export type DestinationWithParks = Destination & {
   parks: Park[];
 };
 
-export type Park = {
-  id: number;
-  name: string;
-  country: string;
-  continent: string;
-  latitude: number;
-  longitude: number;
-  timezone: string;
-  groupId: number;
-  image_url?: string; // Optional field for park image URL
+export type DestinationWithParksAndChildren = DestinationWithParks & {
+  attractions?: Attraction[];
+  shows?: Show[];
+  restaurants?: Restaurant[];
+}
+
+/* PARK TYPES */
+export type Park = GeneralEntity & {
+  destinationId: string | null;
 };
 
-export type ParkWithGroup = Park & {
-  group: ParkGroup;
+export type ParkWithDestination = Park & {
+  destination: Destination;
+}
+
+export type ParkWithDestinationAndChildren = ParkWithDestination & {
+  attractions?: Attraction[];
+  shows?: Show[];
+  restaurants?: Restaurant[];
 };
 
-export type ParkWithLands = Park & {
-  lands: LandWithRides[];
-};
-
-export type ParkWithLandsAndRides = Park & {
-  lands: LandWithRides[];
-};
-
-export type ParkWithGroupAndLands = Park & {
-  group: ParkGroup;
-  lands: LandWithRides[];
-};
-
-export type Land = {
-  id: number;
-  name: string;
-  parkId: number;
-};
-
-export type LandWithRides = Land & {
-  rides: Ride[];
-};
-
-export type LandWithPark = Land & {
-  park: ParkWithGroup;
-};
-
-export type Ride = {
-  id: number;
-  name: string;
-  isOpen: boolean;
-  waitTime: number;
-  lastUpdated: Date;
-  landId: number;
-};
-
-export type RideWithLand = Ride & {
-  land: LandWithPark;
-};
+/* CHILDREN TYPES */
+export type Attraction = ChildrenEntity
+export type Show = ChildrenEntity
+export type Restaurant = ChildrenEntity & {
+  cuisines?: string[];
+}

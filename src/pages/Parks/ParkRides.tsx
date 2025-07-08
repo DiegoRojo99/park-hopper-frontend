@@ -1,4 +1,3 @@
-import React from "react";
 import { Attraction } from "../../types/db";
 
 export default function ParkRidesTable({ attractions }: { attractions: Attraction[] }) {

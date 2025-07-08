@@ -1,9 +1,5 @@
 import { Attraction } from "../../types/db";
 
-function filterSingleRider(attractions: Attraction): boolean {
-  return !attractions.name.includes("Single Rider");
-}
-
 export default function RideGridSection({ attractions }: { attractions: Attraction[] }) {
   if (!attractions || attractions.length === 0) {
     return <div>No attractions available.</div>;

@@ -1,20 +1,14 @@
 import React from "react";
-import { LandWithRides, ParkWithLandsAndRides } from "../../types/db";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Loader } from "../../components/Loader";
 import ParkRidesTable from "./ParkRides";
 import RideGridSection from "./RideGridSection";
-
-type ParkDetailsProps = {
-  park: ParkWithLandsAndRides;
-  lands: LandWithRides[];
-};
+import { ParkWithDestinationAndChildren } from "../../types/db";
 
 export const ParkDetailsContainer: React.FC = () => {
   const { parkId } = useParams<{ parkId: string }>();
-  const [park, setPark] = useState<ParkWithLandsAndRides | null>(null);
-  const [lands, setLands] = useState<LandWithRides[]>([]);
+  const [park, setPark] = useState<ParkWithDestinationAndChildren | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,37 +37,23 @@ export const ParkDetailsContainer: React.FC = () => {
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
 
-    fetch(`${apiUrl}/api/parks/${parkId}/live`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch park live data");
-        return res.json();
-      })
-      .then((data) => setLands(data.lands))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
   }, [parkId]);
 
   if (loading) return <Loader />;
   if (error) return <div>Error: {error}</div>;
   if (!park) return <div>Park not found.</div>;
 
-  return <ParkDetails park={park} lands={lands} />;
+  return <ParkDetails park={park} />;
 };
 
-const ParkDetails: React.FC<ParkDetailsProps> = ({ park, lands }) => {
+const ParkDetails: React.FC<{park: ParkWithDestinationAndChildren}> = ({ park }) => {
   const [gridView, setGridView] = useState(false);
 
   return (
     <div className="flex flex-col items-center justify-center h-full w-full p-4">
       <ParkHeroSection park={park} />
       <GridViewToggle gridView={gridView} setGridView={setGridView} />
-      { gridView ? (
-        <RideGridSection lands={lands} />
-      ) : (
-        <div className="w-full mx-auto">
-          <ParkRidesTable lands={lands} />
-        </div>
-      )}
+      <AttractionsSection attractions={park.attractions} gridView={gridView} />
     </div>
   );
 };
@@ -111,33 +91,37 @@ function GridViewToggle({
   );
 }
 
-function ParkHeroSection({ park }: { park: ParkWithLandsAndRides }) {
-  const hasImage = Boolean(park.image_url);
-
+function ParkHeroSection({ park }: { park: ParkWithDestinationAndChildren }) {
   return (
     <section
-      className={`relative w-full text-center ${
-        hasImage ? "h-64" : "h-32"
-      }`}
+      className={`relative w-full text-center h-32`}
     >
-      {hasImage && (
-        <img
-          src={park.image_url}
-          alt={park.name}
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
-        />
-      )}
-
       <div className="relative z-10 p-6 flex flex-col justify-center h-full">
         <h1 className="text-2xl sm:text-4xl font-bold text-gray-800 dark:text-white">
           {park.name}
         </h1>
         <p className="text-md sm:text-lg text-gray-600 dark:text-gray-300">
-          {park.country}
+          {park.destination?.name || "No Destination"}
         </p>
       </div>
     </section>
   );
 };
+
+function AttractionsSection({ attractions, gridView }: { attractions: ParkWithDestinationAndChildren["attractions"], gridView: boolean }) {
+  if (!attractions || attractions.length === 0) {
+    return <div className="text-center text-gray-500">No attractions available.</div>;
+  }
+
+  if (gridView) {
+    return <RideGridSection attractions={attractions} />;
+  }
+
+  return (
+    <div className="w-full mx-auto">
+      <ParkRidesTable attractions={attractions} />
+    </div>
+  );
+}
 
 export default ParkDetails;

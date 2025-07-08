@@ -6,7 +6,7 @@ import { AuthProvider } from './context/AuthContext';
 
 /* PAGES */
 import HomePage from './pages/Home/HomePage';
-import ParkGroups from './pages/Parks/ParkGroups';
+import Parks from './pages/Parks/Parks';
 import { ParkDetailsContainer } from './pages/Parks/ParkDetails';
 import LoginPage from './pages/Login/LoginPage';
 
@@ -21,7 +21,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
-            <Route path="parks" element={<ParkGroups />} />
+            <Route path="parks" element={<Parks />} />
             <Route path="parks/:parkId" element={<ParkDetailsContainer />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="sync" element={<SyncParksPage />} />

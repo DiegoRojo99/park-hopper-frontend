@@ -19,12 +19,12 @@ export default function ParkRidesTable({ attractions }: { attractions: LiveAttra
   }
 
   return (
-    <table className="w-full mb-4 text-xs sm:text-base">
+    <table className="w-full mb-4 text-xs sm:text-base table-fixed border-collapse">
       <thead className="border-b border-black">
-        <tr>
-          <th className="px-2">Status</th>
-          <th className="text-left">Ride Name</th>
-          <th className="text-left">Wait</th>
+        <tr className="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-bold">
+          <th className="px-2 w-[15%]">Open</th>
+          <th className="text-left w-[75%] py-1">Ride Name</th>
+          <th className="text-left w-[10%]">Wait</th>
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200">
@@ -40,28 +40,29 @@ function AttractionRow({ attraction, index }: { attraction: LiveAttraction, inde
   if (!attraction) return null;
   const liveData = attraction.liveData;
   const waitTime = liveData?.queue?.STANDBY?.waitTime || null;
+  const rowClass = index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-gray-100 dark:bg-gray-700";
   const statusClass =
     liveData?.status === "OPERATING" ? "text-green-600" : 
     liveData?.status === "DOWN" ? "text-yellow-600" : "text-red-600";
 
   return (
-    <tr key={attraction.id} className={`hover:bg-gray-100 transition-colors cursor-pointer ${index % 2 === 0 ? "bg-white" : "bg-gray-100"}`}>
+    <tr key={attraction.id} className={rowClass}>
       {liveData ? (
-        <td className={`${statusClass} flex items-center px-2`}>
-          <span className="inline-flex items-center mx-auto">
-            <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+        <td className={`${statusClass} ${rowClass} flex items-center px-2 h-full`}>
+          <span className="inline-flex items-center mx-auto my-auto">
+            <svg className="w-4 h-4 my-[0.1rem] mr-1 bg-transparent" fill="currentColor" viewBox="0 0 20 20">
               <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 100-12 6 6 0 000 12z" />
             </svg>
           </span>          
         </td>
       ) : null}
-      <td>
-        <strong className="font-bold">{attraction.name}</strong>
+      <td className="w-full pr-2">
+        <strong className="block font-bold truncate">{attraction.name}</strong>
       </td>
       {waitTime ? (
-        <td>{waitTime}</td>
+        <td className="text-right pr-2">{waitTime}</td>
       ) : (
-        <td>N/A</td>
+        <td className="text-right pr-2">N/A</td>
       )}
     </tr>
   );

@@ -34,7 +34,7 @@ const ChildrenTab: React.FC<ChildrenTabProps> = ({ selectedTab, setTab }) => (
         }}
       >
         {icon}
-        {label}
+        <span className="hidden sm:inline">{label}</span>
       </button>
     ))}
   </div>

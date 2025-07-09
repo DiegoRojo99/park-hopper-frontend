@@ -1,5 +1,18 @@
 import { LiveAttraction } from "../../types/db";
 
+function sortByWaitTime(a: LiveAttraction, b: LiveAttraction) {
+  const waitA = a.liveData?.queue?.STANDBY?.waitTime;
+  const waitB = b.liveData?.queue?.STANDBY?.waitTime;
+  if(!waitA) return 1; // Treat null as greater than any number
+  if(!waitB) return -1; // Treat null as greater than any number
+  return waitB - waitA;
+}
+
+function filterNonApplicableRide(attraction: LiveAttraction) {
+  const status = attraction.liveData?.status;
+  return status && ["OPERATING", "DOWN", "CLOSED"].includes(status);
+}
+
 export default function RideGridSection({ attractions }: { attractions: LiveAttraction[] }) {
   if (!attractions || attractions.length === 0) {
     return <div>No attractions available.</div>;
@@ -7,7 +20,7 @@ export default function RideGridSection({ attractions }: { attractions: LiveAttr
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {attractions.map((attraction) => (
+      {attractions.filter(filterNonApplicableRide).sort(sortByWaitTime).map((attraction) => (
         <AttractionCard key={attraction.id} attraction={attraction} />
       ))}
     </div>
@@ -15,6 +28,7 @@ export default function RideGridSection({ attractions }: { attractions: LiveAttr
 }
 
 function AttractionCard({ attraction }: { attraction: LiveAttraction }) {
+  if (!attraction) return null;
   const liveData = attraction.liveData;
   const waitTime = liveData?.queue?.STANDBY?.waitTime || null;
 

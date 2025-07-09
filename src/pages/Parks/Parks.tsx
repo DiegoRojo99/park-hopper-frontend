@@ -58,7 +58,7 @@ const Parks: React.FC = () => {
       {parks.length === 0 ? (
         <div>No parks found.</div>
       ) : (
-        <div className="w-[90vw] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-4 mb-4 bg-white dark:bg-dark-bg rounded-lg">
+        <div className="w-[90vw] mx-auto grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 p-4 mb-4 bg-white dark:bg-dark-bg rounded-lg">
           {sortedParks.map((park, index) => (
             <ParkGridItem
               key={park.id}
@@ -90,11 +90,6 @@ function ParkGridItem({
       <p className="text-sm sm:text-base md:text-lg text-center font-semibold text-gray-800 dark:text-gray-200 mb-2">
         {park.name}
       </p>
-      {park.destination && (
-        <p className="text-gray-400 dark:text-gray-300 text-sm mt-0">
-          {park.destination.name}
-        </p>
-      )}
     </Link>
   );
 }

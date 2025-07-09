@@ -40,7 +40,7 @@ function AttractionRow({ attraction, index }: { attraction: LiveAttraction, inde
   if (!attraction) return null;
   const liveData = attraction.liveData;
   const waitTime = liveData?.queue?.STANDBY?.waitTime || null;
-  const rowClass = index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-gray-100 dark:bg-gray-700";
+  const rowClass = index % 2 === 0 ? "bg-white dark:bg-gray-800 py-1" : "bg-gray-100 dark:bg-gray-700 py-1";
   const statusClass =
     liveData?.status === "OPERATING" ? "text-green-600" : 
     liveData?.status === "DOWN" ? "text-yellow-600" : "text-red-600";

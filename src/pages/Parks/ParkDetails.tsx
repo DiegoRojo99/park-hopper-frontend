@@ -208,10 +208,10 @@ function RestaurantsSection({ restaurants }: { restaurants: LivePark["restaurant
   function RestaurantElement({ restaurant }: { restaurant: LiveRestaurant }) {
     return (
       <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-        <h3 className="text-base sm:text-lg font-bold text-center">{restaurant.name}</h3>
+        <h3 className="text-sm sm:text-lg font-bold text-center h-min-[96px] mb-2 p-2">{restaurant.name}</h3>
+        <hr />
         {restaurant.cuisines?.length ? (
           <>
-            <hr />
             <div className="mt-2 text-center flex flex-row flex-wrap justify-center w-full">
               {restaurant.cuisines?.map((cuisine, index) => (
                 <span key={index} className="text-sm w-full text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-[4px] px-2 py-1 m-1">

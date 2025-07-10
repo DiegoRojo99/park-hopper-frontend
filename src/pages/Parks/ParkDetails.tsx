@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Loader } from "../../components/Loader";
 import ParkRidesTable from "./ParkRides";
 import RideGridSection from "./RideGridSection";
-import { LivePark, LiveRestaurant, LiveShow } from "../../types/db";
+import { LivePark, LiveRestaurant, LiveShow, ShowTimes } from "../../types/db";
 import ChildrenTab from "../../components/ChildrenTab";
 
 export const ParkDetailsContainer: React.FC = () => {
@@ -166,20 +166,39 @@ function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
   }
 
   function ShowElement({ show }: { show: LiveShow }) {
+
+    function displayShowTime(showtime: ShowTimes) {
+      if (!showtime || !showtime.startTime || !showtime.endTime) {
+        return <span className="text-gray-500">No showtime available</span>;
+      }
+      if (showtime.startTime === showtime.endTime) {
+        return (
+          <>
+            {formatShowTime(showtime.startTime)}
+          </>
+        );
+      }
+      return (
+        <>
+         {formatShowTime(showtime.startTime)} - {formatShowTime(showtime.endTime)}
+        </>
+      )
+    }
+
     return (
       <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-        <h3 className="text-lg font-bold text-center mb-2">{show.name}</h3>
+        <h3 className="text-md font-bold text-center mb-2 min-h-12 flex">
+          <span className="my-auto text-center mx-auto">{show.name}</span>
+        </h3>
+        <hr />
         {show.liveData?.showtimes?.length ? (
-          <>
-            <hr />
-            <div className="mt-2 w-full flex flex-row flex-wrap justify-center mx-auto">
-              {show.liveData?.showtimes.map((time, index) => (
-                <div key={index} className="w-26 text-sm text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-[4px] px-2 py-1 m-1">
-                  {formatShowTime(time.startTime)} - {formatShowTime(time.endTime)}
-                </div>
-              ))}
-            </div>
-          </>
+          <div className="mt-2 w-full flex flex-row flex-wrap justify-center mx-auto">
+            {show.liveData?.showtimes.map((time, index) => (
+              <div key={index} className="w-fit text-sm text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-[4px] px-1 py-1 m-1">
+                {displayShowTime(time)}
+              </div>
+            ))}
+          </div>
          ) : (
           <div className="text-sm text-gray-500 dark:text-gray-400 text-center mt-2">
             No showtimes available.
@@ -190,7 +209,7 @@ function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto p-4">
+    <div className="w-full max-w-7xl mx-auto p-4">
       {shows?.length ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {shows.sort(sortByStartTime).map((show) => (
@@ -208,7 +227,9 @@ function RestaurantsSection({ restaurants }: { restaurants: LivePark["restaurant
   function RestaurantElement({ restaurant }: { restaurant: LiveRestaurant }) {
     return (
       <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-        <h3 className="text-sm sm:text-lg font-bold text-center h-min-[128px] mb-2 p-2">{restaurant.name}</h3>
+        <h3 className="text-md font-bold text-center mb-2 min-h-12 flex">
+          <span className="my-auto text-center mx-auto">{restaurant.name}</span>
+        </h3>
         <hr />
         {restaurant.cuisines?.length ? (
           <>
@@ -230,7 +251,7 @@ function RestaurantsSection({ restaurants }: { restaurants: LivePark["restaurant
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto p-4">
+    <div className="w-full max-w-7xl mx-auto p-4">
       {restaurants?.length ? (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {restaurants.map((restaurant) => (

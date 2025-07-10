@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Loader } from "../../components/Loader";
 import ParkRidesTable from "./ParkRides";
 import RideGridSection from "./RideGridSection";
-import { LivePark } from "../../types/db";
+import { LivePark, LiveRestaurant, LiveShow } from "../../types/db";
 import ChildrenTab from "../../components/ChildrenTab";
 
 export const ParkDetailsContainer: React.FC = () => {
@@ -148,14 +148,27 @@ function AttractionsSection({ attractions }: { attractions: LivePark["attraction
 };
 
 function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
+  function ShowElement({ show }: { show: LiveShow }) {
+    return (
+      <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+        <h3 className="text-lg font-bold text-center">{show.name}</h3>
+        <div className="mt-2 text-center flex flex-col items-center">
+          {show.liveData?.showTimes.map((time, index) => (
+            <div key={index} className="text-sm text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-full px-2 py-1 m-1">
+              {time.type}: {time.startTime} - {time.endTime}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-6xl mx-auto p-4">
       {shows?.length ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {shows.map((show) => (
-            <div key={show.id} className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-              <h3 className="text-lg font-bold text-center">{show.name}</h3>
-            </div>
+            <ShowElement key={show.id} show={show} />
           ))}
         </div>
       ) : (
@@ -166,14 +179,27 @@ function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
 };
 
 function RestaurantsSection({ restaurants }: { restaurants: LivePark["restaurants"] }) {
+  function RestaurantElement({ restaurant }: { restaurant: LiveRestaurant }) {
+    return (
+      <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+        <h3 className="text-lg font-bold text-center">{restaurant.name}</h3>
+        <div className="mt-2 text-center flex flex-col items-center">
+          {restaurant.cuisines?.map((cuisine, index) => (
+            <span key={index} className="text-sm text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-full px-2 py-1 m-1">
+              {cuisine}
+            </span>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-6xl mx-auto p-4">
       {restaurants?.length ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {restaurants.map((restaurant) => (
-            <div key={restaurant.id} className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-              <h3 className="text-lg font-bold text-center">{restaurant.name}</h3>
-            </div>
+            <RestaurantElement key={restaurant.id} restaurant={restaurant} />
           ))}
         </div>
       ) : (

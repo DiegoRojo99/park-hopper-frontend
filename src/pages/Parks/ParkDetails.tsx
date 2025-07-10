@@ -208,7 +208,7 @@ function RestaurantsSection({ restaurants }: { restaurants: LivePark["restaurant
   function RestaurantElement({ restaurant }: { restaurant: LiveRestaurant }) {
     return (
       <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-        <h3 className="text-sm sm:text-lg font-bold text-center h-min-[96px] mb-2 p-2">{restaurant.name}</h3>
+        <h3 className="text-sm sm:text-lg font-bold text-center h-min-[128px] mb-2 p-2">{restaurant.name}</h3>
         <hr />
         {restaurant.cuisines?.length ? (
           <>

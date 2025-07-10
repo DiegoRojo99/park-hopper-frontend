@@ -65,8 +65,24 @@ export type LiveDataElement = {
   lastUpdated: string;
 };
 
+export type ShowTimes = {
+  type: string;
+  startTime: string;
+  endTime: string;
+};
+export type ShowLiveDataElement = {
+  id: string;
+  name: string;
+  entityType: EntityType;
+  parkId: string;
+  externalId: string;
+  showTimes: ShowTimes[];
+  status: LiveDataStatus;
+  lastUpdated: string;
+};
+
 export type LiveAttraction = Attraction & { liveData?: LiveDataElement }
-export type LiveShow = Show & { liveData?: LiveDataElement }
+export type LiveShow = Show & { liveData?: ShowLiveDataElement }
 export type LiveRestaurant = Restaurant & { liveData?: LiveDataElement }
 export type LivePark = ParkWithDestination & {
   attractions?: LiveAttraction[];

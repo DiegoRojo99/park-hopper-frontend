@@ -148,17 +148,43 @@ function AttractionsSection({ attractions }: { attractions: LivePark["attraction
 };
 
 function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
+  function sortByStartTime(a: LiveShow, b: LiveShow) {
+    if (!a.liveData?.showtimes?.length) {
+      return 1; // If no showtimes, push to end
+    }
+    if (!b.liveData?.showtimes?.length) {
+      return -1; // If no showtimes, push to end
+    }
+    const aStart = new Date(a.liveData?.showtimes?.[0]?.startTime || "").getTime();
+    const bStart = new Date(b.liveData?.showtimes?.[0]?.startTime || "").getTime();
+    return aStart - bStart;
+  }
+
+  function formatShowTime(time: string) {
+    const date = new Date(time);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
   function ShowElement({ show }: { show: LiveShow }) {
     return (
       <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-        <h3 className="text-lg font-bold text-center">{show.name}</h3>
-        <div className="mt-2 text-center flex flex-col items-center">
-          {show.liveData?.showTimes.map((time, index) => (
-            <div key={index} className="text-sm text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-full px-2 py-1 m-1">
-              {time.type}: {time.startTime} - {time.endTime}
+        <h3 className="text-lg font-bold text-center mb-2">{show.name}</h3>
+        {show.liveData?.showtimes?.length ? (
+          <>
+            <hr />
+            <div className="mt-2 w-full flex flex-row flex-wrap justify-center mx-auto">
+              {show.liveData?.showtimes.map((time, index) => (
+                <div key={index} className="w-26 text-sm text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-[4px] px-2 py-1 m-1">
+                  {formatShowTime(time.startTime)} - {formatShowTime(time.endTime)}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+         ) : (
+          <div className="text-sm text-gray-500 dark:text-gray-400 text-center mt-2">
+            No showtimes available.
+          </div>
+        )}
       </div>
     );
   }
@@ -167,7 +193,7 @@ function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
     <div className="w-full max-w-6xl mx-auto p-4">
       {shows?.length ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {shows.map((show) => (
+          {shows.sort(sortByStartTime).map((show) => (
             <ShowElement key={show.id} show={show} />
           ))}
         </div>

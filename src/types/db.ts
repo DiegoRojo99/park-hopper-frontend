@@ -76,7 +76,7 @@ export type ShowLiveDataElement = {
   entityType: EntityType;
   parkId: string;
   externalId: string;
-  showTimes: ShowTimes[];
+  showtimes: ShowTimes[];
   status: LiveDataStatus;
   lastUpdated: string;
 };

@@ -208,14 +208,23 @@ function RestaurantsSection({ restaurants }: { restaurants: LivePark["restaurant
   function RestaurantElement({ restaurant }: { restaurant: LiveRestaurant }) {
     return (
       <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-        <h3 className="text-lg font-bold text-center">{restaurant.name}</h3>
-        <div className="mt-2 text-center flex flex-col items-center">
-          {restaurant.cuisines?.map((cuisine, index) => (
-            <span key={index} className="text-sm text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-full px-2 py-1 m-1">
-              {cuisine}
-            </span>
-          ))}
-        </div>
+        <h3 className="text-base sm:text-lg font-bold text-center">{restaurant.name}</h3>
+        {restaurant.cuisines?.length ? (
+          <>
+            <hr />
+            <div className="mt-2 text-center flex flex-row flex-wrap justify-center w-full">
+              {restaurant.cuisines?.map((cuisine, index) => (
+                <span key={index} className="text-sm w-full text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-[4px] px-2 py-1 m-1">
+                  {cuisine}
+                </span>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="text-sm text-gray-500 dark:text-gray-400 text-center mt-2">
+            No cuisines available.
+          </div>
+        )}
       </div>
     );
   }
@@ -223,7 +232,7 @@ function RestaurantsSection({ restaurants }: { restaurants: LivePark["restaurant
   return (
     <div className="w-full max-w-6xl mx-auto p-4">
       {restaurants?.length ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {restaurants.map((restaurant) => (
             <RestaurantElement key={restaurant.id} restaurant={restaurant} />
           ))}

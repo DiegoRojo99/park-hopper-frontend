@@ -13,6 +13,7 @@ import LoginPage from './pages/Login/LoginPage';
 /* STYLES */
 import './index.css';
 import SyncParksPage from './pages/Sync/SyncParks';
+import AdminImageLinker from './pages/Admin/AdminImageLinker';
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
             <Route path="parks/:parkId" element={<ParkDetailsContainer />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="sync" element={<SyncParksPage />} />
+            <Route path="admin/images" element={<AdminImageLinker />} />
           </Route>
         </Routes>
       </BrowserRouter>

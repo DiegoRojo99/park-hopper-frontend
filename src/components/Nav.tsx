@@ -26,6 +26,7 @@ const Nav: React.FC = () => {
         <div className="space-x-4">
           {/* <Link to="/" className="hover:underline">Home</Link> */}
           <Link to="/parks" className="hover:underline">Parks</Link>
+          <Link to="/admin/images" className="hover:underline">Admin Images</Link>
           {/* <Link to="/sync" className="hover:underline">Sync Parks</Link> */}
           
           {userLoading ? null : user ? (

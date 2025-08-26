@@ -20,10 +20,17 @@ const AdminImageLinker: React.FC = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    const apiUrl = process.env.REACT_APP_API_URL!;
+    if (!apiUrl) {
+      setError("API URL is not defined");
+      setLoading(false);
+      return;
+    }
+    
     setEntities([]);
     setEntityId('');
     setLoading(true);
-    fetch(`/api/entities?type=${entityType}`)
+    fetch(`${apiUrl}/api/entities?type=${entityType}`)
       .then(async res => {
         if (!res.ok) throw new Error('Failed to fetch entities');
         const data = await res.json();
@@ -38,11 +45,19 @@ const AdminImageLinker: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const apiUrl = process.env.REACT_APP_API_URL!;
+    if (!apiUrl) {
+      setError("API URL is not defined");
+      setLoading(false);
+      return;
+    }
+    
     setLoading(true);
     setError('');
     setSuccess(false);
     try {
-      const res = await fetch('/api/images/wikimedia', {
+      const res = await fetch(`${apiUrl}/api/images/wikimedia`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

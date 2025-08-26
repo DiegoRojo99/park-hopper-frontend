@@ -67,9 +67,9 @@ const AdminImageLinker: React.FC = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded shadow">
-      <h2 className="text-2xl font-bold mb-4">Link Wikimedia Image</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="flex flex-col w-full py-4">
+      <h2 className="text-2xl font-bold mt-4 text-center">Link Wikimedia Image</h2>
+      <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl w-[80%] mx-auto mt-4 p-6 bg-white rounded shadow">
         <div>
           <label className="block font-semibold mb-1">Entity Type</label>
           <select

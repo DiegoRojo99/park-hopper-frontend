@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Layout } from './components/Layout';
 
 /* CONTEXT */
@@ -15,21 +15,25 @@ import './index.css';
 import SyncParksPage from './pages/Sync/SyncParks';
 import AdminImageLinker from './pages/Admin/AdminImageLinker';
 
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: 'parks', element: <Parks /> },
+      { path: 'parks/:parkId', element: <ParkDetailsContainer /> },
+      { path: 'login', element: <LoginPage /> },
+      { path: 'sync', element: <SyncParksPage /> },
+      { path: 'admin/images', element: <AdminImageLinker /> },
+    ],
+  },
+]);
+
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<HomePage />} />
-            <Route path="parks" element={<Parks />} />
-            <Route path="parks/:parkId" element={<ParkDetailsContainer />} />
-            <Route path="login" element={<LoginPage />} />
-            <Route path="sync" element={<SyncParksPage />} />
-            <Route path="admin/images" element={<AdminImageLinker />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <RouterProvider router={router} future={{ v7_startTransition: true }} />
     </AuthProvider>
   );
 }

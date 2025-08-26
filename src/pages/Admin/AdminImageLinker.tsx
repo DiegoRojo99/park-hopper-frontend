@@ -6,7 +6,6 @@ const ENTITY_TYPES: EntityType[] = ['DESTINATION', 'PARK', 'ATTRACTION', 'RESTAU
 const IMAGE_TYPES = [
   { value: 'logo', label: 'Logo' },
   { value: 'main', label: 'Main' },
-  { value: 'regular', label: 'Regular' },
 ];
 
 const AdminImageLinker: React.FC = () => {
@@ -106,7 +105,7 @@ const AdminImageLinker: React.FC = () => {
             disabled={loading || entities.length === 0}
           >
             <option value="">Select...</option>
-            {entities.map(entity => (
+            {entities.filter(entity => entity.name).sort((a, b) => a.name.localeCompare(b.name)).map(entity => (
               <option key={entity.id} value={entity.id}>{entity.name}</option>
             ))}
           </select>

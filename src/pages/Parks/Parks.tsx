@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader } from '../../components/Loader';
-import { ParkWithDestination } from '../../types/db';
+import { ParkWithDetails } from '../../types/Park';
 
 const Parks: React.FC = () => {
-  const [parks, setParks] = useState<ParkWithDestination[]>([]);
+  const [parks, setParks] = useState<ParkWithDetails[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const Parks: React.FC = () => {
           throw new Error('Failed to fetch parks');
         }
         const data = await response.json();
-        setParks(data);
+  setParks(data);
       } catch (err: any) {
         setError(err.message || 'Unknown error');
       } finally {
@@ -36,18 +36,6 @@ const Parks: React.FC = () => {
 
   if (loading) return <Loader />;
   if (error) return <div>Error: {error}</div>;
-
-  // Group parks by destination.name
-  const grouped = parks.reduce<Record<string, ParkWithDestination[]>>((acc, park) => {
-    const destName = park.destination?.name || 'Unknown';
-    if (!acc[destName]) acc[destName] = [];
-    acc[destName].push(park);
-    return acc;
-  }, {});
-
-  const sortedDestinations = Object.entries(grouped).sort(([a], [b]) =>
-    a.localeCompare(b)
-  );
 
   return (
     <div className="flex flex-col items-center justify-center h-full w-full my-auto">
@@ -63,49 +51,35 @@ const Parks: React.FC = () => {
       ></div>
 
       <h1 className="text-3xl md:text-4xl font-bold text-light-text dark:text-dark-text my-4 pb-2">
-        Parks by Destination
+        Parks
       </h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-3 w-full max-w-7xl px-4">
-        {sortedDestinations.map(([destinationName, parks]) => (
-          <div
-            key={destinationName}
-            className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow p-2 flex flex-col"
-          >
-            <div className="flex flex-row items-center gap-4 mb-2">
-              <img
-                src={'/icons/ferris-wheel.svg'}
-                alt={destinationName}
-                className="w-8 h-auto"
-              />
-              <div className="flex flex-col flex-1 min-w-0">
-                <h2 className="text-md md:text-lg font-semibold text-gray-800 dark:text-gray-100 truncate">
-                  {destinationName}
-                </h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {parks.length} park{parks.length > 1 ? 's' : ''}
-                </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl px-4">
+        {parks.sort((a, b) => a.name.localeCompare(b.name)).map((park) => {
+          const logo = park.logoImage?.url;
+          const main = park.mainImage?.url;
+          return (
+            <div
+              key={park.id}
+              onClick={() => navigate(`/parks/${park.id}`)}
+              className="cursor-pointer bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden flex flex-col hover:scale-[1.03] transition-transform"
+            >
+              <div className="relative w-full h-48 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                {main ? (
+                  <img src={main} alt={park.name + ' main'} className="object-cover w-full h-full" />
+                ) : logo ? (
+                  <img src={logo} alt={park.name + ' logo'} className="object-contain w-32 h-32 mx-auto" />
+                ) : (
+                  <span className="text-gray-400">No image</span>
+                )}
+              </div>
+              <div className="p-4 flex flex-col items-center">
+                <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-1">{park.name}</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{park.destination?.name}</p>
               </div>
             </div>
-            <hr className="mb-4 border-gray-300 dark:border-gray-600" />
-
-            <div className="flex flex-col gap-2">
-              {parks
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((park) => (
-                  <div
-                    key={park.id}
-                    onClick={() => navigate(`/parks/${park.id}`)}
-                    className="cursor-pointer border border-gray-300 dark:border-gray-600 rounded-md p-3 text-center bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 transition"
-                  >
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                      {park.name}
-                    </p>
-                  </div>
-                ))}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -76,8 +76,17 @@ const Parks: React.FC = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="flex flex-col items-center w-full py-6 px-2">
-      <div className="w-full max-w-5xl mb-6 px-4">
+    <div className="flex flex-col items-center w-full py-6 px-4 md:px-2">
+      <div className='max-w-7xl text-left w-full mb-4'>
+        <h1 className="text-2xl md:text-4xl font-bold  mb-2">
+          Discover Theme Parks
+        </h1>
+        <p className="text-gray-400 dark:text-gray-200 text-sm md:text-lg">
+          Explore theme parks worldwide with live wait times and real-time updates
+        </p>
+      </div>
+
+      <div className="w-full max-w-7xl mb-6">
         <div className="relative flex items-center gap-2">
           <div className="flex-1 relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -138,7 +147,7 @@ const Parks: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full max-w-7xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full max-w-7xl">
         {filteredParks.length === 0 ? (
           <div className="col-span-full text-center text-gray-500">No parks found.</div>
         ) : (

@@ -17,7 +17,7 @@ const Parks: React.FC = () => {
   // Get unique destinations for filter
   const destinations = useMemo(() => {
     const dests = Array.from(new Set(parks.map(p => p.destination?.name).filter(Boolean)));
-    return dests;
+    return dests.sort((a, b) => a.localeCompare(b));
   }, [parks]);
 
   // Filter, search, sort parks

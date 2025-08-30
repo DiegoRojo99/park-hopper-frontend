@@ -8,8 +8,8 @@ type ParkCardProps = {
 
 const ParkCard: React.FC<ParkCardProps> = ({ park }) => {
   const navigate = useNavigate();
-  const logo = park.logoImage?.[0]?.url;
-  const main = park.mainImage?.[0]?.url;
+  const logo = park.logoImage?.url;
+  const main = park.mainImage?.url;
 
   return (
     <div

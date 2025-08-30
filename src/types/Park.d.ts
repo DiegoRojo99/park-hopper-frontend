@@ -15,8 +15,8 @@ export type Park = {
 };
 
 export type ParkWithDetails = Park & {
-  logoImage: WikimediaImage[];
-  mainImage: WikimediaImage[];
+  logoImage: WikimediaImage;
+  mainImage: WikimediaImage;
   destination: Destination;
 };
 

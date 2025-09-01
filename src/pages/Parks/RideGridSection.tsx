@@ -1,15 +1,15 @@
 import { LiveAttraction } from "../../types/db";
 
 function sortByWaitTime(a: LiveAttraction, b: LiveAttraction) {
-  const waitA = a.liveData?.queue?.STANDBY?.waitTime;
-  const waitB = b.liveData?.queue?.STANDBY?.waitTime;
+  const waitA = a.waitTime;
+  const waitB = b.waitTime;
   if(!waitA) return 1; // Treat null as greater than any number
   if(!waitB) return -1; // Treat null as greater than any number
   return waitB - waitA;
 }
 
 function filterNonApplicableRide(attraction: LiveAttraction) {
-  const status = attraction.liveData?.status;
+  const status = attraction.status;
   return status && ["OPERATING", "DOWN", "CLOSED"].includes(status);
 }
 
@@ -29,16 +29,15 @@ export default function RideGridSection({ attractions }: { attractions: LiveAttr
 
 function AttractionCard({ attraction }: { attraction: LiveAttraction }) {
   if (!attraction) return null;
-  const liveData = attraction.liveData;
-  const waitTime = liveData?.queue?.STANDBY?.waitTime || null;
+  const waitTime = attraction.waitTime || null;
 
   return (
     <div className="p-4 bg-white dark:bg-gray-800 rounded-xl shadow flex justify-between items-center border border-gray-200 dark:border-gray-700">
       <div className="flex flex-col flex-1">
         <h3 className="text-lg font-bold text-gray-900 dark:text-white">{attraction.name}</h3>
-        {liveData ? (
-          <p className={`text-sm ${liveData.status === "OPERATING" ? "text-green-600" : "text-red-600"}`}>
-            {liveData.status}
+        {attraction.status ? (
+          <p className={`text-sm ${attraction.status === "OPERATING" ? "text-green-600" : "text-red-600"}`}>
+            {attraction.status}
           </p>
         ) : (
           <p className="text-sm text-gray-500">Unknown</p>

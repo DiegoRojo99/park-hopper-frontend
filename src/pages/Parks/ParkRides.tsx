@@ -1,15 +1,15 @@
 import { LiveAttraction } from "../../types/db";
 
 function sortByWaitTime(a: LiveAttraction, b: LiveAttraction) {
-  const waitA = a.liveData?.queue?.STANDBY?.waitTime;
-  const waitB = b.liveData?.queue?.STANDBY?.waitTime;
+  const waitA = a.waitTime;
+  const waitB = b.waitTime;
   if(!waitA) return 1; // Treat null as greater than any number
   if(!waitB) return -1; // Treat null as greater than any number
   return waitB - waitA;
 }
 
 function filterNonApplicableRide(attraction: LiveAttraction) {
-  const status = attraction.liveData?.status;
+  const status = attraction.status;
   return status && ["OPERATING", "DOWN", "CLOSED"].includes(status);
 }
 
@@ -38,16 +38,15 @@ export default function ParkRidesTable({ attractions }: { attractions: LiveAttra
 
 function AttractionRow({ attraction, index }: { attraction: LiveAttraction, index: number }) {
   if (!attraction) return null;
-  const liveData = attraction.liveData;
-  const waitTime = liveData?.queue?.STANDBY?.waitTime || null;
+  const waitTime = attraction.waitTime || null;
   const rowClass = index % 2 === 0 ? "bg-white dark:bg-gray-800 py-1" : "bg-gray-100 dark:bg-gray-700 py-1";
   const statusClass =
-    liveData?.status === "OPERATING" ? "text-green-600" : 
-    liveData?.status === "DOWN" ? "text-yellow-600" : "text-red-600";
+    attraction.status === "OPERATING" ? "text-green-600" : 
+    attraction.status === "DOWN" ? "text-yellow-600" : "text-red-600";
 
   return (
     <tr key={attraction.id} className={rowClass}>
-      {liveData ? (
+      {attraction.status ? (
         <td className={`${statusClass} ${rowClass} flex items-center px-2 h-full`}>
           <span className="inline-flex items-center mx-auto my-auto">
             <svg className="w-4 h-4 my-[0.1rem] mr-1 bg-transparent" fill="currentColor" viewBox="0 0 20 20">

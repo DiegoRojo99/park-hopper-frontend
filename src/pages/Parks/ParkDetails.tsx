@@ -29,7 +29,7 @@ export const ParkDetailsContainer: React.FC = () => {
       return;
     }
 
-    fetch(`${apiUrl}/api/parks/${parkId}/live`)
+    fetch(`${apiUrl}/api/parks/${parkId}`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch park details");
         return res.json();
@@ -149,14 +149,14 @@ function AttractionsSection({ attractions }: { attractions: LivePark["attraction
 
 function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
   function sortByStartTime(a: LiveShow, b: LiveShow) {
-    if (!a.liveData?.showtimes?.length) {
+    if (!a?.showtimes?.length) {
       return 1; // If no showtimes, push to end
     }
-    if (!b.liveData?.showtimes?.length) {
+    if (!b?.showtimes?.length) {
       return -1; // If no showtimes, push to end
     }
-    const aStart = new Date(a.liveData?.showtimes?.[0]?.startTime || "").getTime();
-    const bStart = new Date(b.liveData?.showtimes?.[0]?.startTime || "").getTime();
+    const aStart = new Date(a?.showtimes?.[0]?.startTime || "").getTime();
+    const bStart = new Date(b?.showtimes?.[0]?.startTime || "").getTime();
     return aStart - bStart;
   }
 
@@ -191,9 +191,9 @@ function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
           <span className="my-auto text-center mx-auto">{show.name}</span>
         </h3>
         <hr />
-        {show.liveData?.showtimes?.length ? (
+        {show.showtimes?.length ? (
           <div className="mt-2 w-full flex flex-row flex-wrap justify-center mx-auto">
-            {show.liveData?.showtimes.map((time, index) => (
+            {show.showtimes.map((time, index) => (
               <div key={index} className="w-fit text-sm text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-[4px] px-1 py-1 m-1">
                 {displayShowTime(time)}
               </div>

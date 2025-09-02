@@ -31,3 +31,9 @@ export type ParkWithChildren = ParkWithDetails & {
   shows: Show[];
   restaurants: Restaurant[];
 };
+
+export type LivePark = ParkWithDetails & {
+  attractions?: LiveAttraction[];
+  shows?: LiveShow[];
+  restaurants?: LiveRestaurant[];
+};

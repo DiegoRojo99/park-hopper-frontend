@@ -4,8 +4,9 @@ import { useParams } from "react-router-dom";
 import { Loader } from "../../components/Loader";
 import ParkRidesTable from "./ParkRides";
 import RideGridSection from "./RideGridSection";
-import { LivePark, LiveRestaurant, LiveShow, ShowTimes } from "../../types/db";
+import { LiveRestaurant, LiveShow, ShowTimes } from "../../types/db";
 import ChildrenTab from "../../components/ChildrenTab";
+import { LivePark } from "../../types/Park";
 
 export const ParkDetailsContainer: React.FC = () => {
   const { parkId } = useParams<{ parkId: string }>();
@@ -67,7 +68,7 @@ const ParkDetails: React.FC<{park: LivePark}> = ({ park }) => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-full w-full p-4">
+    <div className="flex flex-col items-center justify-center h-full w-full">
       <ParkHeroSection park={park} />
       <ChildrenTab selectedTab={selectedTab} setTab={handleTabChange} />
       {renderTabContent()}
@@ -79,13 +80,21 @@ const ParkDetails: React.FC<{park: LivePark}> = ({ park }) => {
 function ParkHeroSection({ park }: { park: LivePark }) {
   return (
     <section
-      className={`relative w-full text-center h-32`}
+      className={`relative w-full text-center h-48 bg-light-secondary dark:bg-dark-secondary overflow-hidden`}
     >
+      {park.mainImage && (
+        <div 
+          className="absolute inset-0 w-full h-full bg-cover bg-center"
+          style={{ backgroundImage: `url(${park.mainImage.url})` }}
+        />
+      )}
+      {/* Overlay gradient for text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/70" />
       <div className="relative z-10 p-6 flex flex-col justify-center h-full">
-        <h1 className="text-2xl sm:text-4xl font-bold text-gray-800 dark:text-white">
+        <h1 className="text-2xl sm:text-4xl font-bold text-white">
           {park.name}
         </h1>
-        <p className="text-md sm:text-lg text-gray-600 dark:text-gray-300">
+        <p className="text-md sm:text-lg text-gray-200">
           {park.destination?.name || "No Destination"}
         </p>
       </div>

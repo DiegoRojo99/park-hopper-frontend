@@ -14,7 +14,7 @@ const tabOptions: { label: TabOption; icon: React.ReactNode }[] = [
 ];
 
 const ChildrenTab: React.FC<ChildrenTabProps> = ({ selectedTab, setTab }) => (
-  <div style={{ display: "flex", gap: "1rem" }}>
+  <div className="py-4" style={{ display: "flex", gap: "1rem" }}>
     {tabOptions.map(({ label, icon }) => (
       <button
         key={label}

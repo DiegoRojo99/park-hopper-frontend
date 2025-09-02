@@ -84,11 +84,6 @@ export type ShowLiveDataElement = {
 export type LiveAttraction = Attraction & { waitTime: number | null, status: LiveDataStatus };
 export type LiveShow = Show & { showtimes: ShowTimes[], status: LiveDataStatus };
 export type LiveRestaurant = Restaurant;
-export type LivePark = ParkWithDestination & {
-  attractions?: LiveAttraction[];
-  shows?: LiveShow[];
-  restaurants?: LiveRestaurant[];
-};
 
 /* CHILDREN TYPES */
 export type Attraction = ChildrenEntity

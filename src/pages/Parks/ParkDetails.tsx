@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { Loader } from "../../components/Loader";
 import ParkRidesTable from "./ParkRides";
@@ -7,6 +7,7 @@ import RideGridSection from "./RideGridSection";
 import { LiveRestaurant, LiveShow, ShowTimes } from "../../types/db";
 import ChildrenTab from "../../components/ChildrenTab";
 import { LivePark } from "../../types/Park";
+import SearchBar from "../../components/SearchBar";
 
 export const ParkDetailsContainer: React.FC = () => {
   const { parkId } = useParams<{ parkId: string }>();
@@ -103,11 +104,27 @@ function ParkHeroSection({ park }: { park: LivePark }) {
 };
 
 function AttractionsSection({ attractions }: { attractions: LivePark["attractions"] }) {
+  const [search, setSearch] = useState('');
+  
+  const filteredAttractions = useMemo(() => {
+    if (!search || !attractions) return attractions || [];
+    return attractions.filter(attraction => 
+      attraction.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [attractions, search]);
+
   return (
     <div className="w-full sm:max-w-6xl mx-auto p-2 sm:p-4">
+      <div className="mb-4">
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          placeholder="Search attractions..."
+        />
+      </div>
       {attractions?.length ? (
         <div>
-          <RideGridSection attractions={attractions} />
+          <RideGridSection attractions={filteredAttractions} />
         </div>
       ) : (
         <div className="text-center text-gray-500">No attractions available.</div>
@@ -117,6 +134,15 @@ function AttractionsSection({ attractions }: { attractions: LivePark["attraction
 };
 
 function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
+  const [search, setSearch] = useState('');
+
+  const filteredShows = useMemo(() => {
+    if (!search || !shows) return shows;
+    return shows.filter(show => 
+      show.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [shows, search]);
+
   function sortByStartTime(a: LiveShow, b: LiveShow) {
     if (!a?.showtimes?.length) {
       return 1; // If no showtimes, push to end
@@ -156,8 +182,8 @@ function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
 
     return (
       <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-        <h3 className="text-md font-bold text-center mb-2 min-h-12 flex">
-          <span className="my-auto text-center mx-auto">{show.name}</span>
+        <h3 className="text-md font-bold mb-2 min-h-12">
+          {show.name}
         </h3>
         <hr />
         {show.showtimes?.length ? (
@@ -179,9 +205,16 @@ function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
 
   return (
     <div className="w-full max-w-7xl mx-auto p-4">
+      <div className="mb-4">
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          placeholder="Search shows..."
+        />
+      </div>
       {shows?.length ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {shows.sort(sortByStartTime).map((show) => (
+          {(filteredShows || []).sort(sortByStartTime).map((show) => (
             <ShowElement key={show.id} show={show} />
           ))}
         </div>
@@ -193,6 +226,18 @@ function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
 };
 
 function RestaurantsSection({ restaurants }: { restaurants: LivePark["restaurants"] }) {
+  const [search, setSearch] = useState('');
+  
+  const filteredRestaurants = useMemo(() => {
+    if (!search || !restaurants) return restaurants || [];
+    return restaurants.filter(restaurant => 
+      restaurant.name.toLowerCase().includes(search.toLowerCase()) ||
+      restaurant.cuisines?.some((cuisine: string) => 
+        cuisine.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [restaurants, search]);
+
   function RestaurantElement({ restaurant }: { restaurant: LiveRestaurant }) {
     return (
       <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
@@ -221,9 +266,16 @@ function RestaurantsSection({ restaurants }: { restaurants: LivePark["restaurant
 
   return (
     <div className="w-full max-w-7xl mx-auto p-4">
+      <div className="mb-4">
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          placeholder="Search restaurants or cuisines..."
+        />
+      </div>
       {restaurants?.length ? (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {restaurants.map((restaurant) => (
+          {filteredRestaurants.map((restaurant) => (
             <RestaurantElement key={restaurant.id} restaurant={restaurant} />
           ))}
         </div>

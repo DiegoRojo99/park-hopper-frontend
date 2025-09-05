@@ -26,9 +26,35 @@ export default function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
     return aStart - bStart;
   }
 
+  if (!shows || shows.length === 0) {
+    return <div className="w-full max-w-7xl mx-auto p-4 text-center text-gray-500">No shows available.</div>;
+  }
+  
+  if (!filteredShows || filteredShows.length === 0) {
+    return (
+      <div className="w-full sm:max-w-7xl mx-auto p-2 sm:p-4">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Shows</h2>
+          <p className="text-gray-500">0 shows</p>
+        </div>
+        <div className="mb-4">
+          <SearchBar
+            value={search}
+            onChange={setSearch}
+            placeholder="Search shows..."
+          />
+        </div>
+        <div className="text-center text-gray-500">No shows found.</div>
+      </div>
+    )
+  }
 
   return (
     <div className="w-full max-w-7xl mx-auto p-4">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Shows</h2>
+        <p className="text-gray-500">{filteredShows.length} shows</p>
+      </div>
       <div className="mb-4">
         <SearchBar
           value={search}

@@ -1,11 +1,9 @@
 import React from "react";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Loader } from "../../components/Loader";
-import { LiveRestaurant } from "../../types/db";
 import ChildrenTab from "../../components/ChildrenTab";
 import { LivePark } from "../../types/Park";
-import SearchBar from "../../components/SearchBar";
 import AttractionsSection from "../Attractions/AttractionsSection";
 import ShowsSection from "../Shows/ShowsSection";
 import RestaurantsSection from "../Restaurants/RestaurantsSection";

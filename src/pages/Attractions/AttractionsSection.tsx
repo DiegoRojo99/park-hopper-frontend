@@ -26,11 +26,7 @@ export default function AttractionsSection({ attractions }: { attractions: LiveP
           placeholder="Search attractions..."
         />
       </div>
-      {attractions?.length ? (
-        <AttractionGrid attractions={filteredAttractions} />
-      ) : (
-        <div className="text-center text-gray-500">No attractions available.</div>
-      )}
+      <AttractionGrid attractions={filteredAttractions} />
     </div>
   );
 };

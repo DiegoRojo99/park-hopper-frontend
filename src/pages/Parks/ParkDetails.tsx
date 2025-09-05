@@ -2,11 +2,13 @@ import React from "react";
 import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { Loader } from "../../components/Loader";
-import { LiveRestaurant, LiveShow, ShowTimes } from "../../types/db";
+import { LiveRestaurant } from "../../types/db";
 import ChildrenTab from "../../components/ChildrenTab";
 import { LivePark } from "../../types/Park";
 import SearchBar from "../../components/SearchBar";
 import AttractionsSection from "../Attractions/AttractionsSection";
+import ShowsSection from "../Shows/ShowsSection";
+import RestaurantsSection from "../Restaurants/RestaurantsSection";
 
 export const ParkDetailsContainer: React.FC = () => {
   const { parkId } = useParams<{ parkId: string }>();
@@ -99,159 +101,6 @@ function ParkHeroSection({ park }: { park: LivePark }) {
         </p>
       </div>
     </section>
-  );
-};
-
-function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
-  const [search, setSearch] = useState('');
-
-  const filteredShows = useMemo(() => {
-    if (!search || !shows) return shows;
-    return shows.filter(show => 
-      show.name.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [shows, search]);
-
-  function sortByStartTime(a: LiveShow, b: LiveShow) {
-    if (!a?.showtimes?.length) {
-      return 1; // If no showtimes, push to end
-    }
-    if (!b?.showtimes?.length) {
-      return -1; // If no showtimes, push to end
-    }
-    const aStart = new Date(a?.showtimes?.[0]?.startTime || "").getTime();
-    const bStart = new Date(b?.showtimes?.[0]?.startTime || "").getTime();
-    return aStart - bStart;
-  }
-
-  function formatShowTime(time: string) {
-    const date = new Date(time);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  }
-
-  function ShowElement({ show }: { show: LiveShow }) {
-
-    function displayShowTime(showtime: ShowTimes) {
-      if (!showtime || !showtime.startTime || !showtime.endTime) {
-        return <span className="text-gray-500">No showtime available</span>;
-      }
-      if (showtime.startTime === showtime.endTime) {
-        return (
-          <>
-            {formatShowTime(showtime.startTime)}
-          </>
-        );
-      }
-      return (
-        <>
-         {formatShowTime(showtime.startTime)} - {formatShowTime(showtime.endTime)}
-        </>
-      )
-    }
-
-    return (
-      <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-        <h3 className="text-md font-bold mb-2 min-h-12">
-          {show.name}
-        </h3>
-        <hr />
-        {show.showtimes?.length ? (
-          <div className="mt-2 w-full flex flex-row flex-wrap justify-center mx-auto">
-            {show.showtimes.map((time, index) => (
-              <div key={index} className="w-fit text-sm text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-[4px] px-1 py-1 m-1">
-                {displayShowTime(time)}
-              </div>
-            ))}
-          </div>
-         ) : (
-          <div className="text-sm text-gray-500 dark:text-gray-400 text-center mt-2">
-            No showtimes available.
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  return (
-    <div className="w-full max-w-7xl mx-auto p-4">
-      <div className="mb-4">
-        <SearchBar
-          value={search}
-          onChange={setSearch}
-          placeholder="Search shows..."
-        />
-      </div>
-      {shows?.length ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {(filteredShows || []).sort(sortByStartTime).map((show) => (
-            <ShowElement key={show.id} show={show} />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center text-gray-500">No shows available.</div>
-      )}
-    </div>
-  );
-};
-
-function RestaurantsSection({ restaurants }: { restaurants: LivePark["restaurants"] }) {
-  const [search, setSearch] = useState('');
-  
-  const filteredRestaurants = useMemo(() => {
-    if (!search || !restaurants) return restaurants || [];
-    return restaurants.filter(restaurant => 
-      restaurant.name.toLowerCase().includes(search.toLowerCase()) ||
-      restaurant.cuisines?.some((cuisine: string) => 
-        cuisine.toLowerCase().includes(search.toLowerCase())
-      )
-    );
-  }, [restaurants, search]);
-
-  function RestaurantElement({ restaurant }: { restaurant: LiveRestaurant }) {
-    return (
-      <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-        <h3 className="text-md font-bold text-center mb-2 min-h-12 flex">
-          <span className="my-auto text-center mx-auto">{restaurant.name}</span>
-        </h3>
-        <hr />
-        {restaurant.cuisines?.length ? (
-          <>
-            <div className="mt-2 text-center flex flex-row flex-wrap justify-center w-full">
-              {restaurant.cuisines?.map((cuisine, index) => (
-                <span key={index} className="text-sm w-full text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-[4px] px-2 py-1 m-1">
-                  {cuisine}
-                </span>
-              ))}
-            </div>
-          </>
-        ) : (
-          <div className="text-sm text-gray-500 dark:text-gray-400 text-center mt-2">
-            No cuisines available.
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  return (
-    <div className="w-full max-w-7xl mx-auto p-4">
-      <div className="mb-4">
-        <SearchBar
-          value={search}
-          onChange={setSearch}
-          placeholder="Search restaurants or cuisines..."
-        />
-      </div>
-      {restaurants?.length ? (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {filteredRestaurants.map((restaurant) => (
-            <RestaurantElement key={restaurant.id} restaurant={restaurant} />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center text-gray-500">No restaurants available.</div>
-      )}
-    </div>
   );
 };
 

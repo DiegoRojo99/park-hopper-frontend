@@ -80,7 +80,7 @@ const ParkDetails: React.FC<{park: LivePark}> = ({ park }) => {
 function ParkHeroSection({ park }: { park: LivePark }) {
   return (
     <section
-      className={`relative w-full text-center h-48 bg-light-secondary dark:bg-dark-secondary overflow-hidden`}
+      className={`relative w-full text-center h-48 md:h-96 bg-light-secondary dark:bg-dark-secondary overflow-hidden`}
     >
       {park.mainImage && (
         <div 
@@ -103,51 +103,11 @@ function ParkHeroSection({ park }: { park: LivePark }) {
 };
 
 function AttractionsSection({ attractions }: { attractions: LivePark["attractions"] }) {
-  const [gridView, setGridView] = useState(false);
-
-  function GridViewToggle({
-    gridView,
-    setGridView,
-  }: {
-    gridView: boolean;
-    setGridView: (value: boolean) => void;
-  }) {
-    return (
-      <div className="flex justify-end w-full mb-4">
-        <div className="inline-flex bg-gray-200 rounded-md overflow-hidden shadow">
-          <button
-            onClick={() => setGridView(true)}
-            className={`flex items-center px-3 py-2 transition-colors ${
-              gridView ? "bg-blue-500 text-white" : "text-gray-700"
-            }`}
-          >
-            <img src='/icons/grid-2x2.svg' alt="Grid View" className="w-5 h-5 mr-1" />
-            {/* <span className="hidden sm:inline">Grid</span> */}
-          </button>
-          <button
-            onClick={() => setGridView(false)}
-            className={`flex items-center px-3 py-2 transition-colors ${
-              !gridView ? "bg-blue-500 text-white" : "text-gray-700"
-            }`}
-          >
-            <img src='/icons/list.svg' alt="List View" className="w-5 h-5 mr-1" />
-            {/* <span className="hidden sm:inline">List</span> */}
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full sm:max-w-6xl mx-auto p-2 sm:p-4">
-      <GridViewToggle gridView={gridView} setGridView={setGridView} />
       {attractions?.length ? (
         <div>
-          {gridView ? (
-            <RideGridSection attractions={attractions} />
-          ) : (
-            <ParkRidesTable attractions={attractions} />
-          )}
+          <RideGridSection attractions={attractions} />
         </div>
       ) : (
         <div className="text-center text-gray-500">No attractions available.</div>

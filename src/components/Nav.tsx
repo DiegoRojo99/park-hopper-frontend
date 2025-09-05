@@ -42,7 +42,7 @@ const Nav: React.FC = () => {
           {/* Desktop menu */}
           <div className="hidden lg:flex lg:items-center lg:space-x-8">
             <Link to="/parks" className="hover:underline">Parks</Link>
-            <Link to="/admin/images" className="hover:underline">Admin Images</Link>
+            {/* <Link to="/admin/images" className="hover:underline">Admin Images</Link> */}
             {userLoading ? null : user ? (
               <button
                 onClick={handleLogout}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { EntityType } from '../../types/db';
+import { ClipboardIcon } from '@heroicons/react/24/outline';
 
 const ENTITY_TYPES: EntityType[] = ['DESTINATION', 'PARK', 'ATTRACTION', 'RESTAURANT', 'SHOW'];
 
@@ -11,12 +12,14 @@ const IMAGE_TYPES = [
 const AdminImageLinker: React.FC = () => {
   const [entityType, setEntityType] = useState<EntityType>('PARK');
   const [entities, setEntities] = useState<any[]>([]);
+  const [allEntities, setAllEntities] = useState<any[]>([]);
   const [entityId, setEntityId] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [imageType, setImageType] = useState('logo');
+  const [imageType, setImageType] = useState('main');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [showOnlyEmpty, setShowOnlyEmpty] = useState(false);
 
   useEffect(() => {
     const apiUrl = process.env.REACT_APP_API_URL!;
@@ -33,14 +36,21 @@ const AdminImageLinker: React.FC = () => {
       .then(async res => {
         if (!res.ok) throw new Error('Failed to fetch entities');
         const data = await res.json();
+        setAllEntities(data);
         setEntities(data);
         setLoading(false);
       })
       .catch(() => {
         setEntities([]);
+        setAllEntities([]);
         setLoading(false);
       });
   }, [entityType]);
+
+  useEffect(() => {
+    const filteredEntities = showOnlyEmpty ? allEntities.filter(entity => !entity.mainImageId) : allEntities;
+    setEntities(filteredEntities);
+  }, [showOnlyEmpty, allEntities]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,7 +95,21 @@ const AdminImageLinker: React.FC = () => {
       <h2 className="text-2xl font-bold mt-4 text-center">Link Wikimedia Image</h2>
       <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl w-[80%] mx-auto mt-4 p-6 bg-white rounded shadow">
         <div>
-          <label className="block font-semibold mb-1">Entity Type</label>
+          <div className="flex justify-between items-center">
+            <label className="block font-semibold mb-1">Entity Type</label>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="emptyFilter"
+                checked={showOnlyEmpty}
+                onChange={(e) => setShowOnlyEmpty(e.target.checked)}
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <label htmlFor="emptyFilter" className="text-sm text-gray-600">
+                Show only entities without images
+              </label>
+            </div>
+          </div>
           <select
             value={entityType}
             onChange={e => setEntityType(e.target.value as EntityType)}
@@ -98,17 +122,32 @@ const AdminImageLinker: React.FC = () => {
         </div>
         <div>
           <label className="block font-semibold mb-1">Entity</label>
-          <select
-            value={entityId}
-            onChange={e => setEntityId(e.target.value)}
-            className="w-full border rounded px-2 py-1"
-            disabled={loading || entities.length === 0}
-          >
-            <option value="">Select...</option>
-            {entities.filter(entity => entity.name).sort((a, b) => a.name.localeCompare(b.name)).map(entity => (
-              <option key={entity.id} value={entity.id}>{entity.name}</option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              value={entityId}
+              onChange={e => setEntityId(e.target.value)}
+              className="w-full border rounded px-2 py-1 pr-10"
+              disabled={loading || entities.length === 0}
+            >
+              <option value="">Select...</option>
+              {entities.filter(entity => entity.name).sort((a, b) => a.name.localeCompare(b.name)).map(entity => (
+                <option key={entity.id} value={entity.id}>{entity.name}</option>
+              ))}
+            </select>
+            {entityId && (
+              <button
+                type="button"
+                onClick={() => {
+                  const entityName = entities.find(e => e.id === entityId)?.name || '';
+                  navigator.clipboard.writeText(entityName);
+                }}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded"
+                title="Copy entity name"
+              >
+                <ClipboardIcon className="h-5 w-5 text-gray-500" />
+              </button>
+            )}
+          </div>
         </div>
         <div>
           <label className="block font-semibold mb-1">Wikimedia Image URL</label>

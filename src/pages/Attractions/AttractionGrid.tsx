@@ -13,7 +13,7 @@ function filterNonApplicableRide(attraction: LiveAttraction) {
   return status && ["OPERATING", "DOWN", "CLOSED"].includes(status);
 }
 
-export default function RideGridSection({ attractions }: { attractions: LiveAttraction[] }) {
+export default function AttractionGrid({ attractions }: { attractions: LiveAttraction[] }) {
   if (!attractions || attractions.length === 0) {
     return <div>No attractions available.</div>;
   }

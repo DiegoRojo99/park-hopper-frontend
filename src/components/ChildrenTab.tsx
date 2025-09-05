@@ -14,14 +14,13 @@ const tabOptions: { label: TabOption; icon: React.ReactNode }[] = [
 ];
 
 const ChildrenTab: React.FC<ChildrenTabProps> = ({ selectedTab, setTab }) => (
-  <div className="py-4" style={{ display: "flex", gap: "1rem" }}>
+  <div className="pt-4 mb-4 flex gap-4 bg-white w-full justify-center md:justify-around border-b border-gray-200">
     {tabOptions.map(({ label, icon }) => (
       <button
         key={label}
         onClick={() => setTab(label)}
+        className="flex flex-col md:flex-row items-center focus:outline-none"
         style={{
-          display: "flex",
-          alignItems: "center",
           gap: "0.5rem",
           padding: "0.5rem 1rem",
           border: "none",
@@ -34,7 +33,7 @@ const ChildrenTab: React.FC<ChildrenTabProps> = ({ selectedTab, setTab }) => (
         }}
       >
         {icon}
-        <span className="hidden sm:inline">{label}</span>
+        <span className="text-sm sm:text-base">{label}</span>
       </button>
     ))}
   </div>

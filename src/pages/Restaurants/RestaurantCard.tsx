@@ -2,7 +2,7 @@ import { LiveRestaurant } from "../../types/db";
 
 export default function RestaurantCard({ restaurant }: { restaurant: LiveRestaurant }) {
   return (
-    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
       <h3 className="text-md font-bold text-center mb-2 min-h-12 flex">
         <span className="my-auto text-center mx-auto">{restaurant.name}</span>
       </h3>

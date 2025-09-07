@@ -26,7 +26,7 @@ export default function AttractionCard({ attraction }: { attraction: LiveAttract
             {waitTime} min
           </span>
         ) : (
-          <span className="text-sm text-gray-500 italic">Closed</span>
+          <span className="text-xl text-gray-500 italic">-</span>
         )}
       </div>
     </div>

@@ -14,7 +14,7 @@ export default function AttractionsSection({ attractions }: { attractions: LiveP
   }, [attractions, search]);
 
   return (
-    <div className="w-full sm:max-w-7xl mx-auto p-2 sm:p-4">
+    <div className="w-full max-w-7xl mx-auto p-4">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Attractions</h2>
         <p className="text-gray-500">{filteredAttractions.length} attractions</p>

@@ -22,7 +22,7 @@ export default function RestaurantsSection({ restaurants }: { restaurants: LiveP
   }
 
   return (
-    <div className="w-full sm:max-w-7xl mx-auto p-2 sm:p-4">
+    <div className="w-full max-w-7xl mx-auto p-4">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Restaurants</h2>
         <p className="text-gray-500">{filteredRestaurants.length} restaurants</p>
@@ -35,7 +35,7 @@ export default function RestaurantsSection({ restaurants }: { restaurants: LiveP
         />
       </div>
       {restaurants?.length ? (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredRestaurants.map((restaurant) => (
             <RestaurantCard key={restaurant.id} restaurant={restaurant} />
           ))}

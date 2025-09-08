@@ -11,16 +11,26 @@ const Parks: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+
+  /* Filters */
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [destinationFilter, setDestinationFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<'name' | 'destination'>('name');
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [tempFilters, setTempFilters] = useState({
     destinationFilter: 'all',
     statusFilter: 'all',
-    sortBy: 'name' as 'name' | 'destination'
+    sortBy: {
+      field: 'name' as 'name' | 'destination',
+      direction: 'asc' as 'asc' | 'desc'
+    }
   });
-  
+
+  /* Sorting */
+  const [sortBy, setSortBy] = useState<{ field: 'name' | 'destination', direction: 'asc' | 'desc' }>({
+    field: 'name',
+    direction: 'asc'
+  });
+
   // Get unique destinations for filter
   const destinations = useMemo(() => {
     const dests = Array.from(new Set(parks.map(p => p.destination?.name).filter(Boolean)));
@@ -39,11 +49,18 @@ const Parks: React.FC = () => {
     if (statusFilter !== 'all') {
       filtered = filtered.filter(p => p.live?.status === statusFilter);
     }
-    if (sortBy === 'name') {
-      filtered = filtered.sort((a, b) => a.name.localeCompare(b.name));
+    // Apply sorting
+    if (sortBy.field === 'name') {
+      filtered = filtered.sort((a, b) => {
+        const result = a.name.localeCompare(b.name);
+        return sortBy.direction === 'asc' ? result : -result;
+      });
     } 
-    else if (sortBy === 'destination') {
-      filtered = filtered.sort((a, b) => (a.destination?.name || '').localeCompare(b.destination?.name || ''));
+    else if (sortBy.field === 'destination') {
+      filtered = filtered.sort((a, b) => {
+        const result = (a.destination?.name || '').localeCompare(b.destination?.name || '');
+        return sortBy.direction === 'asc' ? result : -result;
+      });
     }
     return filtered;
   }, [parks, search, destinationFilter, statusFilter, sortBy]);
@@ -70,7 +87,10 @@ const Parks: React.FC = () => {
     const defaultFilters = {
       destinationFilter: 'all',
       statusFilter: 'all',
-      sortBy: 'name' as const
+      sortBy: {
+        field: 'name' as const,
+        direction: 'asc' as const
+      }
     };
     setTempFilters(defaultFilters);
     setDestinationFilter(defaultFilters.destinationFilter);

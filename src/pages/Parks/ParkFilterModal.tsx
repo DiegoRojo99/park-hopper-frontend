@@ -12,8 +12,11 @@ interface ParkFilterModalProps {
   setDestinationFilter: (value: string) => void;
   statusFilter: string;
   setStatusFilter: (value: string) => void;
-  sortBy: 'name' | 'destination';
-  setSortBy: (value: 'name' | 'destination') => void;
+  sortBy: {
+    field: 'name' | 'destination';
+    direction: 'asc' | 'desc';
+  };
+  setSortBy: (value: { field: 'name' | 'destination'; direction: 'asc' | 'desc' }) => void;
 }
 
 export default function ParkFilterModal({
@@ -82,24 +85,40 @@ export default function ParkFilterModal({
                         <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Sort by</h4>
                         <div className="grid grid-cols-2 gap-2">
                           <button
-                            onClick={() => setSortBy('name')}
-                            className={`px-4 py-2 text-sm rounded-lg border ${
-                              sortBy === 'name'
+                            onClick={() => setSortBy({ 
+                              field: 'name', 
+                              direction: sortBy.field === 'name' ? (sortBy.direction === 'asc' ? 'desc' : 'asc') : 'asc'
+                            })}
+                            className={`flex items-center justify-center gap-1 px-4 py-2 text-sm rounded-lg border ${
+                              sortBy.field === 'name'
                                 ? 'bg-blue-50 border-blue-600 text-blue-600 dark:bg-blue-900/30 dark:border-blue-500 dark:text-blue-400'
                                 : 'border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700/50'
                             }`}
                           >
                             Name
+                            {sortBy.field === 'name' && (
+                              <span className="text-base">
+                                {sortBy.direction === 'asc' ? '↑' : '↓'}
+                              </span>
+                            )}
                           </button>
                           <button
-                            onClick={() => setSortBy('destination')}
-                            className={`px-4 py-2 text-sm rounded-lg border ${
-                              sortBy === 'destination'
+                            onClick={() => setSortBy({ 
+                              field: 'destination', 
+                              direction: sortBy.field === 'destination' ? (sortBy.direction === 'asc' ? 'desc' : 'asc') : 'asc'
+                            })}
+                            className={`flex items-center justify-center gap-1 px-4 py-2 text-sm rounded-lg border ${
+                              sortBy.field === 'destination'
                                 ? 'bg-blue-50 border-blue-600 text-blue-600 dark:bg-blue-900/30 dark:border-blue-500 dark:text-blue-400'
                                 : 'border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700/50'
                             }`}
                           >
                             Destination
+                            {sortBy.field === 'destination' && (
+                              <span className="text-base">
+                                {sortBy.direction === 'asc' ? '↑' : '↓'}
+                              </span>
+                            )}
                           </button>
                         </div>
                       </div>
@@ -110,7 +129,7 @@ export default function ParkFilterModal({
                         <select
                           value={statusFilter}
                           onChange={(e) => setStatusFilter(e.target.value)}
-                          className="w-full p-1 border-gray-300 text-gray-700 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                          className="w-full p-2 border-gray-300 text-gray-700 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
                         >
                           <option className='py-1' value="all">All Statuses</option>
                           <option className='py-1' value="OPERATING">Operating</option>
@@ -124,7 +143,7 @@ export default function ParkFilterModal({
                         <select
                           value={destinationFilter}
                           onChange={(e) => setDestinationFilter(e.target.value)}
-                          className="w-full p-1 border-gray-300 text-gray-700 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                          className="w-full p-2 border-gray-300 text-gray-700 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
                         >
                           <option className='py-1' value="all">All Destinations</option>
                           {destinations.map(dest => (

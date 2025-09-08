@@ -7,7 +7,7 @@ import { AuthProvider } from './context/AuthContext';
 /* PAGES */
 import HomePage from './pages/Home/HomePage';
 import Parks from './pages/Parks/Parks';
-import { ParkDetailsContainer } from './pages/Parks/ParkDetails';
+import { ParkDetailsContainer } from './pages/Parks/Details/ParkDetails';
 import LoginPage from './pages/Login/LoginPage';
 
 /* STYLES */

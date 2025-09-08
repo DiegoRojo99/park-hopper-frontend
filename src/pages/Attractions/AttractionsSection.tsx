@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
-import { LivePark } from "../../types/Park";
 import SearchBar from "../../components/SearchBar";
 import AttractionGrid from "./AttractionGrid";
+import { LiveAttraction } from "../../types/db";
 
-export default function AttractionsSection({ attractions }: { attractions: LivePark["attractions"] }) {
+export default function AttractionsSection({ attractions }: { attractions: LiveAttraction[] | undefined }) {
   const [search, setSearch] = useState('');
   
   const filteredAttractions = useMemo(() => {

@@ -1,10 +1,9 @@
 import { useMemo, useState } from "react";
 import SearchBar from "../../components/SearchBar";
-import { LivePark } from "../../types/Park";
 import { LiveShow } from "../../types/db";
 import ShowCard from "./ShowCard";
 
-export default function ShowsSection({ shows }: { shows: LivePark["shows"] }) {
+export default function ShowsSection({ shows }: { shows: LiveShow[] | undefined }) {
   const [search, setSearch] = useState('');
 
   const filteredShows = useMemo(() => {

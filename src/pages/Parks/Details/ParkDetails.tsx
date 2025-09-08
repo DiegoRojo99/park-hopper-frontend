@@ -39,7 +39,6 @@ export const ParkDetailsContainer: React.FC = () => {
       .then((data) => setPark(data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-
   }, [parkId]);
 
   if (loading) return <Loader />;
@@ -58,11 +57,11 @@ const ParkDetails: React.FC<{park: LivePark}> = ({ park }) => {
   function renderTabContent() {
     switch (selectedTab) {
       case "Attractions":
-        return <AttractionsSection attractions={park.attractions} />;
+        return <AttractionsSection attractions={park.live?.attractions} />;
       case "Shows":
-        return <ShowsSection shows={park.shows} />;
+        return <ShowsSection shows={park.live?.shows} />;
       case "Restaurants":
-        return <RestaurantsSection restaurants={park.restaurants} />;
+        return <RestaurantsSection restaurants={park.live?.restaurants} />;
       default:
         return null;
     }

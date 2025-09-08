@@ -37,7 +37,7 @@ const Parks: React.FC = () => {
       filtered = filtered.filter(p => p.destination?.name === destinationFilter);
     }
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(p => p.status === statusFilter);
+      filtered = filtered.filter(p => p.live?.status === statusFilter);
     }
     if (sortBy === 'name') {
       filtered = filtered.sort((a, b) => a.name.localeCompare(b.name));

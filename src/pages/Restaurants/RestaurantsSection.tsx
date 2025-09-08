@@ -1,10 +1,10 @@
 import { useState } from "react";
 import SearchBar from "../../components/SearchBar";
-import { LivePark } from "../../types/Park";
 import { useMemo } from "react";
 import RestaurantCard from "./RestaurantCard";
+import { LiveRestaurant } from "../../types/db";
 
-export default function RestaurantsSection({ restaurants }: { restaurants: LivePark["restaurants"] }) {
+export default function RestaurantsSection({ restaurants }: { restaurants: LiveRestaurant[] | undefined }) {
   const [search, setSearch] = useState('');
   
   const filteredRestaurants = useMemo(() => {

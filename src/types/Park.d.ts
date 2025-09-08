@@ -33,8 +33,25 @@ export type ParkWithChildren = ParkWithDetails & {
 };
 
 export type LivePark = ParkWithDetails & {
-  attractions?: LiveAttraction[];
-  shows?: LiveShow[];
-  restaurants?: LiveRestaurant[];
+  live: LiveParkData | null;
+  schedule: ParkSchedule | null;
+};
+
+export type LiveParkData = {
+  attractions: LiveAttraction[];
+  shows: LiveShow[];
+  restaurants: LiveRestaurant[];
   status?: 'OPERATING' | 'CLOSED';
 };
+
+export interface ParkSchedule {
+  parkId: string;
+  schedule: ParkScheduleItem[];
+}
+
+export interface ParkScheduleItem {
+  date: string;
+  type: ScheduleType;
+  openingTime: string;
+  closingTime: string;
+}

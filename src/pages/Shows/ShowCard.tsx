@@ -1,24 +1,14 @@
 import { LiveShow } from "../../types/db";
 import { CalendarIcon, ClockIcon } from "@heroicons/react/24/outline";
 import { ShowTimeElement } from "./ShowTimeElement";
-
-function formatShowTime(time: string) {
-  const date = new Date(time);
-  const options: Intl.DateTimeFormatOptions = {
-    hour: '2-digit',
-    minute: '2-digit',
-    timeZone: 'America/New_York',
-    hour12: true
-  };
-  return date.toLocaleString('en-US', options);
-}
+import formatTime from "../../lib/time";
 
 function getNextShowtime(show: LiveShow) {
   if (!show.showtimes || show.showtimes.length === 0) return null;
   const now = new Date();
   for (const time of show.showtimes) {
     if (new Date(time.startTime) > now) {
-      return formatShowTime(time.startTime);
+      return formatTime(time.startTime, show.timezone);
     }
   }
   return null;

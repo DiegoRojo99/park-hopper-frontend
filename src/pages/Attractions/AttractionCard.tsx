@@ -1,15 +1,22 @@
 import { LiveAttraction } from "../../types/db";
 
 export default function AttractionCard({ attraction }: { attraction: LiveAttraction }) {
+  // Handle case where attraction might be undefined or null
   if (!attraction) return null;
+
   const waitTime = attraction.waitTime || null;
+  const statusColors: { [key: string]: string } = {
+    OPERATING: 'text-green-600',
+    DOWN: 'text-yellow-600',
+    CLOSED: 'text-red-600',
+  };
 
   return (
     <div className="p-4 bg-white dark:bg-gray-800 rounded-xl shadow flex justify-between items-center border border-gray-200 dark:border-gray-700">
       <div className="flex flex-col flex-1">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{attraction.name}</h3>
+        <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white">{attraction.name}</h3>
         {attraction.status ? (
-          <p className={`text-sm ${attraction.status === "OPERATING" ? "text-green-600" : "text-red-600"}`}>
+          <p className={`text-sm ${statusColors[attraction.status] || "text-gray-500"}`}>
             {attraction.status}
           </p>
         ) : (

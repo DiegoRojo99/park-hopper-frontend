@@ -70,7 +70,7 @@ export default function ParkHeroSection({ park }: { park: LivePark }) {
 
   return (
     <section
-      className={`relative w-full text-center h-56 md:h-96 bg-light-secondary dark:bg-dark-secondary overflow-hidden`}
+      className={`relative w-full text-center md:h-96 bg-light-secondary dark:bg-dark-secondary overflow-hidden`}
     >
       {/* Park main image */}
       {park.mainImage && (
@@ -90,12 +90,6 @@ export default function ParkHeroSection({ park }: { park: LivePark }) {
           <h1 className="text-2xl sm:text-4xl font-bold text-white">
             {park.name}
           </h1>
-          {parkLiveData?.status && (
-            <span className={`px-3 py-1 text-xs font-medium text-white rounded-full 
-              ${parkLiveData.status === 'OPERATING' ? 'bg-green-500' : 'bg-red-500'}`}>
-              {parkLiveData.status === 'OPERATING' ? 'Open' : 'Closed'}
-            </span>
-          )}
         </div>
 
         {/* Row 2: Location and Hours */}
@@ -142,15 +136,17 @@ export default function ParkHeroSection({ park }: { park: LivePark }) {
         <div className="flex items-center gap-4">
           {parkLiveData?.attractions && parkLiveData.attractions.length > 0 && (
             <>
+              {/* Park status */}
+              {parkLiveData?.status && (
+                <span className={`px-4 py-3 text-xs font-medium text-white rounded-full w-fit font-semibold
+                  ${parkLiveData.status === 'OPERATING' ? 'bg-green-500' : 'bg-red-500'}`}>
+                  {parkLiveData.status === 'OPERATING' ? 'OPEN' : 'CLOSED'}
+                </span>
+              )}
+              {/* Average wait time */}
               <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
                 <div className="flex items-baseline">
-                  <span className="text-xl font-bold text-white">{parkLiveData.attractions.length}</span>
-                  <span className="ml-2 text-sm text-gray-200">Attractions</span>
-                </div>
-              </div>
-              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
-                <div className="flex items-baseline">
-                  <span className="text-xl font-bold text-white">
+                  <span className="text-base font-bold text-white">
                     {averageWaitTime !== null ? averageWaitTime : 'N/A'}
                   </span>
                   <span className="ml-1 text-white">min</span>

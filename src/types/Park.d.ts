@@ -36,4 +36,5 @@ export type LivePark = ParkWithDetails & {
   attractions?: LiveAttraction[];
   shows?: LiveShow[];
   restaurants?: LiveRestaurant[];
+  status?: 'OPERATING' | 'CLOSED';
 };

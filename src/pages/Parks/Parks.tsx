@@ -1,21 +1,23 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Loader } from '../../components/Loader';
-import { ParkWithDetails } from '../../types/Park';
+import { LivePark } from '../../types/Park';
 import ParkCard from './ParkCard';
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline';
 import SearchBar from '../../components/SearchBar';
 import ParkFilterModal from './ParkFilterModal';
 
 const Parks: React.FC = () => {
-  const [parks, setParks] = useState<ParkWithDetails[]>([]);
+  const [parks, setParks] = useState<LivePark[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [destinationFilter, setDestinationFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'name' | 'destination'>('name');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tempFilters, setTempFilters] = useState({
     destinationFilter: 'all',
+    statusFilter: 'all',
     sortBy: 'name' as 'name' | 'destination'
   });
   
@@ -34,6 +36,9 @@ const Parks: React.FC = () => {
     if (destinationFilter !== 'all') {
       filtered = filtered.filter(p => p.destination?.name === destinationFilter);
     }
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(p => p.status === statusFilter);
+    }
     if (sortBy === 'name') {
       filtered = filtered.sort((a, b) => a.name.localeCompare(b.name));
     } 
@@ -41,20 +46,22 @@ const Parks: React.FC = () => {
       filtered = filtered.sort((a, b) => (a.destination?.name || '').localeCompare(b.destination?.name || ''));
     }
     return filtered;
-  }, [parks, search, destinationFilter, sortBy]);
+  }, [parks, search, destinationFilter, statusFilter, sortBy]);
 
   // Initialize temp filters when modal opens
   useEffect(() => {
     if (isModalOpen) {
       setTempFilters({
         destinationFilter,
+        statusFilter,
         sortBy
       });
     }
-  }, [isModalOpen, destinationFilter, sortBy]);
+  }, [isModalOpen, destinationFilter, statusFilter, sortBy]);
 
   const handleApplyFilters = () => {
     setDestinationFilter(tempFilters.destinationFilter);
+    setStatusFilter(tempFilters.statusFilter);
     setSortBy(tempFilters.sortBy);
     setIsModalOpen(false);
   };
@@ -62,10 +69,12 @@ const Parks: React.FC = () => {
   const handleResetFilters = () => {
     const defaultFilters = {
       destinationFilter: 'all',
+      statusFilter: 'all',
       sortBy: 'name' as const
     };
     setTempFilters(defaultFilters);
     setDestinationFilter(defaultFilters.destinationFilter);
+    setStatusFilter(defaultFilters.statusFilter);
     setSortBy(defaultFilters.sortBy);
     setIsModalOpen(false);
   };
@@ -84,6 +93,7 @@ const Parks: React.FC = () => {
           throw new Error('Failed to fetch parks');
         }
         const data = await response.json();
+        console.log(data);
         setParks(data);
       } catch (err: any) {
         setError(err.message || 'Unknown error');
@@ -131,6 +141,8 @@ const Parks: React.FC = () => {
             destinations={destinations}
             destinationFilter={tempFilters.destinationFilter}
             setDestinationFilter={(value) => setTempFilters(prev => ({ ...prev, destinationFilter: value }))}
+            statusFilter={tempFilters.statusFilter}
+            setStatusFilter={(value) => setTempFilters(prev => ({ ...prev, statusFilter: value }))}
             sortBy={tempFilters.sortBy}
             setSortBy={(value) => setTempFilters(prev => ({ ...prev, sortBy: value }))}
           />

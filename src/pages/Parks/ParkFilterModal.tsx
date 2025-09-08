@@ -10,6 +10,8 @@ interface ParkFilterModalProps {
   destinations: string[];
   destinationFilter: string;
   setDestinationFilter: (value: string) => void;
+  statusFilter: string;
+  setStatusFilter: (value: string) => void;
   sortBy: 'name' | 'destination';
   setSortBy: (value: 'name' | 'destination') => void;
 }
@@ -22,6 +24,8 @@ export default function ParkFilterModal({
   destinations,
   destinationFilter,
   setDestinationFilter,
+  statusFilter,
+  setStatusFilter,
   sortBy,
   setSortBy
 }: ParkFilterModalProps) {
@@ -67,7 +71,7 @@ export default function ParkFilterModal({
                 </div>
 
                 <div className="sm:flex sm:items-start">
-                  <div className="mt-3 w-full">
+                  <div className="w-full">
                     <Dialog.Title as="h3" className="text-lg font-semibold leading-6 text-gray-900 dark:text-white mb-4">
                       Filter & Sort
                     </Dialog.Title>
@@ -100,17 +104,31 @@ export default function ParkFilterModal({
                         </div>
                       </div>
 
+                      {/* Status Filter */}
+                      <div>
+                        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status</h4>
+                        <select
+                          value={statusFilter}
+                          onChange={(e) => setStatusFilter(e.target.value)}
+                          className="w-full p-1 border-gray-300 text-gray-700 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                        >
+                          <option className='py-1' value="all">All Statuses</option>
+                          <option className='py-1' value="OPERATING">Operating</option>
+                          <option className='py-1' value="CLOSED">Closed</option>
+                        </select>
+                      </div>
+
                       {/* Destination Filter */}
                       <div>
                         <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Destination</h4>
                         <select
                           value={destinationFilter}
                           onChange={(e) => setDestinationFilter(e.target.value)}
-                          className="w-full rounded-lg border-gray-300 text-gray-700 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                          className="w-full p-1 border-gray-300 text-gray-700 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
                         >
-                          <option value="all">All Destinations</option>
+                          <option className='py-1' value="all">All Destinations</option>
                           {destinations.map(dest => (
-                            <option key={dest} value={dest}>{dest}</option>
+                            <option className='py-1' key={dest} value={dest}>{dest}</option>
                           ))}
                         </select>
                       </div>
@@ -122,7 +140,7 @@ export default function ParkFilterModal({
                   <button
                     type="button"
                     onClick={onReset}
-                    className="inline-flex justify-center rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700/50"
+                    className="inline-flex justify-center rounded-lg bg-red-500 text-white border border-gray-300 px-4 py-2 text-sm font-medium hover:bg-red-600 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-red-700"
                   >
                     Reset Filters
                   </button>

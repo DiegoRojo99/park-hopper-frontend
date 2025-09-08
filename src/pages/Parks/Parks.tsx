@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Loader } from '../../components/Loader';
 import { ParkWithDetails } from '../../types/Park';
 import ParkCard from './ParkCard';
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline';
 import SearchBar from '../../components/SearchBar';
+import ParkFilterModal from './ParkFilterModal';
 
 const Parks: React.FC = () => {
   const [parks, setParks] = useState<ParkWithDetails[]>([]);
@@ -12,9 +13,12 @@ const Parks: React.FC = () => {
   const [search, setSearch] = useState('');
   const [destinationFilter, setDestinationFilter] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'name' | 'destination'>('name');
-  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const filtersRef = useRef<HTMLDivElement>(null);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tempFilters, setTempFilters] = useState({
+    destinationFilter: 'all',
+    sortBy: 'name' as 'name' | 'destination'
+  });
+  
   // Get unique destinations for filter
   const destinations = useMemo(() => {
     const dests = Array.from(new Set(parks.map(p => p.destination?.name).filter(Boolean)));
@@ -32,22 +36,39 @@ const Parks: React.FC = () => {
     }
     if (sortBy === 'name') {
       filtered = filtered.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sortBy === 'destination') {
+    } 
+    else if (sortBy === 'destination') {
       filtered = filtered.sort((a, b) => (a.destination?.name || '').localeCompare(b.destination?.name || ''));
     }
     return filtered;
   }, [parks, search, destinationFilter, sortBy]);
 
+  // Initialize temp filters when modal opens
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (filtersRef.current && !filtersRef.current.contains(event.target as Node)) {
-        setIsFiltersOpen(false);
-      }
-    };
+    if (isModalOpen) {
+      setTempFilters({
+        destinationFilter,
+        sortBy
+      });
+    }
+  }, [isModalOpen, destinationFilter, sortBy]);
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  const handleApplyFilters = () => {
+    setDestinationFilter(tempFilters.destinationFilter);
+    setSortBy(tempFilters.sortBy);
+    setIsModalOpen(false);
+  };
+
+  const handleResetFilters = () => {
+    const defaultFilters = {
+      destinationFilter: 'all',
+      sortBy: 'name' as const
+    };
+    setTempFilters(defaultFilters);
+    setDestinationFilter(defaultFilters.destinationFilter);
+    setSortBy(defaultFilters.sortBy);
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     const fetchParks = async () => {
@@ -94,49 +115,25 @@ const Parks: React.FC = () => {
             onChange={setSearch}
             placeholder="Search parks..."
           />
-          <div className="relative" ref={filtersRef}>
-            <button
-              onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-              className={`p-2 rounded-lg border border-gray-300 hover:bg-gray-50 
-                ${isFiltersOpen ? 'bg-gray-50 ring-2 ring-blue-500' : ''}`}
-            >
-              <AdjustmentsHorizontalIcon className="h-5 w-5 text-gray-600" />
-            </button>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className={`p-2 rounded-lg border border-gray-300 hover:bg-gray-50 
+              ${isModalOpen ? 'bg-gray-50 ring-2 ring-blue-500' : ''}`}
+          >
+            <AdjustmentsHorizontalIcon className="h-5 w-5 text-gray-600" />
+          </button>
 
-            {isFiltersOpen && (
-              <div className="absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10">
-                <div className="px-4 py-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Destination
-                  </label>
-                  <select
-                    value={destinationFilter}
-                    onChange={e => setDestinationFilter(e.target.value)}
-                    className="block w-full border border-gray-300 rounded-md py-1.5 px-3"
-                  >
-                    <option value="all">All Destinations</option>
-                    {destinations.map(dest => (
-                      <option key={dest} value={dest}>{dest}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="border-t border-gray-100 my-2" />
-                <div className="px-4 py-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Sort by
-                  </label>
-                  <select
-                    value={sortBy}
-                    onChange={e => setSortBy(e.target.value as any)}
-                    className="block w-full border border-gray-300 rounded-md py-1.5 px-3"
-                  >
-                    <option value="name">Name</option>
-                    <option value="destination">Destination</option>
-                  </select>
-                </div>
-              </div>
-            )}
-          </div>
+          <ParkFilterModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onApply={handleApplyFilters}
+            onReset={handleResetFilters}
+            destinations={destinations}
+            destinationFilter={tempFilters.destinationFilter}
+            setDestinationFilter={(value) => setTempFilters(prev => ({ ...prev, destinationFilter: value }))}
+            sortBy={tempFilters.sortBy}
+            setSortBy={(value) => setTempFilters(prev => ({ ...prev, sortBy: value }))}
+          />
         </div>
       </div>
 

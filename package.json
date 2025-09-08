@@ -1,8 +1,9 @@
 {
   "name": "park-hopper-frontend",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "private": true,
   "dependencies": {
+    "@headlessui/react": "^2.2.7",
     "@heroicons/react": "^2.2.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",

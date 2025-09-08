@@ -42,7 +42,6 @@ const Nav: React.FC = () => {
           {/* Desktop menu */}
           <div className="hidden lg:flex lg:items-center lg:space-x-8">
             <Link to="/parks" className="hover:underline">Parks</Link>
-            {/* <Link to="/admin/images" className="hover:underline">Admin Images</Link> */}
             {userLoading ? null : user ? (
               <button
                 onClick={handleLogout}
@@ -62,21 +61,14 @@ const Nav: React.FC = () => {
         <div
           className={`${
             isMenuOpen ? 'flex' : 'hidden'
-          } lg:hidden flex-col space-y-4 pt-4 pb-2`}
+          } lg:hidden flex-col space-y-2 mt-4 -mx-4 px-4 py-4 bg-gray-800 dark:bg-gray-700 border-t border-gray-700 dark:border-gray-600`}
         >
           <Link 
             to="/parks" 
-            className="block px-2 py-1 rounded hover:bg-gray-700"
+            className="block px-3 py-2 rounded-lg text-gray-200 hover:bg-gray-700/50 hover:text-white active:bg-gray-600 transition-colors"
             onClick={() => setIsMenuOpen(false)}
           >
             Parks
-          </Link>
-          <Link 
-            to="/admin/images" 
-            className="block px-2 py-1 rounded hover:bg-gray-700"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Admin Images
           </Link>
           {userLoading ? null : user ? (
             <button
@@ -84,14 +76,14 @@ const Nav: React.FC = () => {
                 handleLogout();
                 setIsMenuOpen(false);
               }}
-              className="block w-full text-left px-2 py-1 rounded hover:bg-gray-700 bg-transparent border-none cursor-pointer text-white"
+              className="block w-full text-left px-3 py-2 rounded-lg text-gray-200 hover:bg-gray-700/50 hover:text-white active:bg-gray-600 transition-colors bg-transparent border-none cursor-pointer"
             >
               Logout
             </button>
           ) : (
             <Link 
               to="/login" 
-              className="block px-2 py-1 rounded hover:bg-gray-700"
+              className="block px-3 py-2 rounded-lg text-gray-200 hover:bg-gray-700/50 hover:text-white active:bg-gray-600 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Login

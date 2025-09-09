@@ -47,7 +47,7 @@ const Parks: React.FC = () => {
       filtered = filtered.filter(p => p.destination?.name === destinationFilter);
     }
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(p => p.live?.status === statusFilter);
+      filtered = filtered.filter(p => p.status === statusFilter);
     }
     // Apply sorting
     if (sortBy.field === 'name') {

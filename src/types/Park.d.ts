@@ -35,13 +35,13 @@ export type ParkWithChildren = ParkWithDetails & {
 export type LivePark = ParkWithDetails & {
   live: LiveParkData | null;
   schedule: ParkSchedule | null;
+  status?: 'OPERATING' | 'CLOSED';
 };
 
 export type LiveParkData = {
   attractions: LiveAttraction[];
   shows: LiveShow[];
   restaurants: LiveRestaurant[];
-  status?: 'OPERATING' | 'CLOSED';
 };
 
 export interface ParkSchedule {

@@ -10,7 +10,7 @@ const ParkCard: React.FC<ParkCardProps> = ({ park }) => {
   const navigate = useNavigate();
   const logo = park.logoImage?.url;
   const main = park.mainImage?.url;
-  const parkLiveData = park.live;
+  const status = park.status;
 
   return (
     <div
@@ -18,11 +18,11 @@ const ParkCard: React.FC<ParkCardProps> = ({ park }) => {
       className="cursor-pointer bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden flex flex-col hover:scale-[1.03] transition-transform"
     >
       <div className="relative w-full h-48 bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
-        {parkLiveData?.status && (
+        {status && (
           <div className={`absolute top-2 left-2 px-3 py-1 text-xs font-medium text-white rounded-lg ${
-            parkLiveData.status === 'OPERATING' ? 'bg-green-500' : 'bg-red-500'
+            status === 'OPERATING' ? 'bg-green-500' : 'bg-red-500'
           }`}>
-            {parkLiveData.status === 'OPERATING' ? 'Open' : 'Closed'}
+            {status === 'OPERATING' ? 'Open' : 'Closed'}
           </div>
         )}
         {main ? (

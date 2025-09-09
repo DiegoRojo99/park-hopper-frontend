@@ -137,10 +137,10 @@ export default function ParkHeroSection({ park }: { park: LivePark }) {
           {parkLiveData?.attractions && parkLiveData.attractions.length > 0 && (
             <>
               {/* Park status */}
-              {parkLiveData?.status && (
+              {park?.status && (
                 <span className={`px-4 py-3 text-xs font-medium text-white rounded-full w-fit font-semibold
-                  ${parkLiveData.status === 'OPERATING' ? 'bg-green-500' : 'bg-red-500'}`}>
-                  {parkLiveData.status === 'OPERATING' ? 'OPEN' : 'CLOSED'}
+                  ${park.status === 'OPERATING' ? 'bg-green-500' : 'bg-red-500'}`}>
+                  {park.status === 'OPERATING' ? 'OPEN' : 'CLOSED'}
                 </span>
               )}
               {/* Average wait time */}

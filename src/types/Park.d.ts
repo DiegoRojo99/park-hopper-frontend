@@ -12,12 +12,15 @@ export type Park = {
   externalId: string;
   logoImageId: string;
   mainImageId: string;
+  city?: string;
+  countryId?: string;
 };
 
 export type ParkWithDetails = Park & {
   logoImage: WikimediaImage;
   mainImage: WikimediaImage;
   destination: Destination;
+  country?: Country;
 };
 
 export type ParkWithChildren = ParkWithDetails & {

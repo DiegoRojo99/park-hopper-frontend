@@ -109,14 +109,15 @@ const Parks: React.FC = () => {
       }
       try {
         const response = await fetch(`${apiUrl}/api/parks`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch parks');
-        }
+        if (!response.ok) throw new Error('Failed to fetch parks');
+
         const data = await response.json();
         setParks(data);
-      } catch (err: any) {
+      } 
+      catch (err: any) {
         setError(err.message || 'Unknown error');
-      } finally {
+      } 
+      finally {
         setLoading(false);
       }
     };

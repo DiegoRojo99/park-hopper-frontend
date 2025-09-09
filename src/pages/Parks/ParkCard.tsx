@@ -1,12 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LivePark } from '../../types/Park';
+import { ClockIcon, MapPinIcon } from '@heroicons/react/24/outline';
+import { getScheduleInfo } from '../../lib/schedule';
 
 type ParkCardProps = {
   park: LivePark;
 };
 
-const ParkCard: React.FC<ParkCardProps> = ({ park }) => {
+export default function ParkCard({ park }: ParkCardProps) {
   const navigate = useNavigate();
   const logo = park.logoImage?.url;
   const main = park.mainImage?.url;
@@ -33,12 +35,30 @@ const ParkCard: React.FC<ParkCardProps> = ({ park }) => {
           <span className="text-gray-400">No image</span>
         )}
       </div>
-      <div className="p-4 flex flex-col items-center">
-        <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-1">{park.name}</h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{park.destination?.name}</p>
-      </div>
+      <ParkCardInfo park={park} />
     </div>
   );
 };
 
-export default ParkCard;
+function ParkCardInfo({ park }: { park: LivePark }) {
+  const location = (park.city && park.country) ? `${park.city}, ${park.country.name}` : undefined;
+  const schedule = getScheduleInfo(park);
+  
+  return (
+    <div className="p-4 flex flex-col items-start gap-1">
+      <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100">{park.name}</h2>
+      {location ? (
+        <div className="flex items-center text-gray-500 text-sm items-center">
+          <MapPinIcon className="h-4 w-4 inline-block mr-1" />
+          {location}
+        </div>
+      ) : null}
+      {schedule.regular ? (
+        <div className="flex items-center text-gray-500 text-sm items-center">
+          <ClockIcon className="h-4 w-4 inline-block mr-1" />
+          {schedule.regular.open} - {schedule.regular.close}
+        </div>
+      ) : null}
+    </div>
+  );
+}

@@ -113,7 +113,6 @@ const Parks: React.FC = () => {
           throw new Error('Failed to fetch parks');
         }
         const data = await response.json();
-        console.log(data);
         setParks(data);
       } catch (err: any) {
         setError(err.message || 'Unknown error');

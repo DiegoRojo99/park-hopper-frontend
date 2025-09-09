@@ -21,8 +21,8 @@ const Nav: React.FC = () => {
 
   return (
     <nav className="bg-light-secondary dark:bg-dark-secondary text-white shadow-md relative">
-      <div className="max-w-7xl mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-4 pt-4">
+        <div className="flex justify-between items-center pb-4">
           <h1 className="text-xl font-bold">
             <Link to="/" className="hover:underline">Park Hopper</Link>
           </h1>
@@ -61,7 +61,7 @@ const Nav: React.FC = () => {
         <div
           className={`${
             isMenuOpen ? 'flex' : 'hidden'
-          } lg:hidden flex-col space-y-2 mt-4 -mx-4 px-4 py-4 bg-gray-800 dark:bg-gray-700 border-t border-gray-700 dark:border-gray-600`}
+          } lg:hidden flex-col space-y-2 -mx-4 px-4 py-4 bg-gray-800 dark:bg-gray-700 border-t border-gray-700 dark:border-gray-600`}
         >
           <Link 
             to="/parks" 

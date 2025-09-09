@@ -42,7 +42,7 @@ export default function ParkCard({ park }: ParkCardProps) {
 
 function ParkCardInfo({ park }: { park: LivePark }) {
   const location = (park.city && park.country) ? `${park.city}, ${park.country.name}` : undefined;
-  const schedule = getScheduleInfo(park);
+  const scheduleInfo = getScheduleInfo(park);
   
   return (
     <div className="p-4 flex flex-col items-start gap-1">
@@ -53,10 +53,10 @@ function ParkCardInfo({ park }: { park: LivePark }) {
           {location}
         </div>
       ) : null}
-      {schedule.regular ? (
+      {scheduleInfo.regular ? (
         <div className="flex items-center text-gray-500 text-sm items-center">
           <ClockIcon className="h-4 w-4 inline-block mr-1" />
-          {schedule.regular.open} - {schedule.regular.close}
+          {scheduleInfo.regular.open} - {scheduleInfo.regular.close}
         </div>
       ) : null}
     </div>

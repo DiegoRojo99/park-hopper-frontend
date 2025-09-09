@@ -41,20 +41,20 @@ export default function ParkHeroSection({ park }: { park: LivePark }) {
           </div>
           <div className="flex flex-col gap-1">
             {(() => {
-              const schedule = getScheduleInfo(park);
+              const scheduleInfo = getScheduleInfo(park);
               return (
                 <>
                   <div className="flex items-center gap-1.5">
                     <ClockIcon className="h-4 w-4 text-gray-300" />
-                    {schedule.regular ? (
+                    {scheduleInfo.regular ? (
                       <span className="text-gray-200">
-                        {schedule.regular.open} - {schedule.regular.close}
+                        {scheduleInfo.regular.open} - {scheduleInfo.regular.close}
                       </span>
                     ) : (
                       <span className="text-gray-400">Hours not available</span>
                     )}
                   </div>
-                  {schedule.additional.map((hours, index) => {
+                  {scheduleInfo.additional.map((hours, index) => {
                     const styles = getScheduleBadgeStyle(hours.type);
                     return (
                       <div key={index} className="flex items-center gap-1.5">

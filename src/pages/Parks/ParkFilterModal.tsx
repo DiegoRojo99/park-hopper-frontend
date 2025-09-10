@@ -10,6 +10,9 @@ interface ParkFilterModalProps {
   destinations: string[];
   destinationFilter: string;
   setDestinationFilter: (value: string) => void;
+  countries: string[];
+  countryFilter: string;
+  setCountryFilter: (value: string) => void;
   statusFilter: string;
   setStatusFilter: (value: string) => void;
   sortBy: {
@@ -27,6 +30,9 @@ export default function ParkFilterModal({
   destinations,
   destinationFilter,
   setDestinationFilter,
+  countries,
+  countryFilter,
+  setCountryFilter,
   statusFilter,
   setStatusFilter,
   sortBy,
@@ -138,19 +144,33 @@ export default function ParkFilterModal({
                       </div>
 
                       {/* Destination Filter */}
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Destination</h4>
-                        <select
-                          value={destinationFilter}
-                          onChange={(e) => setDestinationFilter(e.target.value)}
-                          className="w-full p-2 border-gray-300 text-gray-700 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
-                        >
-                          <option className='py-1' value="all">All Destinations</option>
-                          {destinations.map(dest => (
-                            <option className='py-1' key={dest} value={dest}>{dest}</option>
-                          ))}
-                        </select>
-                      </div>
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Destination</h4>
+                          <select
+                            value={destinationFilter}
+                            onChange={(e) => setDestinationFilter(e.target.value)}
+                            className="w-full p-2 border-gray-300 text-gray-700 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                          >
+                            <option className='py-1' value="all">All Destinations</option>
+                            {destinations.map(dest => (
+                              <option className='py-1' key={dest} value={dest}>{dest}</option>
+                            ))}
+                          </select>
+                        </div>
+                        {/* Country Filter */}
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Country</h4>
+                          <select
+                            value={countryFilter}
+                            onChange={(e) => setCountryFilter(e.target.value)}
+                            className="w-full p-2 border-gray-300 text-gray-700 text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
+                          >
+                            <option className='py-1' value="all">All Countries</option>
+                            {countries.map(country => (
+                              <option className='py-1' key={country} value={country}>{country}</option>
+                            ))}
+                          </select>
+                        </div>
                     </div>
                   </div>
                 </div>

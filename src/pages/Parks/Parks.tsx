@@ -6,11 +6,16 @@ import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline';
 import SearchBar from '../../components/SearchBar';
 import ParkFilterModal from './ParkFilterModal';
 
+
 const Parks: React.FC = () => {
   const [parks, setParks] = useState<LivePark[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+
+  // Country filter
+  const [countries, setCountries] = useState<string[]>([]);
+  const [countryFilter, setCountryFilter] = useState<string>('all');
 
   /* Filters */
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,6 +24,7 @@ const Parks: React.FC = () => {
   const [tempFilters, setTempFilters] = useState({
     destinationFilter: 'all',
     statusFilter: 'all',
+    countryFilter: 'all',
     sortBy: {
       field: 'name' as 'name' | 'destination',
       direction: 'asc' as 'asc' | 'desc'
@@ -46,6 +52,9 @@ const Parks: React.FC = () => {
     if (destinationFilter !== 'all') {
       filtered = filtered.filter(p => p.destination?.name === destinationFilter);
     }
+    if (countryFilter !== 'all') {
+      filtered = filtered.filter(p => p.country?.name === countryFilter);
+    }
     if (statusFilter !== 'all') {
       filtered = filtered.filter(p => p.status === statusFilter);
     }
@@ -63,7 +72,7 @@ const Parks: React.FC = () => {
       });
     }
     return filtered;
-  }, [parks, search, destinationFilter, statusFilter, sortBy]);
+  }, [parks, search, destinationFilter, countryFilter, statusFilter, sortBy]);
 
   // Initialize temp filters when modal opens
   useEffect(() => {
@@ -71,14 +80,16 @@ const Parks: React.FC = () => {
       setTempFilters({
         destinationFilter,
         statusFilter,
+        countryFilter,
         sortBy
       });
     }
-  }, [isModalOpen, destinationFilter, statusFilter, sortBy]);
+  }, [isModalOpen, destinationFilter, statusFilter, countryFilter, sortBy]);
 
   const handleApplyFilters = () => {
     setDestinationFilter(tempFilters.destinationFilter);
     setStatusFilter(tempFilters.statusFilter);
+    setCountryFilter(tempFilters.countryFilter);
     setSortBy(tempFilters.sortBy);
     setIsModalOpen(false);
   };
@@ -87,6 +98,7 @@ const Parks: React.FC = () => {
     const defaultFilters = {
       destinationFilter: 'all',
       statusFilter: 'all',
+      countryFilter: 'all',
       sortBy: {
         field: 'name' as const,
         direction: 'asc' as const
@@ -95,12 +107,13 @@ const Parks: React.FC = () => {
     setTempFilters(defaultFilters);
     setDestinationFilter(defaultFilters.destinationFilter);
     setStatusFilter(defaultFilters.statusFilter);
+    setCountryFilter(defaultFilters.countryFilter);
     setSortBy(defaultFilters.sortBy);
     setIsModalOpen(false);
   };
 
   useEffect(() => {
-    const fetchParks = async () => {
+    const fetchParksAndCountries = async () => {
       const apiUrl = process.env.REACT_APP_API_URL!;
       if (!apiUrl) {
         setError('API URL is not defined');
@@ -108,11 +121,17 @@ const Parks: React.FC = () => {
         return;
       }
       try {
-        const response = await fetch(`${apiUrl}/api/parks`);
-        if (!response.ok) throw new Error('Failed to fetch parks');
+        const [parksRes, countriesRes] = await Promise.all([
+          fetch(`${apiUrl}/api/parks`),
+          fetch(`${apiUrl}/api/admin/countries`)
+        ]);
+        if (!parksRes.ok) throw new Error('Failed to fetch parks');
+        if (!countriesRes.ok) throw new Error('Failed to fetch countries');
 
-        const data = await response.json();
-        setParks(data);
+        const parksData = await parksRes.json();
+        const countriesData = await countriesRes.json();
+        setParks(parksData);
+        setCountries(countriesData.map((c: any) => c.name));
       } 
       catch (err: any) {
         setError(err.message || 'Unknown error');
@@ -121,7 +140,7 @@ const Parks: React.FC = () => {
         setLoading(false);
       }
     };
-    fetchParks();
+    fetchParksAndCountries();
   }, []);
 
   if (loading) return <Loader />;
@@ -161,6 +180,9 @@ const Parks: React.FC = () => {
             destinations={destinations}
             destinationFilter={tempFilters.destinationFilter}
             setDestinationFilter={(value) => setTempFilters(prev => ({ ...prev, destinationFilter: value }))}
+            countries={countries}
+            countryFilter={tempFilters.countryFilter}
+            setCountryFilter={(value) => setTempFilters(prev => ({ ...prev, countryFilter: value }))}
             statusFilter={tempFilters.statusFilter}
             setStatusFilter={(value) => setTempFilters(prev => ({ ...prev, statusFilter: value }))}
             sortBy={tempFilters.sortBy}

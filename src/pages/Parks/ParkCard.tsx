@@ -10,8 +10,7 @@ type ParkCardProps = {
 
 export default function ParkCard({ park }: ParkCardProps) {
   const navigate = useNavigate();
-  const logo = park.logoImage?.url;
-  const main = park.mainImage?.url;
+  const image = park.mainImage || park.logoImage;
   const status = park.status;
 
   return (
@@ -27,10 +26,8 @@ export default function ParkCard({ park }: ParkCardProps) {
             {status === 'OPERATING' ? 'Open' : 'Closed'}
           </div>
         )}
-        {main ? (
-          <img src={main} alt={park.name + ' main'} className="w-full h-full object-cover" />
-        ) : logo ? (
-          <img src={logo} alt={park.name + ' logo'} className="w-32 h-32 object-contain" />
+        {image ? (
+          <img src={image.url} alt={park.name + ' image'} className="w-full h-full object-cover" />
         ) : (
           <span className="text-gray-400">No image</span>
         )}

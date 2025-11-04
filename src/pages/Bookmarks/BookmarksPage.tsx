@@ -1,9 +1,7 @@
 import React from 'react';
-import { Bookmark, useBookmarks } from '../../context/BookmarkContext';
+import { useBookmarks } from '../../context/BookmarkContext';
 import { Loader } from '../../components/Loader';
-import { LiveAttraction, LiveShow, ShowTimes } from '../../types/db';
-import { ClockIcon, MapPinIcon } from '@heroicons/react/24/outline';
-import { BookmarkButton } from '../../components/BookmarkButton';
+import { LiveAttraction, LiveShow } from '../../types/db';
 import ShowCard from '../Shows/ShowCard';
 import AttractionCard from '../Attractions/AttractionCard';
 

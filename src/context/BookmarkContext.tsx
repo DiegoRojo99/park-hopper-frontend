@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
 import { LiveDataStatus, ShowTimes } from "../types/db";
 import { useAuth } from "./AuthContext";
 
@@ -50,7 +50,7 @@ export const BookmarkProvider = ({ children }: BookmarkProviderProps) => {
   const [loading, setLoading] = useState(true);
   const { user, userLoading } = useAuth();
 
-  const fetchBookmarks = async () => {
+  const fetchBookmarks = useCallback(async () => {
     const apiUrl = process.env.REACT_APP_API_URL;
     if (!apiUrl || !user) {
       setLoading(false);
@@ -68,7 +68,7 @@ export const BookmarkProvider = ({ children }: BookmarkProviderProps) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     if (userLoading) return;
@@ -80,7 +80,7 @@ export const BookmarkProvider = ({ children }: BookmarkProviderProps) => {
     }
     
     fetchBookmarks();
-  }, [user, userLoading]);
+  }, [user, userLoading, fetchBookmarks]);
 
   const isBookmarked = (entityId: string): boolean => {
     return bookmarks.some(b => b.id === entityId);

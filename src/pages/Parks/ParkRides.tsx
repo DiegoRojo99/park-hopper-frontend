@@ -1,4 +1,5 @@
 import { LiveAttraction } from "../../types/db";
+import { BookmarkButton } from "../../components/BookmarkButton";
 
 function sortByWaitTime(a: LiveAttraction, b: LiveAttraction) {
   const waitA = a.waitTime;
@@ -22,9 +23,10 @@ export default function ParkRidesTable({ attractions }: { attractions: LiveAttra
     <table className="w-full mb-4 text-xs sm:text-base table-fixed border-collapse">
       <thead className="border-b border-black">
         <tr className="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-bold">
-          <th className="px-2 w-[15%]">Open</th>
-          <th className="text-left w-[75%] py-1">Ride Name</th>
+          <th className="px-2 w-[10%]">Open</th>
+          <th className="text-left w-[60%] py-1">Ride Name</th>
           <th className="text-left w-[10%]">Wait</th>
+          <th className="text-center w-[10%]"></th>
         </tr>
       </thead>
       <tbody className="divide-y divide-gray-200">
@@ -63,6 +65,9 @@ function AttractionRow({ attraction, index }: { attraction: LiveAttraction, inde
       ) : (
         <td className="text-right pr-2">N/A</td>
       )}
+      <td className="text-center">
+        <BookmarkButton entityId={attraction.id} entityType="ATTRACTION" size="sm" />
+      </td>
     </tr>
   );
 }

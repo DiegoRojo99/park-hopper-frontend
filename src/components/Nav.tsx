@@ -42,6 +42,7 @@ const Nav: React.FC = () => {
           {/* Desktop menu */}
           <div className="hidden lg:flex lg:items-center lg:space-x-8">
             <Link to="/parks" className="hover:underline">Parks</Link>
+            {user && <Link to="/bookmarks" className="hover:underline">Bookmarks</Link>}
             {userLoading ? null : user ? (
               <button
                 onClick={handleLogout}
@@ -70,6 +71,15 @@ const Nav: React.FC = () => {
           >
             Parks
           </Link>
+          {user && (
+            <Link 
+              to="/bookmarks" 
+              className="block px-3 py-2 rounded-lg text-gray-200 hover:bg-gray-700/50 hover:text-white active:bg-gray-600 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Bookmarks
+            </Link>
+          )}
           {userLoading ? null : user ? (
             <button
               onClick={() => {

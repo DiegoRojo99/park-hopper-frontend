@@ -3,6 +3,7 @@ import { Layout } from './components/Layout';
 
 /* CONTEXT */
 import { AuthProvider } from './context/AuthContext';
+import { BookmarkProvider } from './context/BookmarkContext';
 
 /* STYLES */
 import './index.css';
@@ -13,6 +14,7 @@ import Parks from './pages/Parks/Parks';
 import { ParkDetailsContainer } from './pages/Parks/Details/ParkDetails';
 import LoginPage from './pages/Login/LoginPage';
 import SyncParksPage from './pages/Sync/SyncParks';
+import BookmarksPage from './pages/Bookmarks/BookmarksPage';
 
 /* ADMIN PAGES */
 import AdminImageLinker from './pages/Admin/AdminImageLinker';
@@ -27,6 +29,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: 'parks', element: <Parks /> },
       { path: 'parks/:parkId', element: <ParkDetailsContainer /> },
+      { path: 'bookmarks', element: <BookmarksPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'sync', element: <SyncParksPage /> },
       { path: 'admin', element: <Admin /> },
@@ -39,7 +42,9 @@ const router = createBrowserRouter([
 export default function App() {
   return (
     <AuthProvider>
-      <RouterProvider router={router} future={{ v7_startTransition: true }} />
+      <BookmarkProvider>
+        <RouterProvider router={router} future={{ v7_startTransition: true }} />
+      </BookmarkProvider>
     </AuthProvider>
   );
 }

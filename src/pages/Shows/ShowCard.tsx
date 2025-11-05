@@ -1,4 +1,4 @@
-import { LiveShow } from "../../types/db";
+import { LiveShow, ShowTimes } from "../../types/db";
 import { CalendarIcon, ClockIcon } from "@heroicons/react/24/outline";
 import { ShowTimeElement } from "./ShowTimeElement";
 import { BookmarkButton } from "../../components/BookmarkButton";
@@ -6,9 +6,14 @@ import formatTime from "../../lib/time";
 
 function getNextShowtime(show: LiveShow) {
   if (!show.showtimes || show.showtimes.length === 0) return null;
+  
+  // Get current time in UTC
   const now = new Date();
+  
+  // Find the next showtime
   for (const time of show.showtimes) {
-    if (new Date(time.startTime) > now) {
+    const showtimeDate = new Date(time.startTime);
+    if (showtimeDate > now) {
       return formatTime(time.startTime, show.timezone);
     }
   }
@@ -60,19 +65,37 @@ export default function ShowCard({ show }: { show: LiveShow }) {
   );
 }
 
-function ShowCardAdditionalShowtimes({ show }: { show: LiveShow }) {
-  const numberOfShowtimes = show.showtimes ? show.showtimes.length : 0;
-  if (numberOfShowtimes === 0) {
-    return <></>;
-  }
+function filterPastShowtime(showtime: ShowTimes) {
+  const now = new Date();
+  return new Date(showtime.startTime) > now;
+}
 
-  if (numberOfShowtimes === 1) {
+function filterDifferentDateShowtime(showtime: ShowTimes) {
+  const now = new Date();
+  return new Date(showtime.startTime).toDateString() !== now.toDateString();
+}
+
+function filterShowtimesByDateAndTime(show: LiveShow) {
+  return show.showtimes?.filter(st => {
+    if (!st.startTime) return false;
+    if (!filterPastShowtime(st)) return false;
+    if (!filterDifferentDateShowtime(st)) return false;
+    return true;
+  });
+}
+
+function ShowCardAdditionalShowtimes({ show }: { show: LiveShow }) {
+  const dateFilteredShowtimes = filterShowtimesByDateAndTime(show);
+  const numberOfShowtimes = dateFilteredShowtimes ? dateFilteredShowtimes.length : 0;
+
+  if (numberOfShowtimes < 2) {
+    const showTimeExists = numberOfShowtimes === 1;
     return (
       <>
         <hr className="mt-2 mb-3" />
         <div className="flex items-center justify-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-2">
           <CalendarIcon className="h-4 w-4" />
-          <span>No additional showtimes available.</span>
+          <span>No {showTimeExists ? "additional" : ""} upcoming showtimes available today.</span>
         </div>
       </>
     );

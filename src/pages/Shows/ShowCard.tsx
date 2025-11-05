@@ -39,26 +39,28 @@ export default function ShowCard({ show }: { show: LiveShow }) {
   const firstShowtime = show.showtimes?.[0];
   const duration = firstShowtime ? calculateDuration(firstShowtime.startTime, firstShowtime.endTime) : undefined;
   return (
-    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
-      <div className="flex justify-between items-start mb-2">
-        <div className="flex-1">        
-          <h3 className="text-md font-bold">
-            {show.name}
-          </h3>
-          {!!duration && (
-            <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center mt-1">
-              <ClockIcon className="h-4 w-4 shrink-0 mr-1.5" />
-              <span className="leading-none">{formatDuration(duration)}</span>
-            </div>
-          )}
-          {getNextShowtime(show) && (
-            <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center mt-1">
-              <CalendarIcon className="h-4 w-4 shrink-0 mr-1.5" />
-              <span className="leading-none">Next Show: {getNextShowtime(show)}</span>
-            </div>
-          )}
-        </div>
+    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 relative">
+      {/* Bookmark button in top-right corner */}
+      <div className="absolute top-2 right-2">
         <BookmarkButton entityId={show.id} entityType="SHOW" size="sm" />
+      </div>
+      
+      <div className="pr-8">
+        <h3 className="text-md font-bold mb-2">
+          {show.name}
+        </h3>
+        {!!duration && (
+          <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center mt-1">
+            <ClockIcon className="h-4 w-4 shrink-0 mr-1.5" />
+            <span className="leading-none">{formatDuration(duration)}</span>
+          </div>
+        )}
+        {getNextShowtime(show) && (
+          <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center mt-1">
+            <CalendarIcon className="h-4 w-4 shrink-0 mr-1.5" />
+            <span className="leading-none">Next Show: {getNextShowtime(show)}</span>
+          </div>
+        )}
       </div>
       <ShowCardAdditionalShowtimes show={show} />
     </div>

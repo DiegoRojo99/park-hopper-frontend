@@ -8,6 +8,7 @@ import AttractionsSection from "../../Attractions/AttractionsSection";
 import ShowsSection from "../../Shows/ShowsSection";
 import RestaurantsSection from "../../Restaurants/RestaurantsSection";
 import ParkHeroSection from "./ParkHeroSection";
+import type { TabOption } from "../../../components/ChildrenTab";
 
 export const ParkDetailsContainer: React.FC = () => {
   const { parkId } = useParams<{ parkId: string }>();
@@ -49,8 +50,8 @@ export const ParkDetailsContainer: React.FC = () => {
 };
 
 const ParkDetails: React.FC<{park: LivePark}> = ({ park }) => {
-  const [selectedTab, setSelectedTab] = useState<"Attractions" | "Shows" | "Restaurants">("Attractions");
-  const handleTabChange = (tab: "Attractions" | "Shows" | "Restaurants") => {
+  const [selectedTab, setSelectedTab] = useState<TabOption>("Attractions");
+  const handleTabChange = (tab: TabOption) => {
     setSelectedTab(tab);
   };
 

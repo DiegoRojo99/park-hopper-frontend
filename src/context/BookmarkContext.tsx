@@ -19,6 +19,15 @@ export interface Bookmark {
   timezone: string;
 }
 
+export interface BookMarkAdditionResponse {
+  createdAt: string;
+  entityId: string;
+  entityType: BookmarkEntityType;
+  id: string;
+  updatedAt: string;
+  userId: string;
+}
+
 interface BookmarkContextType {
   bookmarks: Bookmark[];
   loading: boolean;
@@ -102,8 +111,22 @@ export const BookmarkProvider = ({ children }: BookmarkProviderProps) => {
       });
 
       if (response.ok) {
-        const newBookmark = await response.json();
-        setBookmarks(prev => [...prev, newBookmark]);
+        const newBookmark: BookMarkAdditionResponse = await response.json();
+        const bookmark: Bookmark = {
+          id: newBookmark.entityId,
+          externalId: newBookmark.entityId,
+          entityType: newBookmark.entityType,
+          destinationId: null,
+          latitude: 0,
+          longitude: 0,
+          name: '',
+          parkId: '',
+          showtimes: [],
+          waitTime: null,
+          status: undefined,
+          timezone: ''
+        };
+        setBookmarks(prev => [...prev, bookmark]);
       }
     } catch (error) {
       console.error('Error adding bookmark:', error);

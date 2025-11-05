@@ -1,7 +1,7 @@
 import { LiveAttraction } from "../../types/db";
+import { BookmarkButton } from "../../components/BookmarkButton";
 
 export default function AttractionCard({ attraction }: { attraction: LiveAttraction }) {
-  // Handle case where attraction might be undefined or null
   if (!attraction) return null;
 
   const waitTime = attraction.waitTime || null;
@@ -23,18 +23,23 @@ export default function AttractionCard({ attraction }: { attraction: LiveAttract
           <p className="text-sm text-gray-500">Unknown</p>
         )}
       </div>
-      <div className="text-right w-20">
-        {waitTime ? (
-          <span
-            className={`text-xl font-semibold ${
-              waitTime > 60 ? "text-red-500" : waitTime > 30 ? "text-yellow-500" : "text-green-600"
-            }`}
-          >
-            {waitTime} min
-          </span>
-        ) : (
-          <span className="text-xl text-gray-500 italic">-</span>
-        )}
+      <div className="flex items-center gap-2">
+        <div className="text-right min-w-[80px]">
+          {waitTime ? (
+            <span
+              className={`text-xl font-semibold ${
+                waitTime > 60 ? "text-red-500" : waitTime > 30 ? "text-yellow-500" : "text-green-600"
+              }`}
+            >
+              {waitTime} min
+            </span>
+          ) : (
+            <span className="text-xl text-gray-500 italic">-</span>
+          )}
+        </div>
+        <div className="flex-shrink-0">
+          <BookmarkButton entityId={attraction.id} entityType="ATTRACTION" size="sm" />
+        </div>
       </div>
     </div>
   );

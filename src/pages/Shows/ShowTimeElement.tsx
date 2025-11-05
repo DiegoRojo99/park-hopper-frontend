@@ -3,28 +3,29 @@ import { CalendarIcon } from "@heroicons/react/24/outline";
 
 interface ShowTimeElementProps {
   showtime: ShowTimes;
+  timezone: string | undefined;
 }
 
-function formatShowTime(time: string) {
+function formatShowTime(time: string, timezone: string | undefined) {
   const date = new Date(time);
   const options: Intl.DateTimeFormatOptions = {
     hour: '2-digit',
     minute: '2-digit',
-    timeZone: 'America/New_York',
+    timeZone: timezone || 'America/New_York',
     hour12: true
   };
   return date.toLocaleString('en-US', options);
 }
 
-export function ShowTimeElement({ showtime }: ShowTimeElementProps) {
+export function ShowTimeElement({ showtime, timezone }: ShowTimeElementProps) {
   function displayShowTime(showtime: ShowTimes) {
     if (!showtime || !showtime.startTime || !showtime.endTime) {
       return <span className="text-gray-500">No showtime available</span>;
     }
     if (showtime.startTime === showtime.endTime) {
-      return formatShowTime(showtime.startTime);
+      return formatShowTime(showtime.startTime, timezone);
     }
-    return `${formatShowTime(showtime.startTime)} - ${formatShowTime(showtime.endTime)}`;
+    return `${formatShowTime(showtime.startTime, timezone)} - ${formatShowTime(showtime.endTime, timezone)}`;
   }
 
   return (

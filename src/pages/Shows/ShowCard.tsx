@@ -84,7 +84,7 @@ function ShowCardAdditionalShowtimes({ show }: { show: LiveShow }) {
         <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Additional Showtimes:</p>
         <div className="flex flex-wrap gap-2 justify-start">
           {show.showtimes.slice(1).map((time, index) => (
-            <ShowTimeElement key={index} showtime={time} />
+            <ShowTimeElement key={index} showtime={time} timezone={show.timezone} />
           ))}
         </div>
       </div>

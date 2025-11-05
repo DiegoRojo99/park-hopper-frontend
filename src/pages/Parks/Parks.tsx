@@ -45,9 +45,19 @@ const Parks: React.FC = () => {
 
   // Filter, search, sort parks
   const filteredParks = useMemo(() => {
+    /** Filter parks by search text */
+    function filterByText(parkToFilter: LivePark) {
+      return (
+        parkToFilter.name.toLowerCase().includes(search.toLowerCase()) ||
+        (parkToFilter.city && parkToFilter.city.toLowerCase().includes(search.toLowerCase())) ||
+        (parkToFilter.destination?.name && parkToFilter.destination.name.toLowerCase().includes(search.toLowerCase())) ||
+        (parkToFilter.country?.name && parkToFilter.country.name.toLowerCase().includes(search.toLowerCase()))
+      );
+    }
+
     let filtered = parks;
     if (search) {
-      filtered = filtered.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
+      filtered = filtered.filter(filterByText);
     }
     if (destinationFilter !== 'all') {
       filtered = filtered.filter(p => p.destination?.name === destinationFilter);

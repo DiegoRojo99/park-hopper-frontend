@@ -9,6 +9,7 @@ interface AlertContextType {
   getAlertForEntity: (entityId: string) => Alert | undefined;
   createAlert: (entityId: string, entityType: AlertEntityType, alertType: AlertType, fcmToken: string, waitTimeThreshold?: number) => Promise<void>;
   updateAlert: (alertId: string, updates: UpdateAlertRequest) => Promise<void>;
+  deleteAlert: (alertId: string) => Promise<void>;
   refreshAlerts: () => Promise<void>;
 }
 
@@ -19,6 +20,7 @@ const AlertContext = createContext<AlertContextType>({
   getAlertForEntity: () => undefined,
   createAlert: async () => {},
   updateAlert: async () => {},
+  deleteAlert: async () => {},
   refreshAlerts: async () => {},
 });
 
@@ -151,6 +153,28 @@ export const AlertProvider = ({ children }: AlertProviderProps) => {
     }
   };
 
+  const deleteAlert = async (alertId: string) => {
+    if (!user) {
+      throw new Error('User must be logged in to delete alerts');
+    }
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/alerts/${alertId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete alert');
+      }
+
+      // Optimistically remove the alert from the list
+      setAlerts(prev => prev.filter(alert => alert.id !== alertId));
+    } catch (error) {
+      console.error('Error deleting alert:', error);
+      throw error;
+    }
+  };
+
   const refreshAlerts = async () => {
     await fetchAlerts();
   };
@@ -162,6 +186,7 @@ export const AlertProvider = ({ children }: AlertProviderProps) => {
     getAlertForEntity,
     createAlert,
     updateAlert,
+    deleteAlert,
     refreshAlerts,
   };
 

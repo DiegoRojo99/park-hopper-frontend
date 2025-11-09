@@ -4,6 +4,7 @@ import { Layout } from './components/Layout';
 /* CONTEXT */
 import { AuthProvider } from './context/AuthContext';
 import { BookmarkProvider } from './context/BookmarkContext';
+import { AlertProvider } from './context/AlertContext';
 
 /* STYLES */
 import './index.css';
@@ -42,9 +43,11 @@ const router = createBrowserRouter([
 export default function App() {
   return (
     <AuthProvider>
-      <BookmarkProvider>
-        <RouterProvider router={router} future={{ v7_startTransition: true }} />
-      </BookmarkProvider>
+      <AlertProvider>
+        <BookmarkProvider>
+          <RouterProvider router={router} future={{ v7_startTransition: true }} />
+        </BookmarkProvider>
+      </AlertProvider>
     </AuthProvider>
   );
 }

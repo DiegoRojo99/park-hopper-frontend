@@ -1,5 +1,6 @@
 import { LiveAttraction } from "../../types/db";
 import { BookmarkButton } from "../../components/BookmarkButton";
+import AlertButton from "../../components/AlertButton";
 
 export default function AttractionCard({ attraction }: { attraction: LiveAttraction }) {
   if (!attraction) return null;
@@ -13,8 +14,9 @@ export default function AttractionCard({ attraction }: { attraction: LiveAttract
 
   return (
     <div className="p-4 bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-200 dark:border-gray-700 relative">
-      {/* Bookmark button in top-right corner */}
-      <div className="absolute top-2 right-2">
+      {/* Bookmark and Alert buttons in top-right corner */}
+      <div className="absolute top-2 right-2 flex gap-2">
+        <AlertButton entityId={attraction.id} entityType="ATTRACTION" />
         <BookmarkButton entityId={attraction.id} entityType="ATTRACTION" size="sm" />
       </div>
       

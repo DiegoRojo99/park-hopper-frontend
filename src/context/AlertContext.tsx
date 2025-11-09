@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
-import { Alert, CreateAlertRequest, UpdateAlertRequest, AlertType, AlertEntityType, AlertStatus } from "../types/alert";
+import { Alert, CreateAlertRequest, UpdateAlertRequest, AlertType, AlertEntityType } from "../types/alert";
 import { useAuth } from "./AuthContext";
 
 interface AlertContextType {

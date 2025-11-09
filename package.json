@@ -22,6 +22,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "generate-sw": "node scripts/generate-sw.js",
+    "prestart": "npm run generate-sw",
+    "prebuild": "npm run generate-sw",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

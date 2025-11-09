@@ -1,8 +1,8 @@
 import { LiveDataStatus } from './db';
 
 /* ALERT TYPES */
-export type AlertEntityType = 'ATTRACTION' | 'SHOW' | 'RESTAURANT';
-export type AlertType = 'WAIT_TIME_THRESHOLD' | 'STATUS_CHANGE' | 'SHOWTIME_REMINDER';
+export type AlertEntityType = 'ATTRACTION' | 'SHOW' | 'RESTAURANT' | 'PARK';
+export type AlertType = 'WAIT_TIME_THRESHOLD' | 'STATUS_CHANGE_UP' | 'STATUS_CHANGE_DOWN';
 export type AlertStatus = 'ACTIVE' | 'PAUSED' | 'DELETED';
 
 export interface Alert {
@@ -20,4 +20,19 @@ export interface Alert {
   lastTriggered: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface CreateAlertRequest {
+  userId: string;
+  entityId: string;
+  entityType: AlertEntityType;
+  alertType: AlertType;
+  waitTimeThreshold?: number;
+  fcmToken: string;
+}
+
+export interface UpdateAlertRequest {
+  status?: AlertStatus;
+  waitTimeThreshold?: number;
+  fcmToken?: string;
 }

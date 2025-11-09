@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
-import { Alert } from "../types/alert";
+import { Alert, CreateAlertRequest, UpdateAlertRequest, AlertType, AlertEntityType, AlertStatus } from "../types/alert";
 import { useAuth } from "./AuthContext";
 
 interface AlertContextType {
@@ -7,6 +7,8 @@ interface AlertContextType {
   loading: boolean;
   hasAlert: (entityId: string) => boolean;
   getAlertForEntity: (entityId: string) => Alert | undefined;
+  createAlert: (entityId: string, entityType: AlertEntityType, alertType: AlertType, fcmToken: string, waitTimeThreshold?: number) => Promise<void>;
+  updateAlert: (alertId: string, updates: UpdateAlertRequest) => Promise<void>;
   refreshAlerts: () => Promise<void>;
 }
 
@@ -15,6 +17,8 @@ const AlertContext = createContext<AlertContextType>({
   loading: false,
   hasAlert: () => false,
   getAlertForEntity: () => undefined,
+  createAlert: async () => {},
+  updateAlert: async () => {},
   refreshAlerts: async () => {},
 });
 
@@ -72,6 +76,81 @@ export const AlertProvider = ({ children }: AlertProviderProps) => {
     return alerts.find(alert => alert.entityId === entityId && alert.status === 'ACTIVE');
   };
 
+  const createAlert = async (
+    entityId: string,
+    entityType: AlertEntityType,
+    alertType: AlertType,
+    fcmToken: string,
+    waitTimeThreshold?: number
+  ) => {
+    if (!user) {
+      throw new Error('User must be logged in to create alerts');
+    }
+
+    try {
+      const requestBody: CreateAlertRequest = {
+        userId: user.uid,
+        entityId,
+        entityType,
+        alertType,
+        fcmToken,
+      };
+
+      // Only include waitTimeThreshold if it's provided and alert type is WAIT_TIME_THRESHOLD
+      if (alertType === 'WAIT_TIME_THRESHOLD' && waitTimeThreshold !== undefined) {
+        requestBody.waitTimeThreshold = waitTimeThreshold;
+      }
+
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/alerts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create alert');
+      }
+
+      const newAlert: Alert = await response.json();
+      
+      // Optimistically add the alert to the list
+      setAlerts(prev => [...prev, newAlert]);
+    } catch (error) {
+      console.error('Error creating alert:', error);
+      throw error;
+    }
+  };
+
+  const updateAlert = async (alertId: string, updates: UpdateAlertRequest) => {
+    if (!user) {
+      throw new Error('User must be logged in to update alerts');
+    }
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/alerts/${alertId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updates),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update alert');
+      }
+
+      const updatedAlert: Alert = await response.json();
+      
+      // Optimistically update the alert in the list
+      setAlerts(prev => prev.map(alert => alert.id === alertId ? updatedAlert : alert));
+    } catch (error) {
+      console.error('Error updating alert:', error);
+      throw error;
+    }
+  };
+
   const refreshAlerts = async () => {
     await fetchAlerts();
   };
@@ -81,6 +160,8 @@ export const AlertProvider = ({ children }: AlertProviderProps) => {
     loading,
     hasAlert,
     getAlertForEntity,
+    createAlert,
+    updateAlert,
     refreshAlerts,
   };
 

@@ -7,15 +7,26 @@ import { AlertEntityType, AlertType } from '../types/alert';
 interface AlertButtonProps {
   entityId: string;
   entityType: AlertEntityType;
+  currentWaitTime?: number | null; // Current wait time for validation
 }
 
-const AlertButton: React.FC<AlertButtonProps> = ({ entityId, entityType }) => {
+const AlertButton: React.FC<AlertButtonProps> = ({ entityId, entityType, currentWaitTime }) => {
   const { user } = useAuth();
   const { hasAlert, getAlertForEntity, createAlert, deleteAlert } = useAlerts();
   const { fcmToken, hasPermission, requestNotificationPermission } = useFCM();
   const [showModal, setShowModal] = useState(false);
   const [alertType, setAlertType] = useState<AlertType>('WAIT_TIME_THRESHOLD');
-  const [waitTimeThreshold, setWaitTimeThreshold] = useState<number>(30);
+  
+  // Set initial threshold to 5 minutes below current wait time
+  const getInitialThreshold = () => {
+    if (typeof currentWaitTime === 'number' && currentWaitTime > 0) {
+      // Set 5 minutes below
+      return Math.max(5, currentWaitTime - 5);
+    }
+    return 30; // Default fallback
+  };
+  
+  const [waitTimeThreshold, setWaitTimeThreshold] = useState<number>(getInitialThreshold());
   const [loading, setLoading] = useState(false);
 
   // Don't show button if user is not logged in
@@ -140,17 +151,29 @@ const AlertButton: React.FC<AlertButtonProps> = ({ entityId, entityType }) => {
                 <label className="block text-sm font-medium mb-2">
                   Wait Time Threshold (minutes)
                 </label>
+                {currentWaitTime && (
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    Current wait time: <strong>{currentWaitTime} minutes</strong>
+                  </p>
+                )}
                 <input
                   type="number"
                   value={waitTimeThreshold}
                   onChange={(e) => setWaitTimeThreshold(Number(e.target.value))}
                   min="5"
-                  max="120"
+                  max={currentWaitTime ? currentWaitTime - 1 : 240}
                   className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700"
                 />
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  You'll be notified when wait time drops below this value
+                  {currentWaitTime 
+                    ? `Set a threshold below ${currentWaitTime} minutes to get notified when wait time drops`
+                    : "You'll be notified when wait time drops below this value"}
                 </p>
+                {waitTimeThreshold >= (currentWaitTime || 0) && currentWaitTime && (
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1">
+                    ⚠️ Threshold must be lower than current wait time ({currentWaitTime} min)
+                  </p>
+                )}
               </div>
             )}
 
@@ -163,8 +186,12 @@ const AlertButton: React.FC<AlertButtonProps> = ({ entityId, entityType }) => {
               </button>
               <button
                 onClick={handleCreateAlert}
-                disabled={loading || (!hasPermission && !fcmToken)}
-                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded disabled:opacity-50"
+                disabled={
+                  loading || 
+                  (!hasPermission && !fcmToken) || 
+                  (alertType === 'WAIT_TIME_THRESHOLD' && typeof currentWaitTime === 'number' && waitTimeThreshold >= currentWaitTime)
+                }
+                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Creating...' : hasPermission ? 'Create Alert' : 'Enable Notifications'}
               </button>

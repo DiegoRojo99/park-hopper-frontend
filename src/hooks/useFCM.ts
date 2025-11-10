@@ -19,12 +19,8 @@ export const useFCM = () => {
         vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY,
       });
 
-      if (token) {
-        setFcmToken(token);
-        console.log('FCM Token:', token);
-      } else {
-        setError('No registration token available');
-      }
+      if (token) { setFcmToken(token); } 
+      else { setError('No registration token available'); }
     } catch (err) {
       console.error('Error getting FCM token:', err);
       setError('Failed to get notification token');

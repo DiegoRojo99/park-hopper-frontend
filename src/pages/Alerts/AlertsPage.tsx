@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
-import { useBookmarks } from '../../context/BookmarkContext';
+import { useAlerts } from '../../context/AlertContext';
 import { useAuth } from '../../context/AuthContext';
 import { Loader } from '../../components/Loader';
-import { LiveAttraction, LiveShow } from '../../types/db';
-import ShowCard from '../Shows/ShowCard';
-import AttractionCard from '../Attractions/AttractionCard';
 import { Link } from 'react-router-dom';
 import ChildrenTab, { TabOption } from '../../components/ChildrenTab';
+import AlertCard from './AlertCard';
 
-const BookmarksPage: React.FC = () => {
-  const { bookmarks, loading: bookmarksLoading } = useBookmarks();
+const AlertsPage: React.FC = () => {
+  const { alerts, loading: alertsLoading } = useAlerts();
   const { user, userLoading } = useAuth();
   const [selectedTab, setSelectedTab] = useState<TabOption>('Attractions');
   
-  if (bookmarksLoading || userLoading) return <Loader />;
+  if (alertsLoading || userLoading) return <Loader />;
 
   // Show login prompt if user is not authenticated
   if (!user) {
@@ -27,7 +25,7 @@ const BookmarksPage: React.FC = () => {
           </div>
           <h3 className="text-xl font-semibold mb-2">Login Required</h3>
           <p className="text-gray-600 dark:text-gray-400 mb-4">
-            You need to be logged in to view and manage your bookmarks
+            You need to be logged in to view and manage your alerts
           </p>
           <Link 
             to="/login" 
@@ -40,16 +38,10 @@ const BookmarksPage: React.FC = () => {
     );
   }
 
-  const attractions = bookmarks.filter(e => e.entityType === 'ATTRACTION');
-  const shows = bookmarks.filter(e => e.entityType === 'SHOW');
-
-  const isLiveAttraction = (entity: any): entity is LiveAttraction => {
-    return 'waitTime' in entity;
-  };
-
-  const isLiveShow = (entity: any): entity is LiveShow => {
-    return 'showtimes' in entity;
-  };
+  // Get entities from alerts - alerts only have entityId, not the full entity data
+  // We'll need to fetch the entity data or display alert info directly
+  const attractionAlerts = alerts.filter(a => a.entityType === 'ATTRACTION' && a.status === 'ACTIVE');
+  const showAlerts = alerts.filter(a => a.entityType === 'SHOW' && a.status === 'ACTIVE');
 
   const renderTabContent = () => {
     const displayAttractions = selectedTab === 'Attractions';
@@ -58,43 +50,41 @@ const BookmarksPage: React.FC = () => {
     return (
       <div className="space-y-8 w-full p-4">
         {/* Attractions Section */}
-        {displayAttractions && attractions.length > 0 && (
+        {displayAttractions && attractionAlerts.length > 0 && (
           <section>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {attractions.map((bookmarkedEntity) => {
-                const attraction = isLiveAttraction(bookmarkedEntity) ? bookmarkedEntity : null;
-                return attraction ? (<AttractionCard attraction={attraction} key={bookmarkedEntity.id} />) : null;
-              })}
+              {attractionAlerts.map((alert) => (
+                <AlertCard key={alert.id} alert={alert} />
+              ))}
             </div>
           </section>
         )}
 
         {/* Shows Section */}
-        {displayShows && shows.length > 0 && (
+        {displayShows && showAlerts.length > 0 && (
           <section>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {shows.map((bookmarkShow) => {
-                const show = isLiveShow(bookmarkShow) ? bookmarkShow : null;
-                return show ? <ShowCard show={show} key={bookmarkShow.id} /> : null;
-              })}
+              {showAlerts.map((alert) => (
+                <AlertCard key={alert.id} alert={alert} />
+              ))}
             </div>
           </section>
         )}
 
         {/* Empty state for selected tab */}
-        {((selectedTab === 'Attractions' && attractions.length === 0) ||
-          (selectedTab === 'Shows' && shows.length === 0)) && (
+        {((selectedTab === 'Attractions' && attractionAlerts.length === 0) ||
+          (selectedTab === 'Shows' && showAlerts.length === 0)) && (
           <div className="text-center py-12">
             <div className="text-gray-400 dark:text-gray-500 mb-4">
               <svg className="mx-auto h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
               </svg>
             </div>
             <h3 className="text-xl font-semibold mb-2">
-              {`No ${selectedTab.toLowerCase()} bookmarked`}
+              {`No ${selectedTab.toLowerCase()} alerts`}
             </h3>
             <p className="text-gray-600 dark:text-gray-400">
-              {`Start bookmarking ${selectedTab.toLowerCase()} to see them here`}
+              {`Set up alerts for ${selectedTab.toLowerCase()} to see them here`}
             </p>
           </div>
         )}
@@ -107,9 +97,9 @@ const BookmarksPage: React.FC = () => {
       {/* Header */}
       <div className="w-full bg-white p-6">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">My Bookmarks</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">My Alerts</h1>
           <p className="text-muted dark:text-gray-500">
-            Keep track of your favorite attractions and shows
+            Manage your notification alerts for attractions and shows
           </p>
         </div>
       </div>
@@ -123,4 +113,4 @@ const BookmarksPage: React.FC = () => {
   );
 };
 
-export default BookmarksPage;
+export default AlertsPage;

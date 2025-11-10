@@ -16,6 +16,7 @@ import { ParkDetailsContainer } from './pages/Parks/Details/ParkDetails';
 import LoginPage from './pages/Login/LoginPage';
 import SyncParksPage from './pages/Sync/SyncParks';
 import BookmarksPage from './pages/Bookmarks/BookmarksPage';
+import AlertsPage from './pages/Alerts/AlertsPage';
 
 /* ADMIN PAGES */
 import AdminImageLinker from './pages/Admin/AdminImageLinker';
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
       { path: 'parks', element: <Parks /> },
       { path: 'parks/:parkId', element: <ParkDetailsContainer /> },
       { path: 'bookmarks', element: <BookmarksPage /> },
+      { path: 'alerts', element: <AlertsPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'sync', element: <SyncParksPage /> },
       { path: 'admin', element: <Admin /> },

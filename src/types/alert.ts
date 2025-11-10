@@ -1,10 +1,11 @@
-import { LiveDataStatus } from './db';
+import { CompleteAttractionData, CompleteParkData, CompleteRestaurantData, CompleteShowData, LiveDataStatus } from './db';
 
 /* ALERT TYPES */
 export type AlertEntityType = 'ATTRACTION' | 'SHOW' | 'RESTAURANT' | 'PARK';
 export type AlertType = 'WAIT_TIME_THRESHOLD' | 'STATUS_CHANGE_UP' | 'STATUS_CHANGE_DOWN';
 export type AlertStatus = 'ACTIVE' | 'PAUSED' | 'DELETED';
 
+/* ALERT INTERFACE */
 export interface Alert {
   id: string;
   userId: string;
@@ -20,6 +21,7 @@ export interface Alert {
   lastTriggered: string | null;
   createdAt: string;
   updatedAt: string;
+  entity?: AlertEntity;
 }
 
 export interface CreateAlertRequest {
@@ -35,4 +37,10 @@ export interface UpdateAlertRequest {
   status?: AlertStatus;
   waitTimeThreshold?: number;
   fcmToken?: string;
+}
+
+export type AlertEntity = CompleteAttractionData | CompleteShowData | CompleteRestaurantData | CompleteParkData | null;
+
+export type AlertWithEntityData = Alert & {
+  entity: AlertEntity;
 }

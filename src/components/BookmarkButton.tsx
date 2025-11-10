@@ -1,8 +1,9 @@
 import React from 'react';
 import { BookmarkIcon as BookmarkOutline } from '@heroicons/react/24/outline';
 import { BookmarkIcon as BookmarkSolid } from '@heroicons/react/24/solid';
-import { useBookmarks, BookmarkEntityType } from '../context/BookmarkContext';
+import { useBookmarks } from '../context/BookmarkContext';
 import { useAuth } from '../context/AuthContext';
+import { BookmarkEntityType } from '../types/Bookmark';
 
 interface BookmarkButtonProps {
   entityId: string;

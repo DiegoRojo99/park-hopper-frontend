@@ -58,10 +58,12 @@ export const AlertProvider = ({ children }: AlertProviderProps) => {
 
       const data: Alert[] = await response.json();
       setAlerts(data);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error fetching alerts:', error);
       setAlerts([]);
-    } finally {
+    } 
+    finally {
       setLoading(false);
     }
   }, [user]);
@@ -116,10 +118,9 @@ export const AlertProvider = ({ children }: AlertProviderProps) => {
       }
 
       const newAlert: Alert = await response.json();
-      
-      // Optimistically add the alert to the list
       setAlerts(prev => [...prev, newAlert]);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error creating alert:', error);
       throw error;
     }
@@ -144,10 +145,9 @@ export const AlertProvider = ({ children }: AlertProviderProps) => {
       }
 
       const updatedAlert: Alert = await response.json();
-      
-      // Optimistically update the alert in the list
       setAlerts(prev => prev.map(alert => alert.id === alertId ? updatedAlert : alert));
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error updating alert:', error);
       throw error;
     }
@@ -167,9 +167,9 @@ export const AlertProvider = ({ children }: AlertProviderProps) => {
         throw new Error('Failed to delete alert');
       }
 
-      // Optimistically remove the alert from the list
       setAlerts(prev => prev.filter(alert => alert.id !== alertId));
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error deleting alert:', error);
       throw error;
     }

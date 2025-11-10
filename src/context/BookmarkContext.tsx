@@ -1,23 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
-import { LiveDataStatus, ShowTimes } from "../types/db";
 import { useAuth } from "./AuthContext";
-
-export type BookmarkEntityType = 'ATTRACTION' | 'SHOW' | 'RESTAURANT' | 'PARK';
-
-export interface Bookmark {
-  destinationId: string | null;
-  entityType: BookmarkEntityType;
-  externalId: string;
-  id: string;
-  latitude: number;
-  longitude: number;
-  name: string;
-  parkId: string;
-  showtimes?: ShowTimes[];
-  waitTime?: number | null;
-  status?: LiveDataStatus;
-  timezone: string;
-}
+import { Bookmark, BookmarkEntityType } from "../types/Bookmark";
 
 export interface BookMarkAdditionResponse {
   createdAt: string;

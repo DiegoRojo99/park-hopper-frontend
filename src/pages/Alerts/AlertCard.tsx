@@ -49,8 +49,40 @@ const AlertCard: React.FC<AlertCardProps> = ({ alert }) => {
     }
   };
 
+  const entity = alert.entity;
+
+  // Handle different image property names: StaticParkData uses mainImage, others use image
+  const getEntityImage = () => {
+    if (!entity) return null;
+    
+    // Type guard for park data (has mainImage)
+    if ('mainImage' in entity && entity.mainImage) {
+      return entity.mainImage;
+    }
+    
+    // For attractions, shows, restaurants (have image)
+    if ('image' in entity && entity.image) {
+      return entity.image;
+    }
+    
+    return null;
+  };
+
+  const entityImage = getEntityImage();
+
   return (
     <div className="p-4 bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-200 dark:border-gray-700 relative">
+      {/* Entity Image (if available) */}
+      {entityImage && (
+        <div className="mb-3 -mx-4 -mt-4">
+          <img 
+            src={entityImage.url} 
+            alt={entity?.name || 'Entity image'}
+            className="w-full h-32 object-cover rounded-t-xl"
+          />
+        </div>
+      )}
+
       {/* Alert icon and status indicator */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
@@ -115,14 +147,48 @@ const AlertCard: React.FC<AlertCardProps> = ({ alert }) => {
 
       {/* Alert details */}
       <div className="space-y-2">
+        {/* Entity name (if available) */}
+        {entity?.name && (
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              {entity.name}
+            </h3>
+          </div>
+        )}
+
         <div>
-          <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+          <h4 className="text-base font-semibold text-gray-900 dark:text-white">
             {getAlertTypeLabel(alert.alertType)}
-          </h3>
+          </h4>
           <p className="text-sm text-gray-600 dark:text-gray-400">
             {alert.entityType.charAt(0) + alert.entityType.slice(1).toLowerCase()}
           </p>
         </div>
+
+        {/* Live data (if available) */}
+        {entity && 'status' in entity && entity.status && (
+          <div className="flex items-center gap-2 text-sm">
+            <span className={`px-2 py-1 rounded text-xs font-medium ${
+              entity.status === 'OPERATING'
+                ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+            }`}>
+              {entity.status}
+            </span>
+            {/* Wait time for attractions */}
+            {'waitTime' in entity && entity.waitTime !== null && entity.waitTime !== undefined && (
+              <span className="text-gray-700 dark:text-gray-300">
+                Wait: <strong>{entity.waitTime} min</strong>
+              </span>
+            )}
+            {/* Showtimes for shows */}
+            {'showtimes' in entity && entity.showtimes && entity.showtimes.length > 0 && (
+              <span className="text-gray-700 dark:text-gray-300">
+                Next: <strong>{new Date(entity.showtimes[0].startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong>
+              </span>
+            )}
+          </div>
+        )}
 
         {alert.waitTimeThreshold && (
           <div className="flex items-center gap-2 text-sm">

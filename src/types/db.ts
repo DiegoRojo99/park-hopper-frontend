@@ -1,3 +1,6 @@
+import { LiveRestaurantData, StaticAttractionData, StaticParkData, StaticRestaurantData, StaticShowData } from "./Cache";
+import { LivePark, ParkSchedule } from "./Park";
+
 /* ENTITY TYPES */
 export type GeneralEntity = {
   id: string;
@@ -91,3 +94,22 @@ export type Show = ChildrenEntity
 export type Restaurant = ChildrenEntity & {
   cuisines?: string[];
 }
+
+/* COMPLETE DATA TYPES */
+export type CompleteAttractionData = 
+  StaticAttractionData & 
+  Partial<Omit<LiveAttraction, 'id' | 'name'>>;
+
+export type CompleteParkData = StaticParkData & {
+  live: LivePark | null;
+  schedule: ParkSchedule | null;
+  status: 'OPERATING' | 'CLOSED';
+};
+
+export type CompleteRestaurantData = 
+  StaticRestaurantData & 
+  Partial<Omit<LiveRestaurantData, 'id' | 'name'>>;
+
+export type CompleteShowData = 
+  StaticShowData & 
+  Partial<Omit<LiveShow, 'id' | 'name'>>;

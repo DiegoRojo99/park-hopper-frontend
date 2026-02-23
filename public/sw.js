@@ -1,5 +1,5 @@
 // PWA Service Worker for caching and offline functionality
-const CACHE_NAME = 'park-hopper-v1.1.0';
+const CACHE_NAME = 'park-hopper-v1.1.1';
 const urlsToCache = [
   '/',
   '/static/js/bundle.js',

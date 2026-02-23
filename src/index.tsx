@@ -13,12 +13,19 @@ root.render(
   </React.StrictMode>
 );
 
-// Register Firebase messaging service worker for push notifications
+// Register service workers for PWA functionality
 if ('serviceWorker' in navigator) {
+  // Register main PWA service worker for caching and offline functionality
   navigator.serviceWorker
-    .register('/firebase-messaging-sw.js')
+    .register('/sw.js')
     .then((registration) => {
-      console.log('✅ Service Worker registered:', registration);
+      console.log('✅ PWA Service Worker registered:', registration);
+      
+      // Also register Firebase messaging service worker for push notifications
+      return navigator.serviceWorker.register('/firebase-messaging-sw.js');
+    })
+    .then((registration) => {
+      console.log('✅ Firebase messaging Service Worker registered:', registration);
     })
     .catch((error) => {
       console.error('❌ Service Worker registration failed:', error);

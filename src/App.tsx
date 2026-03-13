@@ -16,6 +16,7 @@ import Parks from './pages/Parks/Parks';
 import { ParkDetailsContainer } from './pages/Parks/Details/ParkDetails';
 import AttractionDetails from './pages/Attractions/Details/AttractionDetails';
 import ShowDetails from './pages/Shows/Details/ShowDetails';
+import VisitDetails from './pages/Visits/Details/VisitDetails';
 import LoginPage from './pages/Login/LoginPage';
 import SyncParksPage from './pages/Sync/SyncParks';
 import BookmarksPage from './pages/Bookmarks/BookmarksPage';
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
       { path: 'parks/:parkId', element: <ParkDetailsContainer /> },
       { path: 'attractions/:attractionId', element: <AttractionDetails /> },
       { path: 'shows/:showId', element: <ShowDetails /> },
+      { path: 'visits/:visitId', element: <VisitDetails /> },
       { path: 'bookmarks', element: <BookmarksPage /> },
       { path: 'alerts', element: <AlertsPage /> },
       { path: 'visits', element: <VisitsPage /> },

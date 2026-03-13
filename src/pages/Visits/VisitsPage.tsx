@@ -82,8 +82,12 @@ const VisitsPage: React.FC = () => {
           <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Park Visits</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {visits.map((visit) => (
-              <div key={visit.id} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{visit.park?.name}</h3>
+              <Link 
+                key={visit.id} 
+                to={`/visits/${visit.id}`} 
+                className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg transition-shadow cursor-pointer group block"
+              >
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{visit.park?.name}</h3>
                 <p className="text-gray-600 dark:text-gray-400">{new Date(visit.visitDate).toLocaleDateString()}</p>
                 <p className="text-sm text-gray-500">
                   {new Date(visit.entryTime).toLocaleTimeString()} - {visit.exitTime ? new Date(visit.exitTime).toLocaleTimeString() : 'Still visiting'}
@@ -91,7 +95,14 @@ const VisitsPage: React.FC = () => {
                 {visit.notes && (
                   <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">{visit.notes}</p>
                 )}
-              </div>
+                
+                {/* Visit Summary */}
+                <div className="flex items-center gap-4 mt-3 text-xs text-gray-500">
+                  <span>🎢 {visit.attractionVisits?.length || 0}</span>
+                  <span>🎭 {visit.showVisits?.length || 0}</span>
+                  <span>🍽️ {visit.restaurantVisits?.length || 0}</span>
+                </div>
+              </Link>
             ))}
           </div>
         </section>

@@ -14,9 +14,9 @@ export interface Visit {
 
 export interface VisitWithDetails extends Visit {
   park: Park;
-  attractionVisits: AttractionVisit[];
-  showVisits: ShowVisit[];
-  restaurantVisits: RestaurantVisit[];
+  attractionVisits: AttractionVisitWithDetails[];
+  showVisits: ShowVisitWithDetails[];
+  restaurantVisits: RestaurantVisitWithDetails[];
 }
 
 export interface AttractionVisit {

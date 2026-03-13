@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { LiveAttraction } from "../../types/db";
 import { BookmarkButton } from "../../components/BookmarkButton";
 import AlertButton from "../../components/AlertButton";
@@ -49,7 +50,8 @@ export default function AttractionCard({ attraction }: { attraction: LiveAttract
   return (
     <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-gray-200 dark:border-gray-600 overflow-hidden group flex flex-col h-full">
       {/* Header with name and status */}
-      <div className="p-6 pb-4 flex-1">
+      <Link to={`/attractions/${attraction.id}`} className="block">
+        <div className="p-6 pb-4 flex-1 cursor-pointer">
         <div className="flex justify-between items-start mb-6">
           <h3 className="text-xl font-bold text-gray-900 dark:text-white leading-tight pr-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
             {attraction.name}
@@ -78,7 +80,8 @@ export default function AttractionCard({ attraction }: { attraction: LiveAttract
             </div>
           )}
         </div>
-      </div>
+        </div>
+      </Link>
 
       {/* Action buttons footer - always at bottom */}
       <div className="bg-gray-50 dark:bg-gray-700/30 border-t-2 border-gray-200 dark:border-gray-600 p-5 mt-auto">

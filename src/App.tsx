@@ -14,6 +14,7 @@ import './index.css';
 import HomePage from './pages/Home/HomePage';
 import Parks from './pages/Parks/Parks';
 import { ParkDetailsContainer } from './pages/Parks/Details/ParkDetails';
+import AttractionDetails from './pages/Attractions/Details/AttractionDetails';
 import ShowDetails from './pages/Shows/Details/ShowDetails';
 import LoginPage from './pages/Login/LoginPage';
 import SyncParksPage from './pages/Sync/SyncParks';
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: 'parks', element: <Parks /> },
       { path: 'parks/:parkId', element: <ParkDetailsContainer /> },
+      { path: 'attractions/:attractionId', element: <AttractionDetails /> },
       { path: 'shows/:showId', element: <ShowDetails /> },
       { path: 'bookmarks', element: <BookmarksPage /> },
       { path: 'alerts', element: <AlertsPage /> },

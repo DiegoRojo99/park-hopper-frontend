@@ -13,6 +13,7 @@ interface VisitButtonProps {
   entityName: string;
   parkVisitId?: string;
   className?: string;
+  hideLabel?: boolean;
 }
 
 const VisitButton: React.FC<VisitButtonProps> = ({ 
@@ -20,7 +21,8 @@ const VisitButton: React.FC<VisitButtonProps> = ({
   entityId, 
   entityName, 
   parkVisitId,
-  className = ""
+  className = "",
+  hideLabel = false
 }) => {
   const { 
     createVisit, 
@@ -259,11 +261,11 @@ const VisitButton: React.FC<VisitButtonProps> = ({
           setIsModalOpen(true);
           setValidationErrors([]);
         }}
-        className={`flex items-center space-x-2 px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors ${className}`}
+        className={`flex items-center justify-center space-x-2 px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors ${className}`}
         title={`Track visit to ${entityName}`}
       >
         <PlusIcon className="h-4 w-4" />
-        <span>Visit</span>
+        {!hideLabel && <span>Visit</span>}
       </button>
 
       {/* Modal */}

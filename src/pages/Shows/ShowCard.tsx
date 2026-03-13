@@ -3,6 +3,8 @@ import { CalendarIcon, ClockIcon } from "@heroicons/react/24/outline";
 import { ShowTimeElement } from "./ShowTimeElement";
 import { BookmarkButton } from "../../components/BookmarkButton";
 import VisitButton from "../../components/VisitButton";
+import AlertButton from "../../components/AlertButton";
+import { Link } from "react-router-dom";
 import formatTime from "../../lib/time";
 
 function getNextShowtime(show: LiveShow) {
@@ -15,10 +17,30 @@ function getNextShowtime(show: LiveShow) {
   for (const time of show.showtimes) {
     const showtimeDate = new Date(time.startTime);
     if (showtimeDate > now) {
-      return formatTime(time.startTime, show.timezone);
+      return {
+        time: formatTime(time.startTime, show.timezone),
+        startTime: time.startTime
+      };
     }
   }
   return null;
+}
+
+function getTimeUntilNext(startTime: string) {
+  const now = new Date();
+  const showTime = new Date(startTime);
+  const diffMs = showTime.getTime() - now.getTime();
+  
+  if (diffMs <= 0) return null;
+  
+  const diffMinutes = Math.floor(diffMs / (1000 * 60));
+  const hours = Math.floor(diffMinutes / 60);
+  const minutes = diffMinutes % 60;
+  
+  if (hours > 0) {
+    return minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`;
+  }
+  return `${minutes}m`;
 }
 
 export default function ShowCard({ show }: { show: LiveShow }) {
@@ -39,91 +61,84 @@ export default function ShowCard({ show }: { show: LiveShow }) {
 
   const firstShowtime = show.showtimes?.[0];
   const duration = firstShowtime ? calculateDuration(firstShowtime.startTime, firstShowtime.endTime) : undefined;
+  const nextShow = getNextShowtime(show);
+  const timeUntilNext = nextShow ? getTimeUntilNext(nextShow.startTime) : null;
+
   return (
-    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 relative">
-      {/* Bookmark button in top-right corner */}
-      <div className="absolute top-2 right-2">
-        <BookmarkButton entityId={show.id} entityType="SHOW" size="sm" />
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-gray-200 dark:border-gray-600 overflow-hidden group flex flex-col h-full relative">
+      {/* Status badge - positioned absolutely in top right */}
+      <div className="absolute top-4 right-4 z-10">
+        <div className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200">
+          <span className="text-sm">🎭</span>
+          <span>Show</span>
+        </div>
       </div>
-      
-      <div className="pr-8">
-        <h3 className="text-md font-bold mb-2">
-          {show.name}
-        </h3>
-        {!!duration && (
-          <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center mt-1">
-            <ClockIcon className="h-4 w-4 shrink-0 mr-1.5" />
-            <span className="leading-none">{formatDuration(duration)}</span>
+
+      {/* Header with name */}
+      <Link to={`/shows/${show.id}`} className="block">
+        <div className="p-6 pb-4 flex-1 cursor-pointer">
+          <div className="mb-6 pr-20">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              {show.name}
+            </h3>
+            {duration && (
+              <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center mt-2">
+                <ClockIcon className="h-4 w-4 shrink-0 mr-1.5" />
+                <span>{formatDuration(duration)}</span>
+              </div>
+            )}
           </div>
-        )}
-        {getNextShowtime(show) && (
-          <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center mt-1">
-            <CalendarIcon className="h-4 w-4 shrink-0 mr-1.5" />
-            <span className="leading-none">Next Show: {getNextShowtime(show)}</span>
+
+          {/* Next showtime display - prominent center section */}
+          <div className="flex justify-center mb-6">
+            {nextShow ? (
+              <div className="px-8 py-6 rounded-3xl border-2 w-full bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-700">
+                <div className="text-center">
+                  <div className="text-xs font-medium opacity-80 mb-1">NEXT SHOWTIME</div>
+                  <div className="text-2xl font-bold leading-none">{nextShow.time}</div>
+                  {timeUntilNext && (
+                    <div className="text-sm font-medium opacity-80 mt-2">Starts in {timeUntilNext}</div>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="px-8 py-6 rounded-3xl border-2 w-full bg-gray-50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600">
+                <div className="text-center">
+                  <div className="text-xl font-bold text-gray-400 dark:text-gray-500 leading-none">No Shows</div>
+                  <div className="text-sm font-medium text-gray-400 dark:text-gray-500 mt-1">today</div>
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      <ShowCardAdditionalShowtimes show={show} />
-      
-      {/* Visit Button */}
-      <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
-        <VisitButton 
-          entityType="show"
-          entityId={show.id}
-          entityName={show.name}
-          className="w-full text-sm"
-        />
+        </div>
+      </Link>
+
+      {/* Action buttons footer - always at bottom */}
+      <div className="bg-gray-50 dark:bg-gray-700/30 border-t-2 border-gray-200 dark:border-gray-600 p-5 mt-auto">
+        <div className="grid grid-cols-3 gap-4">
+          {/* Visit Button */}
+          <VisitButton 
+            entityType="show"
+            entityId={show.id}
+            entityName={show.name}
+            hideLabel={true}
+            className="w-full h-14 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border-2 border-green-200 dark:border-green-700 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-xl text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200"
+          />
+          
+          {/* Alert Button */}
+          <div className="flex items-center justify-center bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 border-2 border-orange-200 dark:border-orange-700 hover:bg-orange-100 dark:hover:bg-orange-900/30 rounded-xl h-14 transition-all duration-200 shadow-sm hover:shadow-md w-full">
+            <AlertButton 
+              entityId={show.id} 
+              entityType="SHOW" 
+            />
+          </div>
+          
+          {/* Bookmark Button */}
+          <div className="flex items-center justify-center bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border-2 border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-xl h-14 transition-all duration-200 shadow-sm hover:shadow-md w-full">
+            <BookmarkButton entityId={show.id} entityType="SHOW" size="lg" />
+          </div>
+        </div>
       </div>
     </div>
-  );
-}
-
-function filterPastShowtime(showtime: ShowTimes) {
-  const now = new Date();
-  return new Date(showtime.startTime) > now;
-}
-
-function filterDifferentDateShowtime(showtime: ShowTimes) {
-  const now = new Date();
-  return new Date(showtime.startTime).toDateString() !== now.toDateString();
-}
-
-function filterShowtimesByDateAndTime(show: LiveShow) {
-  return show.showtimes?.filter(st => {
-    if (!st.startTime) return false;
-    if (!filterPastShowtime(st)) return false;
-    if (!filterDifferentDateShowtime(st)) return false;
-    return true;
-  });
-}
-
-function ShowCardAdditionalShowtimes({ show }: { show: LiveShow }) {
-  const dateFilteredShowtimes = filterShowtimesByDateAndTime(show);
-  const numberOfShowtimes = dateFilteredShowtimes ? dateFilteredShowtimes.length : 0;
-
-  if (numberOfShowtimes < 2) {
-    const showTimeExists = numberOfShowtimes === 1;
-    return (
-      <>
-        <hr className="mt-2 mb-3" />
-        <div className="flex items-center justify-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-2">
-          <CalendarIcon className="h-4 w-4" />
-          <span>No {showTimeExists ? "additional" : ""} upcoming showtimes available today.</span>
-        </div>
-      </>
-    );
-  }
-  return (
-    <>
-      <hr className="mt-2 mb-3" />
-      <div>
-        <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Additional Showtimes:</p>
-        <div className="flex flex-wrap gap-2 justify-start">
-          {show.showtimes.slice(1).map((time, index) => (
-            <ShowTimeElement key={index} showtime={time} timezone={show.timezone} />
-          ))}
-        </div>
-      </div>
-    </>
   );
 }

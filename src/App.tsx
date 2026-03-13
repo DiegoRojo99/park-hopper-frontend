@@ -5,6 +5,7 @@ import { Layout } from './components/Layout';
 import { AuthProvider } from './context/AuthContext';
 import { BookmarkProvider } from './context/BookmarkContext';
 import { AlertProvider } from './context/AlertContext';
+import { VisitProvider } from './context/VisitContext';
 
 /* STYLES */
 import './index.css';
@@ -17,6 +18,7 @@ import LoginPage from './pages/Login/LoginPage';
 import SyncParksPage from './pages/Sync/SyncParks';
 import BookmarksPage from './pages/Bookmarks/BookmarksPage';
 import AlertsPage from './pages/Alerts/AlertsPage';
+import VisitsPage from './pages/Visits/VisitsPage';
 
 /* ADMIN PAGES */
 import AdminImageLinker from './pages/Admin/AdminImageLinker';
@@ -33,6 +35,7 @@ const router = createBrowserRouter([
       { path: 'parks/:parkId', element: <ParkDetailsContainer /> },
       { path: 'bookmarks', element: <BookmarksPage /> },
       { path: 'alerts', element: <AlertsPage /> },
+      { path: 'visits', element: <VisitsPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'sync', element: <SyncParksPage /> },
       { path: 'admin', element: <Admin /> },
@@ -47,7 +50,9 @@ export default function App() {
     <AuthProvider>
       <AlertProvider>
         <BookmarkProvider>
-          <RouterProvider router={router} future={{ v7_startTransition: true }} />
+          <VisitProvider>
+            <RouterProvider router={router} future={{ v7_startTransition: true }} />
+          </VisitProvider>
         </BookmarkProvider>
       </AlertProvider>
     </AuthProvider>

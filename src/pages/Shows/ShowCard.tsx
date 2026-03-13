@@ -1,9 +1,8 @@
-import { LiveShow, ShowTimes } from "../../types/db";
-import { CalendarIcon, ClockIcon } from "@heroicons/react/24/outline";
-import { ShowTimeElement } from "./ShowTimeElement";
+import { LiveShow } from "../../types/db";
+import { ClockIcon } from "@heroicons/react/24/outline";
 import { BookmarkButton } from "../../components/BookmarkButton";
 import VisitButton from "../../components/VisitButton";
-import AlertButton from "../../components/AlertButton";
+// import AlertButton from "../../components/AlertButton";
 import { Link } from "react-router-dom";
 import formatTime from "../../lib/time";
 
@@ -66,22 +65,14 @@ export default function ShowCard({ show }: { show: LiveShow }) {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-gray-200 dark:border-gray-600 overflow-hidden group flex flex-col h-full relative">
-      {/* Status badge - positioned absolutely in top right */}
-      <div className="absolute top-4 right-4 z-10">
-        <div className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200">
-          <span className="text-sm">🎭</span>
-          <span>Show</span>
-        </div>
-      </div>
-
       {/* Header with name */}
       <Link to={`/shows/${show.id}`} className="block">
         <div className="p-6 pb-4 flex-1 cursor-pointer">
-          <div className="mb-6 pr-20">
+          <div className="mb-6">
             <h3 className="text-xl font-bold text-gray-900 dark:text-white leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
               {show.name}
             </h3>
-            {duration && (
+            {!!duration && (
               <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center mt-2">
                 <ClockIcon className="h-4 w-4 shrink-0 mr-1.5" />
                 <span>{formatDuration(duration)}</span>
@@ -115,7 +106,7 @@ export default function ShowCard({ show }: { show: LiveShow }) {
 
       {/* Action buttons footer - always at bottom */}
       <div className="bg-gray-50 dark:bg-gray-700/30 border-t-2 border-gray-200 dark:border-gray-600 p-5 mt-auto">
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {/* Visit Button */}
           <VisitButton 
             entityType="show"
@@ -126,12 +117,12 @@ export default function ShowCard({ show }: { show: LiveShow }) {
           />
           
           {/* Alert Button */}
-          <div className="flex items-center justify-center bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 border-2 border-orange-200 dark:border-orange-700 hover:bg-orange-100 dark:hover:bg-orange-900/30 rounded-xl h-14 transition-all duration-200 shadow-sm hover:shadow-md w-full">
+          {/* <div className="flex items-center justify-center bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 border-2 border-orange-200 dark:border-orange-700 hover:bg-orange-100 dark:hover:bg-orange-900/30 rounded-xl h-14 transition-all duration-200 shadow-sm hover:shadow-md w-full">
             <AlertButton 
               entityId={show.id} 
               entityType="SHOW" 
             />
-          </div>
+          </div> */}
           
           {/* Bookmark Button */}
           <div className="flex items-center justify-center bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border-2 border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-xl h-14 transition-all duration-200 shadow-sm hover:shadow-md w-full">

@@ -1,6 +1,7 @@
 import { LiveAttraction } from "../../types/db";
 import { BookmarkButton } from "../../components/BookmarkButton";
 import AlertButton from "../../components/AlertButton";
+import VisitButton from "../../components/VisitButton";
 
 export default function AttractionCard({ attraction }: { attraction: LiveAttraction }) {
   if (!attraction) return null;
@@ -48,6 +49,16 @@ export default function AttractionCard({ attraction }: { attraction: LiveAttract
             <span className="text-xl text-gray-500 italic">-</span>
           )}
         </div>
+      </div>
+      
+      {/* Visit Button */}
+      <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+        <VisitButton 
+          entityType="attraction"
+          entityId={attraction.id}
+          entityName={attraction.name}
+          className="w-full text-sm"
+        />
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { formatScheduleType, getScheduleBadgeStyle, getScheduleInfo } from "../../../lib/schedule";
 import { LivePark } from "../../../types/Park";
 import { MapPinIcon, ClockIcon } from "@heroicons/react/24/outline";
+import VisitButton from "../../../components/VisitButton";
 
 export default function ParkHeroSection({ park }: { park: LivePark }) {
   const parkLiveData = park.live;
@@ -27,10 +28,16 @@ export default function ParkHeroSection({ park }: { park: LivePark }) {
       {/* Park information overlay */}
       <div className="relative z-10 p-6 flex flex-col justify-end h-full">
         {/* Row 1: Park name and status */}
-        <div className="flex items-center gap-3 mb-2">
+        <div className="flex items-center justify-between gap-3 mb-2">
           <h1 className="text-2xl sm:text-4xl font-bold text-white">
             {park.name}
           </h1>
+          <VisitButton 
+            entityType="park"
+            entityId={park.id}
+            entityName={park.name}
+            className="text-sm"
+          />
         </div>
 
         {/* Row 2: Location and Hours */}

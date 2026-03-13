@@ -2,6 +2,7 @@ import { LiveShow, ShowTimes } from "../../types/db";
 import { CalendarIcon, ClockIcon } from "@heroicons/react/24/outline";
 import { ShowTimeElement } from "./ShowTimeElement";
 import { BookmarkButton } from "../../components/BookmarkButton";
+import VisitButton from "../../components/VisitButton";
 import formatTime from "../../lib/time";
 
 function getNextShowtime(show: LiveShow) {
@@ -63,6 +64,16 @@ export default function ShowCard({ show }: { show: LiveShow }) {
         )}
       </div>
       <ShowCardAdditionalShowtimes show={show} />
+      
+      {/* Visit Button */}
+      <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+        <VisitButton 
+          entityType="show"
+          entityId={show.id}
+          entityName={show.name}
+          className="w-full text-sm"
+        />
+      </div>
     </div>
   );
 }

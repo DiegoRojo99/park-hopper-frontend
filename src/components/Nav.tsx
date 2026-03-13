@@ -43,6 +43,7 @@ const Nav: React.FC = () => {
           <div className="hidden lg:flex lg:items-center lg:space-x-8">
             <Link to="/parks" className="hover:underline">Parks</Link>
             {user && <Link to="/bookmarks" className="hover:underline">Bookmarks</Link>}
+            {user && <Link to="/visits" className="hover:underline">Visits</Link>}
             {user && <Link to="/alerts" className="hover:underline">Alerts</Link>}
             {userLoading ? null : user ? (
               <button
@@ -80,6 +81,13 @@ const Nav: React.FC = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Bookmarks
+              </Link>
+              <Link 
+                to="/visits" 
+                className="block px-3 py-2 rounded-lg text-gray-200 hover:bg-gray-700/50 hover:text-white active:bg-gray-600 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Visits
               </Link>
               <Link 
                 to="/alerts" 

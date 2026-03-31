@@ -1,4 +1,5 @@
 import { LiveRestaurant } from "../../types/db";
+import VisitButton from "../../components/VisitButton";
 
 export default function RestaurantCard({ restaurant }: { restaurant: LiveRestaurant }) {
   return (
@@ -22,6 +23,16 @@ export default function RestaurantCard({ restaurant }: { restaurant: LiveRestaur
           No cuisines available.
         </div>
       )}
+      
+      {/* Visit Button */}
+      <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+        <VisitButton 
+          entityType="restaurant"
+          entityId={restaurant.id}
+          entityName={restaurant.name}
+          className="w-full text-sm"
+        />
+      </div>
     </div>
   );
 }

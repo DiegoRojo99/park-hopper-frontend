@@ -97,17 +97,11 @@ export const BookmarkProvider = ({ children }: BookmarkProviderProps) => {
         const newBookmark: BookMarkAdditionResponse = await response.json();
         const bookmark: Bookmark = {
           id: newBookmark.entityId,
-          externalId: newBookmark.entityId,
           entityType: newBookmark.entityType,
-          destinationId: null,
-          latitude: 0,
-          longitude: 0,
-          name: '',
-          parkId: '',
-          showtimes: [],
-          waitTime: null,
-          status: undefined,
-          timezone: ''
+          entityId: newBookmark.entityId,
+          userId: newBookmark.userId,
+          createdAt: newBookmark.createdAt,
+          updatedAt: newBookmark.updatedAt
         };
         setBookmarks(prev => [...prev, bookmark]);
       }

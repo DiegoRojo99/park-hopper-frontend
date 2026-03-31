@@ -5,6 +5,7 @@ import { Layout } from './components/Layout';
 import { AuthProvider } from './context/AuthContext';
 import { BookmarkProvider } from './context/BookmarkContext';
 import { AlertProvider } from './context/AlertContext';
+import { VisitProvider } from './context/VisitContext';
 
 /* STYLES */
 import './index.css';
@@ -13,10 +14,14 @@ import './index.css';
 import HomePage from './pages/Home/HomePage';
 import Parks from './pages/Parks/Parks';
 import { ParkDetailsContainer } from './pages/Parks/Details/ParkDetails';
+import AttractionDetails from './pages/Attractions/Details/AttractionDetails';
+import ShowDetails from './pages/Shows/Details/ShowDetails';
+import VisitDetails from './pages/Visits/Details/VisitDetails';
 import LoginPage from './pages/Login/LoginPage';
 import SyncParksPage from './pages/Sync/SyncParks';
 import BookmarksPage from './pages/Bookmarks/BookmarksPage';
 import AlertsPage from './pages/Alerts/AlertsPage';
+import VisitsPage from './pages/Visits/VisitsPage';
 
 /* ADMIN PAGES */
 import AdminImageLinker from './pages/Admin/AdminImageLinker';
@@ -31,8 +36,12 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: 'parks', element: <Parks /> },
       { path: 'parks/:parkId', element: <ParkDetailsContainer /> },
+      { path: 'attractions/:attractionId', element: <AttractionDetails /> },
+      { path: 'shows/:showId', element: <ShowDetails /> },
+      { path: 'visits/:visitId', element: <VisitDetails /> },
       { path: 'bookmarks', element: <BookmarksPage /> },
       { path: 'alerts', element: <AlertsPage /> },
+      { path: 'visits', element: <VisitsPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'sync', element: <SyncParksPage /> },
       { path: 'admin', element: <Admin /> },
@@ -47,7 +56,9 @@ export default function App() {
     <AuthProvider>
       <AlertProvider>
         <BookmarkProvider>
-          <RouterProvider router={router} future={{ v7_startTransition: true }} />
+          <VisitProvider>
+            <RouterProvider router={router} future={{ v7_startTransition: true }} />
+          </VisitProvider>
         </BookmarkProvider>
       </AlertProvider>
     </AuthProvider>

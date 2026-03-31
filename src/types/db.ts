@@ -1,5 +1,11 @@
 import { LiveRestaurantData, StaticAttractionData, StaticParkData, StaticRestaurantData, StaticShowData } from "./Cache";
-import { LivePark, ParkSchedule } from "./Park";
+import { LivePark, Park, ParkSchedule } from "./Park";
+import { Image } from "./Image";
+import { WikimediaImage } from "./WikimediaImage";
+import { Restaurant } from "./Restaurant";
+import { Show } from "./Show";
+import { Attraction } from "./Attraction";
+import { Destination } from "./Destination";
 
 /* ENTITY TYPES */
 export type GeneralEntity = {
@@ -19,8 +25,6 @@ export type ChildrenEntity = GeneralEntity & {
 }
 
 /* DESTINATION TYPES */
-export type Destination = GeneralEntity
-
 export type DestinationWithParks = Destination & {
   parks: Park[];
 };
@@ -32,8 +36,10 @@ export type DestinationWithParksAndChildren = DestinationWithParks & {
 }
 
 /* PARK TYPES */
-export type Park = GeneralEntity & {
-  destinationId: string | null;
+export type ParkWithImages = Park & {
+  logoImage?: WikimediaImage;
+  mainImage?: WikimediaImage;
+  images: Image[];
 };
 
 export type ParkWithDestination = Park & {
@@ -46,8 +52,10 @@ export type ParkWithDestinationAndChildren = ParkWithDestination & {
   restaurants?: Restaurant[];
 };
 
+/* ENTITY ENUMS */
+export type EntityType = 'DESTINATION' | 'PARK' | 'ATTRACTION' | 'SHOW' | 'RESTAURANT' | 'SHOP';
+
 /* LIVE DATA TYPES */
-export type EntityType = 'DESTINATION' | 'PARK' | 'ATTRACTION' | 'RESTAURANT' | 'SHOW';
 export type LiveDataStatus = 'CLOSED' | 'DOWN' | 'OPERATING';
 export type LiveDataElement = {
   id: string;
@@ -84,16 +92,9 @@ export type ShowLiveDataElement = {
   lastUpdated: string;
 };
 
-export type LiveAttraction = Attraction & { waitTime: number | null, status: LiveDataStatus };
-export type LiveShow = Show & { showtimes: ShowTimes[], status: LiveDataStatus };
-export type LiveRestaurant = Restaurant;
-
-/* CHILDREN TYPES */
-export type Attraction = ChildrenEntity
-export type Show = ChildrenEntity
-export type Restaurant = ChildrenEntity & {
-  cuisines?: string[];
-}
+export type LiveAttraction = Attraction & { waitTime: number | null, status: LiveDataStatus, images: Image[] };
+export type LiveShow = Show & { showtimes: ShowTimes[], status: LiveDataStatus, images: Image[] };
+export type LiveRestaurant = Restaurant & { images: Image[] };
 
 /* COMPLETE DATA TYPES */
 export type CompleteAttractionData = 

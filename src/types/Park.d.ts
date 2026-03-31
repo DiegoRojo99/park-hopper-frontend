@@ -1,5 +1,6 @@
 import { Destination } from "./db";
 import { WikimediaImage } from "./WikimediaImage";
+import { Image } from "./Image";
 
 export type Park = {
   id: string;
@@ -14,11 +15,13 @@ export type Park = {
   mainImageId: string;
   city?: string;
   countryId?: string;
+  themeparksApiId?: string;
 };
 
 export type ParkWithDetails = Park & {
-  logoImage: WikimediaImage;
-  mainImage: WikimediaImage;
+  logoImage?: WikimediaImage;
+  mainImage?: WikimediaImage;
+  images: Image[];
   destination: Destination;
   country?: Country;
 };

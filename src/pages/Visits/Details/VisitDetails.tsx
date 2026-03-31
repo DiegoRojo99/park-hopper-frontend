@@ -15,6 +15,8 @@ const VisitDetails: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   // Helper function to format time
   const formatTime = (dateString: string) => {
@@ -109,12 +111,88 @@ const VisitDetails: React.FC = () => {
     setIsEditModalOpen(true);
   };
 
-  const handleSaveActivity = (updatedActivity: Activity) => {
-    // TODO: Implement API call to update the activity
-    // For now, just close the modal
-    console.log('Updated activity:', updatedActivity);
-    setIsEditModalOpen(false);
-    setEditingActivity(null);
+  const handleSaveActivity = async (updatedActivity: Activity) => {
+    try {
+      setLoading(true);
+      
+      if (!apiUrl) {
+        throw new Error('API URL not configured');
+      }
+      
+      if (updatedActivity.type === 'park') {
+        // Update visit entry/exit times
+        const updateData: any = {};
+        if (updatedActivity.isEntry) updateData.entryTime = updatedActivity.timestamp;
+        else if (updatedActivity.isExit) updateData.exitTime = updatedActivity.timestamp;
+        
+        if (updatedActivity.notes !== undefined) updateData.notes = updatedActivity.notes || null;
+        
+        const response = await fetch(`${apiUrl}/api/visits/visit/${visitId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to update visit');
+        }
+      } 
+      else {
+        // Update specific visit records
+        let endpoint = '';
+        let updateData: any = {
+          rating: updatedActivity.rating || null,
+          notes: updatedActivity.notes || null,
+        };
+        
+        switch (updatedActivity.type) {
+          case 'attraction':
+            endpoint = `${apiUrl}/api/visits/attractions/${updatedActivity.id}`;
+            if (updatedActivity.waitTime !== undefined) {
+              updateData.waitTime = updatedActivity.waitTime || null;
+            }
+            updateData.visitedAt = updatedActivity.timestamp;
+            break;
+          case 'show':
+            endpoint = `${apiUrl}/api/visits/shows/${updatedActivity.id}`;
+            updateData.visitedAt = updatedActivity.timestamp;
+            break;
+          case 'restaurant':
+            endpoint = `${apiUrl}/api/visits/restaurants/${updatedActivity.id}`;
+            updateData.visitedAt = updatedActivity.timestamp;
+            break;
+          default:
+            throw new Error('Unknown activity type');
+        }
+        
+        const response = await fetch(endpoint, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData),
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Failed to update ${updatedActivity.type} visit`);
+        }
+      }
+      
+      // Refresh visit data
+      const updatedVisit = await getVisit(visitId!);
+      setVisit(updatedVisit);
+      setError('');
+      
+    } catch (err) {
+      console.error('Error updating activity:', err);
+      setError(err instanceof Error ? err.message : 'Failed to update activity');
+    } finally {
+      setLoading(false);
+      setIsEditModalOpen(false);
+      setEditingActivity(null);
+    }
   };
 
   // Calculate total visit duration

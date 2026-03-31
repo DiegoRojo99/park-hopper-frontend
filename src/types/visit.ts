@@ -1,4 +1,7 @@
-import { Park, Attraction, Show, Restaurant } from './db';
+import { Park } from './Park';
+import { Attraction } from './Attraction';
+import { Show } from './Show';
+import { Restaurant } from './Restaurant';
 
 export interface Visit {
   id: string;

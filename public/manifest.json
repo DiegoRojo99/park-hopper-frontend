@@ -8,33 +8,34 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logos/favicon-96x96.png",
+      "src": "logos/favicon-16x16.png",
       "type": "image/png",
-      "sizes": "96x96"
+      "sizes": "16x16",
+      "purpose": "any"
     },
     {
-      "src": "logos/web-app-manifest-192x192.png",
+      "src": "logos/favicon-32x32.png",
+      "type": "image/png",
+      "sizes": "32x32",
+      "purpose": "any"
+    },
+    {
+      "src": "logos/android-chrome-192x192.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any"
     },
     {
-      "src": "logos/web-app-manifest-192x192.png",
+      "src": "logos/android-chrome-maskable-192x192.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "maskable"
     },
     {
-      "src": "logos/web-app-manifest-512x512.png",
+      "src": "logos/android-chrome-512x512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
-    },
-    {
-      "src": "logos/web-app-manifest-512x512.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "maskable"
     }
   ],
   "start_url": "/",

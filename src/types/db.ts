@@ -92,9 +92,9 @@ export type ShowLiveDataElement = {
   lastUpdated: string;
 };
 
-export type LiveAttraction = Attraction & { waitTime: number | null, status: LiveDataStatus };
-export type LiveShow = Show & { showtimes: ShowTimes[], status: LiveDataStatus };
-export type LiveRestaurant = Restaurant;
+export type LiveAttraction = Attraction & { waitTime: number | null, status: LiveDataStatus, images: Image[] };
+export type LiveShow = Show & { showtimes: ShowTimes[], status: LiveDataStatus, images: Image[] };
+export type LiveRestaurant = Restaurant & { images: Image[] };
 
 /* COMPLETE DATA TYPES */
 export type CompleteAttractionData = 
